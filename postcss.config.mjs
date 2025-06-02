@@ -1,5 +1,13 @@
 const config = {
-  plugins: ["@tailwindcss/postcss"],
+  plugins: {
+    "@tailwindcss/postcss": {
+      theme: {
+        container: {
+          center: true,
+        },
+      },
+    },
+  },
 };
 
 export default config;
