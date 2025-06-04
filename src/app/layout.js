@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
       >
         <UserContextProvider>
           <Header />
-          <main className="container mx-auto px-4 flex flex-col grow">
+          <main className="flex flex-col grow">
             {children}
           </main>
           <Footer />
