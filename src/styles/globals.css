@@ -4,7 +4,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --main-text: #de2323;
-  /* --button-background: #49e659; */
+  /* --button-background: #6ED788; */
 }
 
 @theme inline {
@@ -13,6 +13,12 @@
   --color-button-background: var(--button-background);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+}
+
+@theme{
+  --color-green: #6ED788;
+  --color-gray-100: #F0F2F5;
 }
 
 
@@ -38,7 +44,6 @@ h1 {
 }
 
 
-/* button {
-  background-color: var(--color-button-background);
-  color: var(--color-background)
-} */
+button {
+  cursor: pointer;
+}

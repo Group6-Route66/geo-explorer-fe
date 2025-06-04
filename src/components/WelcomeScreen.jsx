@@ -1,16 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { UserContext } from "@/contexts";
 import { PopUp } from "./ui";
-
 
 const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
   const { user, setUser } = useContext(UserContext);
 
   const [value, setValue] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      closeWelcomeScreen();
+    }
+  }, [user]);
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -36,7 +41,7 @@ const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
               closeWelcomeScreen();
             }}
           >
-            <button className="w-full bg-[#6ED788] rounded-[20px] p-2 text-white font-bold">
+            <button className="w-full bg-green rounded-4xl p-2 text-white font-bold">
               Take a quiz
             </button>
           </Link>
@@ -47,7 +52,7 @@ const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
               closeWelcomeScreen();
             }}
           >
-            <button className="w-full bg-[#6ED788] rounded-[20px] p-2 text-white font-bold">
+            <button className="w-full bg-green rounded-4xl p-2 text-white font-bold">
               Learn
             </button>
           </Link>
@@ -61,7 +66,7 @@ const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
             <h3 className="text-2xl font-bold">Welcome to Geo Explorer</h3>
             <input
               placeholder="Enter username"
-              className="h-[56px] w-full bg-[#F0F2F5] p-4 rounded-xl"
+              className="h-[56px] w-full bg-gray-100 p-4 rounded-xl"
               name="user"
               value={value}
               onChange={(e) => {
@@ -69,12 +74,12 @@ const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
               }}
             ></input>
 
-            <button className="w-full bg-[#6ED788] rounded-[20px] p-2 text-white font-bold">
+            <button className="w-full bg-green rounded-4xl p-2 text-white font-bold">
               Play
             </button>
           </form>
           <button
-            className="w-full bg-[#F0F2F5] rounded-[20px] p-2 text-black font-bold"
+            className="w-full bg-gray-100 rounded-4xl p-2 text-black font-bold"
             onClick={playAsGuest}
           >
             Play as Guest
