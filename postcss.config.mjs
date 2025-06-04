@@ -5,6 +5,11 @@ const config = {
         container: {
           center: true,
         },
+        extend: {
+          colors: {
+            customgreen: "#49e659",
+          },
+        },
       },
     },
   },
