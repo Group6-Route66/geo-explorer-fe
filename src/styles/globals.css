@@ -13,14 +13,14 @@
   --color-button-background: var(--button-background);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-
 }
 
-@theme{
-  --color-green: #6ED788;
-  --color-gray-100: #F0F2F5;
+@theme {
+  --color-green: #6ed788;
+  --color-gray-100: #f0f2f5;
+  --color-yellow: #ffb703;
+  --color-red: #f25c54;
 }
-
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -42,7 +42,6 @@ h1 {
   font-size: 1.5rem;
   font-weight: 600;
 }
-
 
 button {
   cursor: pointer;
