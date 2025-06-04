@@ -18,6 +18,8 @@
 @theme {
   --color-green: #6ed788;
   --color-gray-100: #f0f2f5;
+  --color-yellow: #ffb703;
+  --color-red: #f25c54;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -44,3 +46,4 @@ h1 {
 /* button {
   cursor: pointer;
 } */
+

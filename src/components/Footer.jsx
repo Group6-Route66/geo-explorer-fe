@@ -21,6 +21,9 @@ const Footer = () => {
         <UserIcon />
         Profile
       </Link>
+      <Link href="/multichoice" className="flex flex-col items-center">
+        test-question
+      </Link>
     </footer>
   );
 };
