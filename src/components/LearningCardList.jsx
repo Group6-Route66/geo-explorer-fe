@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useEffect, useCallback, useRef } from "react";
-import { useFilter } from "../contexts/FilterContext";
-import LearningCard from "./LearningCard";
-import mockLearningCards from "@/mockData/mockLearningCard";
+import { useFilter } from "@/contexts/FilterContext";
+import LearningCard from "@/components/LearningCard";
+import { getLearningCards } from "@/api";
 
 export default function LearningCardList() {
+  // Destructure all needed state and setters from FilterContext
   const {
     continent,
     subCategoryId,
-    cards = [],
+    cards,
     setCards,
     page,
     setPage,
@@ -19,80 +20,84 @@ export default function LearningCardList() {
     setHasMore,
   } = useFilter();
 
+  // useRef to keep track of the IntersectionObserver instance
   const observer = useRef();
 
+  // Fixed page size used for pagination requests
   const pageSize = 5;
 
-  const fetchCards = useCallback(async () => {
-    setLoading(true);
+  // Function to fetch learning cards based on current filters and page
+  const fetchCards = useCallback(() => {
+    setLoading(true); // Show loading spinner
 
-    await new Promise((res) => setTimeout(res, 300));
+    // Call API function to get learning cards for current filters & page
+    getLearningCards(continent.toLowerCase(), subCategoryId, page)
+      .then((data) => {
+        console.log("Fetched data length:", data.length, "Page:", page);
 
-    // use mock data for pagination
-    const startIndex = (page - 1) * pageSize;
-    const pagedData = mockLearningCards
-      .filter(
-        (card) =>
-          card.sub_category_id === subCategoryId &&
-          (continent === "world" || card.continent === continent)
-      )
-      .slice(startIndex, startIndex + pageSize);
+        // If this is the first page, replace current cards with fresh data
+        if (page === 1) {
+          setCards(data);
+        } else {
+          // Otherwise, append new cards to existing list for infinite scroll
+          setCards((prev) => [...prev, ...data]);
+        }
 
-    if (page === 1) {
-      setCards(pagedData);
-    } else {
-      setCards((prev) => [...prev, ...pagedData]);
-    }
-    setHasMore(pagedData.length === pageSize);
-    setLoading(false);
+        // If number of fetched cards is less than page size, no more data
+        setHasMore(data.length === pageSize);
 
-    // for axios, copied from NC news
-    /*
-    try {
-      const res = await axios.get(
-        `/api/learning-cards?sub_category_id=${subCategoryId}&continent=${continent}&page=${page}`
-      );
-      const data = res.data;
-      if (page === 1) {
-        setCards(data.learningCards);
-      } else {
-        setCards((prev) => [...prev, ...data.learningCards]);
-      }
-      setHasMore(data.learningCards.length > 0);
-    } catch (err) {
-      console.error(err);
-      setHasMore(false);
-    } finally {
-      setLoading(false);
-    }
-    */
+        setLoading(false); // Hide loading spinner
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+
+        setHasMore(false); // Prevent further fetching on error
+        setLoading(false); // Hide loading spinner
+      });
   }, [continent, subCategoryId, page, setCards, setHasMore, setLoading]);
 
+  // When continent or subCategoryId changes, reset page to 1 to refresh data
   useEffect(() => {
-    setPage(1); // when filter chamge, page reset to 1
+    setPage(1);
   }, [continent, subCategoryId, setPage]);
 
+  // Fetch cards whenever the fetchCards function changes (due to dependencies)
   useEffect(() => {
     fetchCards();
   }, [fetchCards]);
 
+  // Set up IntersectionObserver to detect when last card is visible for infinite scroll
   const lastCardRef = useCallback(
     (node) => {
+      // If already loading, don't setup observer again
       if (loading) return;
+
+      // Disconnect previous observer instance if exists
       if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPage((prev) => prev + 1);
-        }
-      });
+
+      // Create new IntersectionObserver with some margin to preload
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          // If last card is intersecting viewport and there is more data
+          if (entries[0].isIntersecting && hasMore) {
+            console.log("Load next page triggered");
+            setPage((prevPage) => prevPage + 1); // Load next page
+          }
+        },
+        { rootMargin: "100px" } // Trigger a bit before it enters viewport
+      );
+
+      // Observe the current node (last card)
       if (node) observer.current.observe(node);
     },
     [loading, hasMore, setPage]
   );
 
   return (
-    <div className=" container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Render all cards */}
       {cards.map((card, idx) => {
+        // Attach the IntersectionObserver ref to the last card only
         if (idx === cards.length - 1) {
           return (
             <LearningCard ref={lastCardRef} key={card.card_id} card={card} />
@@ -100,7 +105,8 @@ export default function LearningCardList() {
         }
         return <LearningCard key={card.card_id} card={card} />;
       })}
-      {loading && <p>Loading...</p>}
+      {/* Show loading indicator when loading */}
+      {loading && <p className="text-center col-span-full">Loading...</p>}
     </div>
   );
 }

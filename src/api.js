@@ -17,15 +17,15 @@ export const getUsers = () => {
 };
 
 export const getUserByUsername = (username) => {
-    return geoExplorerApi.get(`/users/${username}`).then(({data}) => {
-       return data.user;
-    });
+  return geoExplorerApi.get(`/users/${username}`).then(({ data }) => {
+    return data.user;
+  });
 };
 
-export const getLearningCards = (continent, sub_category_id) => {
+export const getLearningCards = (continent, sub_category_id, page = 1) => {
   return geoExplorerApi
     .get(
-      `/learning-cards?continent=${continent}&sub_category_id=${sub_category_id}`
+      `/learning-cards?continent=${continent}&sub_category_id=${sub_category_id}&page=${page}`
     )
     .then(({ data }) => {
       return data.learningCards;
