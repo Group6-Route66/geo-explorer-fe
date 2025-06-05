@@ -4,7 +4,7 @@ import { QuizIcon, LearnIcon, LeaderboardIcon, UserIcon } from "@/assets";
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm border">
+    <footer className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm">
       <Link href="/" className="flex flex-col items-center">
         <QuizIcon />
         Take a quiz

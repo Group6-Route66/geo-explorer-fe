@@ -3,10 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --main-text: #de2323;
+  --main-text: #51545d;
+  --accent-green: #6ed788;
 }
 
-@theme inline {
+/* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -18,7 +19,7 @@
   --color-gray-100: #f0f2f5;
   --color-yellow: #ffb703;
   --color-red: #f25c54;
-}
+} */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -39,9 +40,23 @@ body {
 h1 {
   font-size: 1.5rem;
   font-weight: 600;
+  color: #6ed788;
 }
 
 button {
   cursor: pointer;
 }
-
+/* for learnig card flipping  */
+.perspective {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}

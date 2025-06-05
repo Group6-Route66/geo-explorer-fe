@@ -4,7 +4,7 @@ import { LogoIcon, UserIcon } from "@/assets";
 
 const Header = () => {
   return (
-    <header className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm border">
+    <header className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm">
       <Link href="/">
         <LogoIcon />
       </Link>
