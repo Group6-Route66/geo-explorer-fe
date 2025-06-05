@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-import { Categories, Continent, WelcomeScreen } from "@/components";
+import {
+  Categories,
+  Continent,
+  QuizzButtons,
+  WelcomeScreen,
+} from "@/components";
 import { CategoryProvider } from "@/contexts";
 import { ProgressProvider } from "@/contexts/ProgressContext";
 import ProgressBar from "@/components/ProgressBar";
@@ -25,6 +30,9 @@ export default function Home() {
 
       <ProgressProvider>
         <ProgressBar />
+      </ProgressProvider>
+      <ProgressProvider>
+        <QuizzButtons />
       </ProgressProvider>
     </div>
   );
