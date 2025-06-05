@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-import { Continent, WelcomeScreen } from "@/components";
+import { Categories, Continent, WelcomeScreen } from "@/components";
+import { CategoryProvider } from "@/contexts";
 
 export default function Home() {
   const [isOpenWelcomeScreen, setOpenWelcomeScreen] = useState(true);
@@ -16,6 +17,9 @@ export default function Home() {
         closeWelcomeScreen={handleCloseWelcomeScreen}
       />
       <Continent />
+      <CategoryProvider>
+        <Categories />
+      </CategoryProvider>
     </div>
   );
 }
