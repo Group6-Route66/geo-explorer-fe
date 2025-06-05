@@ -21,6 +21,8 @@ const Footer = () => {
         <UserIcon />
         Profile
       </Link>
+      <Link href="/testQuizMatchingPairs" className="flex flex-col items-center">
+        Quiz Matching Pairs
       <Link href="/multichoice" className="flex flex-col items-center">
         test-question
       </Link>
