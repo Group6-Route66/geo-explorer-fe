@@ -8,17 +8,17 @@ const QuizzButtons = () => {
 
   const levelColors = {
     Beginner:
-      "w-50 h-30 bg-green border-2 border-green-600 rounded-3xl p-2 text-white text-3xl font-bold hover:text-green-600",
+      "w-50 h-30 bg-green shadow-lg/60 shadow-green-600  border-2 border-green-600 rounded-full p-2 text-white text-3xl font-bold hover:text-green-600",
     Intermediate:
-      "w-50 h-30 bg-yellow border-2 border-yellow-600 rounded-3xl p-2 text-white text-3xl font-bold hover:text-yellow-600",
+      "w-50 h-30 bg-yellow shadow-lg/60 shadow-yellow-600 border-2 border-yellow-600 rounded-full p-2 text-white text-3xl font-bold hover:text-yellow-600",
     Advanced:
-      "w-50 h-30 bg-red border-2 border-red-600 rounded-3xl p-2 text-white text-3xl font-bold hover:text-red-600",
+      "w-50 h-30 bg-red-400 shadow-lg/60 border-2 shadow-red-600 border-red-600 rounded-full p-2 text-white text-3xl font-bold hover:text-red-600",
   };
 
   const buttonClass = levelColors[level] || levelColors.Beginner;
 
   const disabledClass =
-    "w-50 h-30 bg-gray-200  rounded-3xl p-2 text-gray-400 text-3xl font-bold";
+    "w-50 h-30 bg-gray-200 shadow-xl/20 rounded-full p-2 text-gray-400 text-3xl font-bold";
 
   return (
     <div className=" flex-col p-20 content-center mt-10">
