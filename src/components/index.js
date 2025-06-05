@@ -7,5 +7,6 @@ export { default as Categories } from "./Categories";
 export { default as MultiChoice } from "./MultiChoice";
 export { default as Map } from "./Map";
 export { default as UserProfile } from "./UserProfile";
+export { default as QuizzButtons } from "./QuizzButtons";
 
 export * from "./ui";
