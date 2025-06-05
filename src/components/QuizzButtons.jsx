@@ -41,7 +41,7 @@ const QuizzButtons = () => {
       </div>
 
       <div className="flex justify-start mb-10 ml-30">
-        {quizz === 1 ? (
+        {quizz === 1 || quizz === 2 ? (
           <button disabled className={`${disabledClass}`}>
             3
           </button>

@@ -28,7 +28,7 @@ const Footer = () => {
         Quiz Matching Pairs
       </Link>
       <Link href="/multichoice" className="flex flex-col items-center">
-        test-question
+        Quiz Multichoice
       </Link>
     </footer>
   );
