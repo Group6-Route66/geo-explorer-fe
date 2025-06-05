@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useProgress } from "@/contexts/ProgressContext";
+import { useProgress } from "@/contexts";
 
 const ProgressBar = () => {
   const { progress } = useProgress();
