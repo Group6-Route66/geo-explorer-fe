@@ -8,5 +8,8 @@ export { default as MultiChoice } from "./MultiChoice";
 export { default as Map } from "./Map";
 export { default as UserProfile } from "./UserProfile";
 export { default as QuizzButtons } from "./QuizzButtons";
+export { default as UsersRanking } from "./UsersRanking";
+export { default as CustomError } from "./CustomError";
+export { default as CustomLoading } from "./CustomLoading";
 
 export * from "./ui";

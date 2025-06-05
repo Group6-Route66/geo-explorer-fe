@@ -16,7 +16,7 @@ export const getUsers = () => {
     });
 };
 
-export const getUserByUserId = (username) => {
+export const getUserByUsername = (username) => {
     return geoExplorerApi.get(`/users/${username}`).then(({data}) => {
        return(data.user);
     });

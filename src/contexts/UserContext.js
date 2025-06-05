@@ -23,7 +23,6 @@ export const UserContextProvider = ({ children }) => {
   });
 
   if (error) return <p>Sorry, something went wrong!</p>;
-  console.log(usersList, "<---userlist");
   
 
   return (
