@@ -167,6 +167,9 @@ const QuizMatchingPairs = () => {
 
   function handleSubmit() {
     let isCorrectAnswer = true;
+    if (finalAnswer.length < 4) {
+        isCorrectAnswer = false;
+    }
     for (const answer of finalAnswer) {
       if (!correctAnswers.includes(answer)) {
         isCorrectAnswer = false;
