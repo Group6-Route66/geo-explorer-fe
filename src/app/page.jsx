@@ -11,6 +11,7 @@ import {
 import { CategoryProvider } from "@/contexts";
 import { ProgressProvider } from "@/contexts/ProgressContext";
 import ProgressBar from "@/components/ProgressBar";
+import ProgressBarMain from "@/components/ProgressBarMain";
 
 export default function Home() {
   const [isOpenWelcomeScreen, setOpenWelcomeScreen] = useState(true);
@@ -29,8 +30,13 @@ export default function Home() {
       </CategoryProvider>
 
       <ProgressProvider>
+        <ProgressBarMain />
+      </ProgressProvider>
+
+      <ProgressProvider>
         <ProgressBar />
       </ProgressProvider>
+
       <ProgressProvider>
         <QuizzButtons />
       </ProgressProvider>
