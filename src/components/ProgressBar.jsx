@@ -5,12 +5,13 @@ import { useProgress } from "@/contexts/ProgressContext";
 
 const ProgressBar = () => {
   const { progress } = useProgress();
-  const { level, currentQuestion, totalQuestions } = progress;
+  const { level, currentQuestion, totalQuestions, quizz } = progress;
 
   const percent = Math.min(
     Math.max((currentQuestion / totalQuestions) * 100, 0),
     100
   );
+  
 
   return (
     <div style={{ margin: "1rem 0" }}>
