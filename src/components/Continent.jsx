@@ -44,17 +44,17 @@ const Continent = () => {
             </button>
             <button
               className="w-full block bg-green hover:bg-green-700 text-white rounded-4xl items-center m-2 p-2"
-              value="Asia"
-              onClick={handleOnclickContinent}
-            >
-              Asia
-            </button>
-            <button
-              className="w-full block bg-green hover:bg-green-700 text-white rounded-4xl items-center m-2 p-2"
               value="Europe"
               onClick={handleOnclickContinent}
             >
               Europe
+            </button>
+            <button
+              className="w-full block bg-green hover:bg-green-700 text-white rounded-4xl items-center m-2 p-2"
+              value="Asia"
+              onClick={handleOnclickContinent}
+            >
+              Asia
             </button>
             <button
               className="w-full block bg-green hover:bg-green-700 text-white rounded-4xl items-center m-2 p-2"
