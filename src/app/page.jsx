@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { Categories, Continent, WelcomeScreen } from "@/components";
 import { CategoryProvider } from "@/contexts";
+import { ProgressProvider } from "@/contexts/ProgressContext";
+import ProgressBar from "@/components/ProgressBar";
 
 export default function Home() {
   const [isOpenWelcomeScreen, setOpenWelcomeScreen] = useState(true);
@@ -20,6 +22,10 @@ export default function Home() {
       <CategoryProvider>
         <Categories />
       </CategoryProvider>
+
+      <ProgressProvider>
+        <ProgressBar />
+      </ProgressProvider>
     </div>
   );
 }
