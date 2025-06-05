@@ -16,10 +16,10 @@ export const getUsers = () => {
   });
 };
 
-export const getUserByUserId = (username) => {
-  return geoExplorerApi.get(`/users/${username}`).then(({ data }) => {
-    return data.user;
-  });
+export const getUserByUsername = (username) => {
+    return geoExplorerApi.get(`/users/${username}`).then(({data}) => {
+       return data.user;
+    });
 };
 
 export const getLearningCards = (continent, sub_category_id) => {

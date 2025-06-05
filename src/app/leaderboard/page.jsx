@@ -1,7 +1,9 @@
+import { UsersRanking } from "@/components";
+
 export default function Leaderboard() {
   return (
     <div>
-      Leaderboard Page
+      <UsersRanking />
     </div>
   );
 }
