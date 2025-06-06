@@ -11,5 +11,7 @@ export { default as QuizzButtons } from "./QuizzButtons";
 export { default as UsersRanking } from "./UsersRanking";
 export { default as CustomError } from "./CustomError";
 export { default as CustomLoading } from "./CustomLoading";
+export { default as FilterBar } from "./FilterBar";
+export { default as LearningCardList } from "./LearningCardList";
 
 export * from "./ui";

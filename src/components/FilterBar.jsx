@@ -13,21 +13,26 @@ const continents = [
   "Australia/Oceania",
 ];
 
-const subCategories = [
-  { id: 1, label: "Landscape" },
-  { id: 2, label: "Country" },
-  { id: 3, label: "Water" },
-  { id: 4, label: "Mountain" },
-];
-
-export default function FilterBar() {
-  const { continent, setContinent, subCategoryId, setSubCategoryId } =
-    useFilter();
+// FilterBar supports optional rendering of categories and sub-categories
+export default function FilterBar({
+  showCategories = true,
+  showSubCategories = true,
+}) {
+  const {
+    continent,
+    setContinent,
+    categories,
+    activeCategory,
+    setActiveCategory,
+    subCategories,
+    subCategoryId,
+    setSubCategoryId,
+  } = useFilter();
 
   const [isContinentOpen, setIsContinentOpen] = useState(false);
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4  ">
+    <div className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4">
       <div className="w-full max-w-5xl mx-auto p-4">
         {/* Continent dropdown */}
         <div className="relative mb-6">
@@ -63,23 +68,45 @@ export default function FilterBar() {
           )}
         </div>
 
+        {/* Category button group */}
+        {showCategories && (
+          <div className="w-full flex justify-between items-center rounded-md ">
+            {categories.map(({ id, category_name }) => (
+              <button
+                key={id}
+                onClick={() => setActiveCategory(category_name)}
+                className={`pb-2 border-b-4 mr-1 ml-1 ${
+                  activeCategory === category_name
+                    ? "border-[var(--color-green)] w-1/2 font-bold text-[var(--color-green)]"
+                    : "border-[var(--color-gray-900)] w-1/2 text-gray-700 hover:text-[var(--color-green)]"
+                }`}
+                type="button"
+              >
+                {category_name}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Sub-category button group */}
-        <div className="w-full flex justify-between items-center rounded-md px-10 py-1 ">
-          {subCategories.map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => setSubCategoryId(id)}
-              className={`pb-2 border-b-4 mr-1 ml-1 ${
-                subCategoryId === id
-                  ? "border-[#6ED788] w-100 font-bold text-[#6ED788]"
-                  : "border-[#51545d] w-100 text-gray-700 hover:text-[#6ED788]"
-              }`}
-              type="button"
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        {showSubCategories && (
+          <div className="w-full flex justify-between items-center rounded-md">
+            {subCategories.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => setSubCategoryId(id)}
+                className={`pb-2 border-b-4 mr-1 ml-1 ${
+                  subCategoryId === id
+                    ? "border-[var(--color-green)] w-100 font-bold text-[var(--color-green)]"
+                    : "border-[#51545d] w-100 text--[var(--color-gray-900)] hover:text-[var(--color-green)]"
+                }`}
+                type="button"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
