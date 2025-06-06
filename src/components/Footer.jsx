@@ -50,17 +50,6 @@ const Footer = () => {
         />
         <span className="text-xs mt-1">Profile</span>
       </Link>
-
-      <Link
-        href="/testQuizMatchingPairs"
-        className={linkClass("/testQuizMatchingPairs")}
-      >
-        <span className="text-xs mt-1">Quiz Matching Pairs</span>
-      </Link>
-
-      <Link href="/multichoice" className={linkClass("/multichoice")}>
-        <span className="text-xs mt-1">Quiz Multichoice</span>
-      </Link>
     </footer>
   );
 };

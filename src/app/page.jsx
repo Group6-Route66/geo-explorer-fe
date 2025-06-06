@@ -31,13 +31,9 @@ export default function Home() {
 
       <ProgressProvider>
         <ProgressBarMain />
-      </ProgressProvider>
 
-      <ProgressProvider>
         <ProgressBar />
-      </ProgressProvider>
 
-      <ProgressProvider>
         <QuizzButtons />
       </ProgressProvider>
     </div>
