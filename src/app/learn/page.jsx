@@ -1,14 +1,15 @@
-import { Categories, Continent } from "@/components";
-import { CategoryProvider } from "@/contexts";
+"use client";
 
-export default function Learn() {
+import React from "react";
+import { FilterProvider } from "@/contexts/FilterContext";
+import FilterBar from "@/components/FilterBar";
+import LearningCardList from "@/components/LearningCardList";
+
+export default function LearnPage() {
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl">
-      <Continent />
-      <CategoryProvider>
-        <Categories />
-      </CategoryProvider>
-      Learn Page
-    </div>
+    <FilterProvider>
+      <FilterBar />
+      <LearningCardList />
+    </FilterProvider>
   );
 }

@@ -1,4 +1,4 @@
-export const UserIcon = () => {
+export const UserIcon = ({ className = "" }) => {
   return (
     <svg
       width="25"
@@ -6,6 +6,7 @@ export const UserIcon = () => {
       viewBox="0 0 25 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={`fill-current ${className}`}
     >
       <g clipPath="url(#clip0_21_80)">
         <path
