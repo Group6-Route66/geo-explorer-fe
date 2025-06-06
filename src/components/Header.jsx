@@ -12,7 +12,7 @@ const Header = () => {
         <h1>Geo Explorer</h1>
       </Link>
       <Link href="/profile">
-        <UserIcon className="fill-[var(--accent-green)]" />
+        <UserIcon className="fill-[var(--color-green)]" />
       </Link>
     </header>
   );
