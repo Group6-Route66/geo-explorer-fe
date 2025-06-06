@@ -3,15 +3,17 @@
 import { useState } from "react";
 
 import {
-  Categories,
-  Continent,
+  // Categories,
+  // Continent,
   QuizzButtons,
   WelcomeScreen,
 } from "@/components";
-import { CategoryProvider } from "@/contexts";
+// import { CategoryProvider } from "@/contexts";
 import { ProgressProvider } from "@/contexts/ProgressContext";
 import ProgressBar from "@/components/ProgressBar";
 import ProgressBarMain from "@/components/ProgressBarMain";
+import FilterBar from "@/components/FilterBar.jsx";
+import { FilterProvider } from "@/contexts/FilterContext";
 
 export default function Home() {
   const [isOpenWelcomeScreen, setOpenWelcomeScreen] = useState(true);
@@ -24,10 +26,14 @@ export default function Home() {
         openWelcomeScreen={isOpenWelcomeScreen}
         closeWelcomeScreen={handleCloseWelcomeScreen}
       />
-      <Continent />
+      {/* <Continent />
       <CategoryProvider>
         <Categories />
-      </CategoryProvider>
+      </CategoryProvider> */}
+
+      <FilterProvider>
+        <FilterBar showCategories={true} showSubCategories={false} />
+      </FilterProvider>
 
       <ProgressProvider>
         <ProgressBarMain />

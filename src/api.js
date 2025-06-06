@@ -3,6 +3,9 @@ import axios from "axios";
 const geoExplorerApi = axios.create({
   baseURL: "https://geo-explorer-be.onrender.com/api",
 });
+export const getCategories = () => {
+  return geoExplorerApi.get("/categories").then(({ data }) => data.categories);
+};
 
 export const getSubCategories = () => {
   return geoExplorerApi.get("/subcategories").then(({ data }) => {

@@ -1,17 +1,48 @@
 "use client";
 
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { getCategories, getSubCategories } from "@/api";
 
 const FilterContext = createContext();
 
 export const FilterProvider = ({ children }) => {
-  const [continent, setContinent] = useState("world");
+  const [continent, setContinent] = useState("World");
   const [subCategoryId, setSubCategoryId] = useState(1);
-  const [cards, setCards] = useState([]); // add this
+  const [cards, setCards] = useState([]);
   const [page, setPage] = useState(1); // pagination
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
 
+  useEffect(() => {
+    getCategories()
+      .then((categories) => {
+        console.log("Fetched categories:", categories);
+        setCategories(categories);
+        if (categories.length > 0)
+          setActiveCategory(categories[0].category_name);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch categories:", error);
+        setCategories([]);
+      });
+
+    getSubCategories()
+      .then((subs) => {
+        console.log("Fetched subCategories:", subs);
+        const formattedSubs = subs.map((s) => ({
+          id: s.sub_category_id,
+          label: s.sub_category_name,
+        }));
+        setSubCategories(formattedSubs);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch subCategories:", error);
+        setSubCategories([]);
+      });
+  }, []);
   return (
     <FilterContext.Provider
       value={{
@@ -27,6 +58,10 @@ export const FilterProvider = ({ children }) => {
         setLoading,
         hasMore,
         setHasMore,
+        categories,
+        activeCategory,
+        setActiveCategory,
+        subCategories,
       }}
     >
       {children}
