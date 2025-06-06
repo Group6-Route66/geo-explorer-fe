@@ -11,5 +11,8 @@ export { default as QuizzButtons } from "./QuizzButtons";
 export { default as UsersRanking } from "./UsersRanking";
 export { default as CustomError } from "./CustomError";
 export { default as CustomLoading } from "./CustomLoading";
+export { default as LoginScreen } from "./LoginScreen";
+export { default as RegisterScreen } from "./RegisterScreen";
+export { default as PickAvatarScreen } from "./PickAvatarScreen";
 
 export * from "./ui";
