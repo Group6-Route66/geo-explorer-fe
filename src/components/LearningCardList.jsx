@@ -94,7 +94,7 @@ export default function LearningCardList() {
   );
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="container mx-auto px-4 lg:grid-cols-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {/* Render all cards */}
       {cards.map((card, idx) => {
         // Attach the IntersectionObserver ref to the last card only

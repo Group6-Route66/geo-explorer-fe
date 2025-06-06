@@ -1,11 +1,21 @@
 "use client";
 
 import React, { useState, forwardRef } from "react";
+import styles from "./LearningCard.module.css";
+
+// default fallback image
+const fallbackImage =
+  "https://media.istockphoto.com/id/1456098439/photo/reflection-canyon.jpg?s=612x612&w=0&k=20&c=pvF8LGI9p4ouvI1gd1grAvUoDBtWBx0yh35iVMKXpP4=";
 
 const LearningCard = forwardRef(({ card }, ref) => {
   const [flipped, setFlipped] = useState(false);
+  const [imgSrc, setImgSrc] = useState(card.img_url);
 
-  // Card Front background style with gradient overlay + image
+  const handleImgError = () => {
+    setImgSrc(fallbackImage);
+  };
+
+  // Tailwind not avaliable - Card Front background style with gradient overlay + image - dynamic css stay in jsx only
   const frontBgStyle = {
     backgroundImage: `linear-gradient(
       0deg,
@@ -17,11 +27,11 @@ const LearningCard = forwardRef(({ card }, ref) => {
     backgroundPosition: "50%",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    borderColor: "var(--accent-green)",
-    backgroundColor: "var(--accent-green)",
+    borderColor: "var(--color-green)",
+    backgroundColor: "var(--color-green)",
   };
 
-  // Card Back background style with stronger gradient overlay + image
+  //  Card Back
   const backBgStyle = {
     backgroundImage: `linear-gradient(
       0deg,
@@ -33,52 +43,36 @@ const LearningCard = forwardRef(({ card }, ref) => {
     backgroundPosition: "50%",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    borderColor: "var(--accent-green)",
-    backgroundColor: "var(--accent-green)",
-  };
-
-  // Back card text style (CSS-in-JS)
-  const backTextStyle = {
-    height: "90%",
-    width: "90%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    flexShrink: 0,
-    color: "#FFF",
-    fontFeatureSettings: "'dlig' on",
-    fontSize: "1.1rem",
-    lineHeight: "1.5em",
-    padding: "1rem",
-    textAlign: "center",
+    borderColor: "var(--color-green)",
+    backgroundColor: "var(--color-green)",
   };
 
   return (
     <div
       ref={ref}
-      style={{
-        borderColor: "var(--accent-green)",
-      }}
-      className="relative w-full h-60 perspective cursor-pointer rounded-lg shadow border"
+      className={`relative w-full h-60 ${styles.perspective} border-[var(--color-green)] cursor-pointer  bg-[var(--color-green)] rounded-lg shadow`}
       onClick={() => setFlipped(!flipped)}
     >
       <div
-        className={`relative w-full h-full transition-transform duration-500 transform-style preserve-3d ${
-          flipped ? "rotate-y-180" : ""
-        }`}
+        className={`relative w-full h-full transition-transform duration-500 transform-style ${
+          styles["preserve-3d"]
+        } ${flipped ? "rotate-y-180" : ""}`}
       >
         {/* Front side */}
         <div
           style={frontBgStyle}
-          className="absolute backface-hidden w-full h-full rounded shadow p-0"
+          className={`${styles["backface-hidden"]} absolute w-full h-full rounded shadow p-0`}
         >
           <div className="relative w-full h-full rounded overflow-hidden">
             <img
-              src={card.img_url}
+              src={imgSrc}
               alt={card.title}
+              onError={handleImgError}
               className="w-full h-full object-cover"
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-opacity-50 text-white p-2 text-center font-semibold">
+            <div
+              className={`absolute bottom-0 left-0 right-0 bg-opacity-50 text-white p-2 text-center font-semibold ${styles.titleShadow}`}
+            >
               {card.title}
             </div>
           </div>
@@ -87,9 +81,9 @@ const LearningCard = forwardRef(({ card }, ref) => {
         {/* Back side */}
         <div
           style={backBgStyle}
-          className=" absolute backface-hidden rotate-y-180 w-full h-full rounded shadow overflow-auto flex items-center justify-center"
+          className={`${styles["backface-hidden"]} ${styles["rotate-y-180"]} absolute w-full h-full rounded shadow overflow-auto flex items-center justify-center`}
         >
-          <p style={backTextStyle}>{card.description}</p>
+          <p className={`${styles.backText}`}>{card.description}</p>
         </div>
       </div>
     </div>
