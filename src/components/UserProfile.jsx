@@ -1,45 +1,80 @@
 "use client";
-//need to remove useState later
-import { useContext, useEffect, useState } from "react";
 
+import { useContext, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { UserContext } from "@/contexts";
-import RegisterScreen from "./Register";
-import LoginScreen from "./LogIn";
+
+import { patchUserAvatar } from "@/api";
+import { CustomError, LoginScreen, PickAvatarScreen, RegisterScreen } from ".";
 
 const UserProfile = () => {
-  //use after api calls implemented
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const isRegister = searchParams.get("register");
   const { user, setUser } = useContext(UserContext);
+
   const [showRegisterScreen, setShowRegisterScreen] = useState(false);
   const [showLoginScreen, setShowLoginScreen] = useState(false);
+  const [showPickAvatarScreen, setShowPickAvatarScreen] = useState(false);
+  const [changeAvatar, setChangeAvatar] = useState();
+  const [error, setError] = useState(false);
 
   const closeRegisterScreen = () => setShowRegisterScreen(false);
   const closeLoginScreen = () => setShowLoginScreen(false);
+  const closePickAvatarScreen = () => setShowPickAvatarScreen(false);
 
-  //mock data
-  // const [user, setUser] = useState({
-  //   user_id: 1,
-  //   username: "john_s",
-  //   level_nature: "Beginner",
-  //   level_territory: "Intermediate",
-  //   rating: 200,
-  //   avatar_url: "https://avatar.iran.liara.run/public/35",
-  // });
-
-  //test
+  //handle default user to "guest"
   useEffect(() => {
+    setError(false);
     if (!user) {
       setUser("guest");
     }
   }, [user]);
 
+  //handle ?register=true form searchParams
+  useEffect(() => {
+    setError(false);
+    if (isRegister === "true") {
+      setShowRegisterScreen(true);
+      router.replace(window.location.pathname); //clear ?register=true
+    }
+  }, [isRegister, router]);
+
+  //handle avatar change
+  useEffect(() => {
+    setError(false);
+    if (changeAvatar && user !== "guest") {
+      patchUserAvatar(user.username, changeAvatar)
+        .then((updatedUser) => {
+          setUser(updatedUser);
+        })
+        .catch((err) => {
+          console.log(err);
+          setError(true);
+        });
+    }
+  }, [changeAvatar, user]);
+
+  if (error) {
+    return <CustomError />;
+  }
+
   return (
     <div className="flex flex-col items-center pt-12 pb-12">
       {user !== "guest" && user !== undefined ? (
         <>
+          {showPickAvatarScreen ? (
+            <PickAvatarScreen
+              openPickAvatarScreen={showPickAvatarScreen}
+              closePickAvatarScreen={closePickAvatarScreen}
+              setAvatarUrl={setChangeAvatar}
+            />
+          ) : null}
           <img
-            className="w-48 h-48 rounded-full object-cover shadow-md mb-4"
+            className="w-48 h-48 rounded-full object-cover shadow-md mb-4 hover:scale-110 transition-transform cursor-pointer"
             src={user.avatar_url}
             alt="user's Profile Image"
+            onClick={() => setShowPickAvatarScreen(true)}
           />
           <div className="pt-1">
             <p className="text-xl font-extrabold text-green flex flex-col items-center">
@@ -74,20 +109,20 @@ const UserProfile = () => {
         </>
       ) : (
         <>
-          {showRegisterScreen && (
+          {showRegisterScreen ? (
             <RegisterScreen
-              openWelcomeScreen={showRegisterScreen}
-              closeWelcomeScreen={closeRegisterScreen}
+              openRegisterScreen={showRegisterScreen}
+              closeRegisterScreen={closeRegisterScreen}
               setUser={setUser}
             />
-          )}
-          {showLoginScreen && (
+          ) : null}
+          {showLoginScreen ? (
             <LoginScreen
-              openWelcomeScreen={showLoginScreen}
-              closeWelcomeScreen={closeLoginScreen}
+              openLoginScreen={showLoginScreen}
+              closeLoginScreen={closeLoginScreen}
               setUser={setUser}
             />
-          )}
+          ) : null}
           <img
             className="w-48 h-48 rounded-full object-cover shadow-md mb-4"
             src="https://avatar.iran.liara.run/public/35"

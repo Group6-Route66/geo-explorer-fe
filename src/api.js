@@ -22,6 +22,25 @@ export const getUserByUsername = (username) => {
   });
 };
 
+export const postUser = (username, avatar_url) => {
+  return geoExplorerApi
+    .post(`/users`, {
+      username: username,
+      avatar_url: avatar_url,
+    })
+    .then(({ data }) => {
+      return data.user;
+    });
+};
+
+export const patchUserAvatar = (username, avatar_url) => {
+  return geoExplorerApi
+    .patch(`/users/${username}`, { avatar_url: avatar_url })
+    .then(({ data }) => {
+      return data.user;
+    });
+};
+
 export const getLearningCards = (continent, sub_category_id, page = 1) => {
   return geoExplorerApi
     .get(
