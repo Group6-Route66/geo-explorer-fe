@@ -78,12 +78,8 @@ const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
               Play
             </button>
           </form>
-          <Link
-            href="/profile?register=true"
-          >
-            <button
-              className="w-full border border-green text-green rounded-4xl p-2 font-bold shadow-[0px_4px_4px_0px_#00000040] hover:bg-green-600 hover:text-white mb-5"
-            >
+          <Link href="/profile?register=true">
+            <button className="w-full border border-green text-green rounded-4xl p-2 font-bold shadow-[0px_4px_4px_0px_#00000040] hover:bg-green-600 hover:text-white mb-5">
               Register
             </button>
           </Link>
