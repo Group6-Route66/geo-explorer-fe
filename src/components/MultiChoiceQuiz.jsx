@@ -3,16 +3,19 @@
 const { useEffect, useState } = require("react");
 
 import { getMultichoiceQAs } from "@/api";
+import { useFilter } from "@/contexts";
 import MultiChoice from "./MultiChoice";
+import ProgressBar from "./ProgressBar";
 
 const MultiChoiceQuiz = () => {
   const [mcQuestions, setMcQuestions] = useState([]);
   const [activeQuestion, setActiveQuestion] = useState({});
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
 
-  //todo: use filterContext for endpoints
+  const { continent, activeCategory } = useFilter();
+
   useEffect(() => {
-    getMultichoiceQAs("Beginner", "asia", 1).then((result) => {
+    getMultichoiceQAs("Beginner", continent, activeCategory).then((result) => {
       setMcQuestions(result);
     });
   }, []);
@@ -25,6 +28,7 @@ const MultiChoiceQuiz = () => {
 
   return (
     <>
+      <ProgressBar />
       {activeQuestion ? (
         <MultiChoice
           mcQuestions={mcQuestions}

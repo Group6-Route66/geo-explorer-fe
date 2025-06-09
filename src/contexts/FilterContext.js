@@ -6,7 +6,7 @@ import { getCategories, getSubCategories } from "@/api";
 const FilterContext = createContext();
 
 export const FilterProvider = ({ children }) => {
-  const [continent, setContinent] = useState("World");
+  const [continent, setContinent] = useState("world");
   const [subCategoryId, setSubCategoryId] = useState(1);
   const [cards, setCards] = useState([]);
   const [page, setPage] = useState(1); // pagination
@@ -21,8 +21,7 @@ export const FilterProvider = ({ children }) => {
       .then((categories) => {
         console.log("Fetched categories:", categories);
         setCategories(categories);
-        if (categories.length > 0)
-          setActiveCategory(categories[0].category_name);
+        if (categories.length > 0) setActiveCategory(categories[0].category_id);
       })
       .catch((error) => {
         console.error("Failed to fetch categories:", error);

@@ -8,19 +8,39 @@ const MatchingPairsCard = ({
   activeQuestion,
   activeQuestionIndex,
   setActiveQuestionIndex,
+  progress,
+  updateProgress,
 }) => {
   const colours = [
-    "bg-sky-600 text-white",
-    "bg-sky-600 text-white",
-    "bg-pink-600 text-white",
-    "bg-pink-600 text-white",
-    "bg-lime-600 text-white",
-    "bg-lime-600 text-white",
-    "bg-amber-600 text-white",
-    "bg-amber-600 text-white",
+    "bg-sky-300 text-white",
+    "bg-sky-300 text-white",
+    "bg-pink-300 text-white",
+    "bg-pink-300 text-white",
+    "bg-green-300 text-white",
+    "bg-green-300 text-white",
+    "bg-amber-300 text-white",
+    "bg-amber-300 text-white",
   ];
 
-  const initialStyle = `w-80 bg-white text-black m-1 px-4 py-2 items-center border rounded-4xl`;
+const initialStyle = `  w-full 
+  bg-white 
+  text-black 
+  m-1 
+  px-6 
+  py-3 
+  flex 
+  items-center 
+  justify-center 
+  border-2 
+  border-gray-300 
+  rounded-2xl 
+  shadow-md 
+  text-base 
+  font-medium 
+  break-words 
+  hover:bg-gray-100 
+`;
+
 
   const [styleLeftButton1, setStyleLeftButton1] = useState("");
   const [styleLeftButton2, setStyleLeftButton2] = useState("");
@@ -38,30 +58,8 @@ const MatchingPairsCard = ({
   const [leftButtons, setLeftButtons] = useState([]);
   const [rightButtons, setRightButtons] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState([]);
-
-  useEffect(() => {
-    setStyleLeftButton1(initialStyle);
-    setStyleLeftButton2(initialStyle);
-    setStyleLeftButton3(initialStyle);
-    setStyleLeftButton4(initialStyle);
-    setStyleRightButton1(initialStyle);
-    setStyleRightButton2(initialStyle);
-    setStyleRightButton3(initialStyle);
-    setStyleRightButton4(initialStyle);
-    setCounterColour(0);
-    setCurrentAnswer("");
-    setFinalAnswer([]);
-  }, []);
-
-  useEffect(() => {
-    if (activeQuestion?.answers?.length) {
-      const lefts = activeQuestion.answers.map((answer) => answer.left_text);
-      const rights = activeQuestion.answers.map((answer) => answer.right_text);
-
-      setLeftButtons(lefts);
-      setRightButtons(rights);
-    }
-  }, [activeQuestion]);
+  const [correctStyle, setCorrectStyle] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   function setCorrectAnswersArray(arr1, arr2) {
     let correctAnswersArray = [];
@@ -93,14 +91,6 @@ const MatchingPairsCard = ({
     randomize(rightButtons)
   );
 
-  useEffect(() => {
-    if (leftButtons.length && rightButtons.length) {
-      setCorrectAnswers(setCorrectAnswersArray(leftButtons, rightButtons));
-      setRandomLeftButtons(randomize(leftButtons));
-      setRandomRightButtons(randomize(rightButtons));
-    }
-  }, [leftButtons, rightButtons]);
-
   function isOdd(number) {
     return number % 2 === 0 ? false : true;
   }
@@ -112,14 +102,25 @@ const MatchingPairsCard = ({
       const value = event.target.value;
 
       setCounterColour(counterColour + 1);
-      const currentStyle = `w-80 ${colours[counterColour]} m-1 px-4 py-2 items-center border rounded-4xl`;
+      const currentStyle = `w-full ${colours[counterColour]} m-1 
+  px-6 
+  py-3 
+  flex 
+  items-center 
+  justify-center 
+  border-2 
+  border-gray-300 
+  rounded-2xl 
+  shadow-md 
+  text-base 
+  font-medium 
+  break-words `;
 
       if (isOdd(counterColour)) {
         finalAnswer.push(`${currentAnswer}-${value}`);
       } else {
         setCurrentAnswer(value);
       }
-      console.log(finalAnswer, "<---finalAnswer");
 
       switch (currentClicked) {
         case "left1":
@@ -184,35 +185,100 @@ const MatchingPairsCard = ({
 
   function handleSubmit() {
     let isCorrectAnswer = true;
+
+    const correctGreen = "border-2 border-green-400 shadow-md shadow-green-200";
+    const incorrectRed = "border-2 border-red-400 shadow-md shadow-rose-200";
+
+    const leftStyles = ["", "", "", ""];
+    const rightStyles = ["", "", "", ""];
+
     if (finalAnswer.length < 4) {
       isCorrectAnswer = false;
     }
+
+    setIsSubmitted(true);
     for (const answer of finalAnswer) {
-      if (!correctAnswers.includes(answer)) {
+      const [left, right] = answer.split("-");
+
+      const leftIndex = randomLeftButtons.indexOf(left);
+      const rightIndex = randomRightButtons.indexOf(right);
+
+      if (correctAnswers.includes(answer)) {
+        if (leftIndex !== -1) leftStyles[leftIndex] = correctGreen;
+        if (rightIndex !== -1) rightStyles[rightIndex] = correctGreen;
+      } else {
         isCorrectAnswer = false;
-        break;
+        if (leftIndex !== -1) leftStyles[leftIndex] = incorrectRed;
+        if (rightIndex !== -1) rightStyles[rightIndex] = incorrectRed;
       }
     }
-    isCorrectAnswer ? console.log("Correct") : console.log("Wrong");
-    setActiveQuestionIndex((current) => current + 1);
-    handleReset();
+
+    setStyleLeftButton1((prev) => `${prev} ${leftStyles[0]}`);
+    setStyleLeftButton2((prev) => `${prev} ${leftStyles[1]}`);
+    setStyleLeftButton3((prev) => `${prev} ${leftStyles[2]}`);
+    setStyleLeftButton4((prev) => `${prev} ${leftStyles[3]}`);
+
+    setStyleRightButton1((prev) => `${prev} ${rightStyles[0]}`);
+    setStyleRightButton2((prev) => `${prev} ${rightStyles[1]}`);
+    setStyleRightButton3((prev) => `${prev} ${rightStyles[2]}`);
+    setStyleRightButton4((prev) => `${prev} ${rightStyles[3]}`);
   }
 
+  function handleNext() {
+    handleReset();
+    setIsSubmitted(false);
+
+    setActiveQuestionIndex((current) => current + 1);
+
+    updateProgress({ currentQuestion: progress.currentQuestion + 1 });
+  }
+
+  useEffect(() => {
+    setStyleLeftButton1(initialStyle);
+    setStyleLeftButton2(initialStyle);
+    setStyleLeftButton3(initialStyle);
+    setStyleLeftButton4(initialStyle);
+    setStyleRightButton1(initialStyle);
+    setStyleRightButton2(initialStyle);
+    setStyleRightButton3(initialStyle);
+    setStyleRightButton4(initialStyle);
+    setCounterColour(0);
+    setCurrentAnswer("");
+    setFinalAnswer([]);
+  }, []);
+
+  useEffect(() => {
+    if (activeQuestion?.answers?.length) {
+      const lefts = activeQuestion.answers.map((answer) => answer.left_text);
+      const rights = activeQuestion.answers.map((answer) => answer.right_text);
+
+      setLeftButtons(lefts);
+      setRightButtons(rights);
+    }
+  }, [activeQuestion]);
+
+  useEffect(() => {
+    if (leftButtons.length && rightButtons.length) {
+      setCorrectAnswers(setCorrectAnswersArray(leftButtons, rightButtons));
+      setRandomLeftButtons(randomize(leftButtons));
+      setRandomRightButtons(randomize(rightButtons));
+    }
+  }, [leftButtons, rightButtons]);
+
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl flex flex-col justify-center items-center m-2 p-4 rounded-sm">
-      <h2 className="text-4xl font-bold text-lime-500 mb-2">QUIZ № 1</h2>
-      <h4 className="text-2xl font-bold">Match the Pairs</h4>
+    <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
+      <h4 className="text-2xl font-bold">{activeQuestion.question_text}</h4>
       <div className="container mx-auto">
         {correctAnswers.length ? (
           <section className="grid grid-cols-2">
             <div className="flex flex-col place-items-end p-4">
-              <ul>
+              <ul className="w-full h-full flex flex-col items-stretch justify-between">
                 <li>
                   <button
                     name="left1"
                     value={randomLeftButtons[0]}
                     onClick={handleClickButton}
-                    className={styleLeftButton1}
+                    className={`${styleLeftButton1} ${correctStyle}`}
                   >
                     {randomLeftButtons[0]}
                   </button>
@@ -222,7 +288,7 @@ const MatchingPairsCard = ({
                     name="left2"
                     value={randomLeftButtons[1]}
                     onClick={handleClickButton}
-                    className={styleLeftButton2}
+                    className={`${styleLeftButton2} ${correctStyle}`}
                   >
                     {randomLeftButtons[1]}
                   </button>
@@ -232,7 +298,7 @@ const MatchingPairsCard = ({
                     name="left3"
                     value={randomLeftButtons[2]}
                     onClick={handleClickButton}
-                    className={styleLeftButton3}
+                    className={`${styleLeftButton3} ${correctStyle}`}
                   >
                     {randomLeftButtons[2]}
                   </button>
@@ -242,7 +308,7 @@ const MatchingPairsCard = ({
                     name="left4"
                     value={randomLeftButtons[3]}
                     onClick={handleClickButton}
-                    className={styleLeftButton4}
+                    className={`${styleLeftButton4} ${correctStyle}`}
                   >
                     {randomLeftButtons[3]}
                   </button>
@@ -250,7 +316,7 @@ const MatchingPairsCard = ({
               </ul>
             </div>
             <div className="flex flex-col place-items-start p-4">
-              <ul>
+              <ul className="w-full h-full flex flex-col items-stretch justify-between">
                 <li>
                   <button
                     name="right1"
@@ -297,20 +363,33 @@ const MatchingPairsCard = ({
         ) : null}
         <div className="flex justify-center p-2">
           <button
-            className="w-64 bg-black  hover:bg-gray-700 text-white m-1 px-4 py-2 items-center border rounded-4xl"
-            onClick={handleReset}
+              className="w-40 px-5 py-2 rounded-2xl border border-gray-300 text-black bg-white hover:bg-gray-100 shadow transition duration-200 ease-in-out"
+              onClick={handleReset}
           >
             Reset
           </button>
         </div>
-        <div className="flex justify-center p-2">
-          <button
-            className="w-64 bg-green hover:bg-green-700 text-white m-1 px-4 py-2 items-center border rounded-4xl"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-        </div>
+        {!isSubmitted ? (
+          <div className="flex justify-center p-2">
+            <button
+              className="w-40 bg-green rounded-3xl p-2 font-bold hover:bg-green-500 shadow disabled:bg-gray-200 disabled:text-gray-500"
+              onClick={handleSubmit}
+              disabled={finalAnswer.length < 4}
+            >
+              Submit
+            </button>
+          </div>
+        ) : activeQuestionIndex < mpQuestions.length - 1 ? (
+          <div className="flex justify-center p-2" onClick={handleNext}>
+            <NextButton />
+          </div>
+        ) : (
+          <div className="flex justify-center p-2">
+            <button className="w-40 bg-green hover:bg-green-700text-white m-1 px-4 py-2 items-center border rounded-4xl">
+              Finish
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ const QuizzButtons = () => {
           </Link>
         </div>
         <div className="flex justify-end">
-          <Link href="/">
+          <Link href="/matchingPairs">
             <button
               disabled={quizz === 1}
               className={`${quizz === 1 ? disabledClass : buttonClass}`}

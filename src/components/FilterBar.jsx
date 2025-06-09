@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { useFilter } from "@/contexts/FilterContext";
+import { useFilter } from "@/contexts";
+import { Categories } from ".";
 
-const continents = [
-  "World",
-  "Asia",
-  "Europe",
-  "Africa",
-  "South America",
-  "North America",
-  "Australia/Oceania",
-];
-
+const continents = {
+  world: "World",
+  asia: "Asia",
+  europe: "Europe",
+  africa: "Africa",
+  "south america": "South America",
+  "north america": "North America",
+  "australia/oceania": "Australia/Oceania",
+};
 // FilterBar supports optional rendering of categories and sub-categories
 export default function FilterBar({
   showCategories = true,
@@ -41,7 +41,7 @@ export default function FilterBar({
             onClick={() => setIsContinentOpen(!isContinentOpen)}
             type="button"
           >
-            <span>{continent}</span>
+            <span>{continents[continent] || continents.world}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path
                 d="M4.25334 3C2.52413 3 1.44124 4.86947 2.30159 6.36946L10.0461 19.8717C10.9107 21.3791 13.085 21.3791 13.9496 19.8717L21.6941 6.36947C22.5545 4.86948 21.4716 3 19.7424 3H4.25334Z"
@@ -51,17 +51,17 @@ export default function FilterBar({
           </button>
           {isContinentOpen && (
             <div className="absolute z-10 w-full border border-[#6ED788] rounded-md mt-1 bg-white shadow-lg max-h-60 overflow-auto">
-              {continents.map((c) => (
+              {Object.entries(continents).map(([key, value]) => (
                 <button
-                  key={c}
+                  key={key}
                   onClick={() => {
-                    setContinent(c);
+                    setContinent(key);
                     setIsContinentOpen(false);
                   }}
                   className="block w-full text-left px-4 py-2 hover:bg-[#6ED788] hover:text-white"
                   type="button"
                 >
-                  {c}
+                  {value}
                 </button>
               ))}
             </div>
@@ -70,22 +70,11 @@ export default function FilterBar({
 
         {/* Category button group */}
         {showCategories && (
-          <div className="w-full flex justify-between items-center rounded-md ">
-            {categories.map(({ id, category_name }) => (
-              <button
-                key={id}
-                onClick={() => setActiveCategory(category_name)}
-                className={`pb-2 border-b-4 mr-1 ml-1 ${
-                  activeCategory === category_name
-                    ? "border-[var(--color-green)] w-1/2 font-bold text-[var(--color-green)]"
-                    : "border-[var(--color-gray-900)] w-1/2 text-gray-700 hover:text-[var(--color-green)]"
-                }`}
-                type="button"
-              >
-                {category_name}
-              </button>
-            ))}
-          </div>
+          <Categories
+            categories={categories}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+          />
         )}
 
         {/* Sub-category button group */}

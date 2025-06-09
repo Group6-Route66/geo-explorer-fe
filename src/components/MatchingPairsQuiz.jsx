@@ -4,15 +4,20 @@ import { useEffect, useState } from "react";
 
 import { getMatchingPairs } from "@/api";
 import { MatchingPairsCard } from ".";
+import { useFilter, useProgress } from "@/contexts";
+import ProgressBar from "./ProgressBar";
 
 const MatchingPairsQuiz = () => {
   const [mpQuestions, setMpQuestions] = useState([]);
   const [activeQuestion, setActiveQuestion] = useState({});
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
 
-  //todo: use filterContext for endpoints
+  const { continent, activeCategory } = useFilter();
+
+  const { progress, updateProgress } = useProgress();
+
   useEffect(() => {
-    getMatchingPairs(1, "asia", "Beginner").then((result) => {
+    getMatchingPairs(activeCategory, continent, "Beginner").then((result) => {
       setMpQuestions(result);
     });
   }, []);
@@ -23,13 +28,20 @@ const MatchingPairsQuiz = () => {
     }
   }, [activeQuestionIndex, mpQuestions]);
 
+  useEffect(() => {
+    updateProgress({ totalQuestions: mpQuestions.length });
+  }, [mpQuestions]);
+
   return (
     <>
+      <ProgressBar />
       <MatchingPairsCard
         mpQuestions={mpQuestions}
         activeQuestion={activeQuestion}
         activeQuestionIndex={activeQuestionIndex}
         setActiveQuestionIndex={setActiveQuestionIndex}
+        progress={progress}
+        updateProgress={updateProgress}
       />
     </>
   );

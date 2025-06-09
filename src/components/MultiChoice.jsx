@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NextButton from "./NextButton";
+import { useProgress } from "@/contexts";
 
 const MultiChoice = ({
   activeQuestion,
@@ -11,6 +12,7 @@ const MultiChoice = ({
 }) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
   const [correctAnswersList, setCorrectAnswersList] = useState([]);
+  const { progress, updateProgress } = useProgress();
 
   const levelColors = {
     Beginner: {
@@ -40,6 +42,10 @@ const MultiChoice = ({
     levelColors[activeQuestion?.level] || levelColors.Beginner;
 
   const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(",");
+
+  useEffect(() => {
+    updateProgress({ totalQuestions: mcQuestions.length });
+  }, [mcQuestions]);
 
   return (
     <div className=" w-full my-25">
@@ -85,22 +91,26 @@ const MultiChoice = ({
           Not quite right. The correct answer is highlighted in green.
         </div>
       ) : null}
+      {activeQuestionIndex < mcQuestions.length - 1 ? (
+        <div
+          className="flex items-center justify-end"
+          onClick={() => {
+            setActiveQuestionIndex((current) => current + 1);
+            setIsCorrectAnswer(null);
+            updateProgress({ currentQuestion: progress.currentQuestion + 1 });
+          }}
+        >
+          <NextButton disabled={isCorrectAnswer === null} />
+        </div>
+      ) : null}
 
-      <div
-        className="flex items-center justify-end"
-        onClick={() => {
-          setActiveQuestionIndex((current) => current + 1);
-          setIsCorrectAnswer(null);
-        }}
-      >
-        {activeQuestionIndex >= mcQuestions.length - 1 ? (
-          <button className="w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
+      {activeQuestionIndex >= mcQuestions.length - 1 ? (
+        <div className="flex items-center justify-end">
+          <button className=" w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
             Finish
           </button>
-        ) : (
-          <NextButton disabled={isCorrectAnswer === null} />
-        )}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 };
