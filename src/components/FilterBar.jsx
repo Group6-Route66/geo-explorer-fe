@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { useFilter } from "@/contexts";
 import { Categories } from ".";
 
@@ -30,6 +31,14 @@ export default function FilterBar({
   } = useFilter();
 
   const [isContinentOpen, setIsContinentOpen] = useState(false);
+
+  const { continent: continentParams } = useParams();
+
+  useEffect(() => {
+    if (continentParams) {
+      setContinent(continentParams);
+    }
+  }, [continentParams]);
 
   return (
     <div className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4">

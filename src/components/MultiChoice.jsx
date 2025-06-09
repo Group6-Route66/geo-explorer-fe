@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import NextButton from "./NextButton";
 import { useProgress } from "@/contexts";
+import QuizFeedbackPopup from "./QuizFeedbackPopup";
 
 const MultiChoice = ({
   activeQuestion,
@@ -12,6 +13,8 @@ const MultiChoice = ({
 }) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
   const [correctAnswersList, setCorrectAnswersList] = useState([]);
+  const [isOpenFeedback, setOpenFeedback] = useState(false);
+
   const { progress, updateProgress } = useProgress();
 
   const levelColors = {
@@ -42,6 +45,10 @@ const MultiChoice = ({
     levelColors[activeQuestion?.level] || levelColors.Beginner;
 
   const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(",");
+
+  const handleCloseFeedback = () => {
+    setOpenFeedback(false);
+  };
 
   useEffect(() => {
     updateProgress({ totalQuestions: mcQuestions.length });
@@ -105,11 +112,25 @@ const MultiChoice = ({
       ) : null}
 
       {activeQuestionIndex >= mcQuestions.length - 1 ? (
-        <div className="flex items-center justify-end">
-          <button className=" w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
+        <div
+          className="flex items-center justify-end"
+          onClick={() => {
+            setOpenFeedback(true);
+          }}
+        >
+          <button className="w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
             Finish
           </button>
         </div>
+      ) : null}
+
+      {isOpenFeedback ? (
+        <QuizFeedbackPopup
+          openFeedback={isOpenFeedback}
+          onClose={handleCloseFeedback}
+          correctCount={correctAnswersList.length}
+          totalCount={mcQuestions.length}
+        />
       ) : null}
     </div>
   );

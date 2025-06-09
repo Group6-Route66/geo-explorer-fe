@@ -1,10 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useProgress } from "@/contexts/ProgressContext";
+import { useFilter } from "@/contexts";
 
 const QuizzButtons = () => {
   const { progress } = useProgress();
   const { level, quizz } = progress;
+
+  const { continent, activeCategory } = useFilter();
 
   const levelColors = {
     Beginner: "bg-green",
@@ -25,7 +28,7 @@ const QuizzButtons = () => {
       </h2>
       <div className="w-full sm:max-w-100  lg:max-w-150 flex flex-col gap-4 p-10">
         <div className="flex justify-start">
-          <Link href="/multichoice">
+          <Link href={`/multichoice/${activeCategory}/${continent}`}>
             <button
               className={`${buttonClass} ${
                 levelColors[level] || levelColors.Beginner
@@ -36,7 +39,7 @@ const QuizzButtons = () => {
           </Link>
         </div>
         <div className="flex justify-end">
-          <Link href="/matchingPairs">
+          <Link href={`/matchingPairs/${activeCategory}/${continent}`}>
             <button
               disabled={quizz === 1}
               className={`${quizz === 1 ? disabledClass : buttonClass}`}
@@ -46,7 +49,7 @@ const QuizzButtons = () => {
           </Link>
         </div>
         <div className="flex justify-start">
-          <Link href="/">
+          <Link href={`/map/${activeCategory}/${continent}`}>
             <button
               disabled={quizz === 1 && quizz === 2}
               className={`${

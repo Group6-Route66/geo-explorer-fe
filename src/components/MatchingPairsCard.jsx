@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import NextButton from "./NextButton";
+import { QuizFeedbackPopup } from ".";
 
 const MatchingPairsCard = ({
   mpQuestions,
@@ -22,7 +23,7 @@ const MatchingPairsCard = ({
     "bg-amber-300 text-white",
   ];
 
-const initialStyle = `  w-full 
+  const initialStyle = `  w-full 
   bg-white 
   text-black 
   m-1 
@@ -40,7 +41,6 @@ const initialStyle = `  w-full
   break-words 
   hover:bg-gray-100 
 `;
-
 
   const [styleLeftButton1, setStyleLeftButton1] = useState("");
   const [styleLeftButton2, setStyleLeftButton2] = useState("");
@@ -60,6 +60,7 @@ const initialStyle = `  w-full
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [correctStyle, setCorrectStyle] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isOpenFeedback, setOpenFeedback] = useState(false);
 
   function setCorrectAnswersArray(arr1, arr2) {
     let correctAnswersArray = [];
@@ -233,6 +234,11 @@ const initialStyle = `  w-full
     updateProgress({ currentQuestion: progress.currentQuestion + 1 });
   }
 
+  const handleCloseFeedback = () => {
+    setOpenFeedback(false);
+  };
+
+
   useEffect(() => {
     setStyleLeftButton1(initialStyle);
     setStyleLeftButton2(initialStyle);
@@ -363,8 +369,8 @@ const initialStyle = `  w-full
         ) : null}
         <div className="flex justify-center p-2">
           <button
-              className="w-40 px-5 py-2 rounded-2xl border border-gray-300 text-black bg-white hover:bg-gray-100 shadow transition duration-200 ease-in-out"
-              onClick={handleReset}
+            className="w-40 px-5 py-2 rounded-2xl border border-gray-300 text-black bg-white hover:bg-gray-100 shadow transition duration-200 ease-in-out"
+            onClick={handleReset}
           >
             Reset
           </button>
@@ -384,13 +390,26 @@ const initialStyle = `  w-full
             <NextButton />
           </div>
         ) : (
-          <div className="flex justify-center p-2">
+          <div
+            className="flex justify-center p-2"
+            onClick={() => {
+              setOpenFeedback(true);
+            }}
+          >
             <button className="w-40 bg-green hover:bg-green-700text-white m-1 px-4 py-2 items-center border rounded-4xl">
               Finish
             </button>
           </div>
         )}
       </div>
+      {isOpenFeedback ? (
+        <QuizFeedbackPopup
+          openFeedback={isOpenFeedback}
+          onClose={handleCloseFeedback}
+          correctCount={correctAnswers.length}
+          totalCount={mpQuestions.length * 4}
+        />
+      ) : null}
     </div>
   );
 };

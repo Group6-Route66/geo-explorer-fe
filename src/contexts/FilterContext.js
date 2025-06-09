@@ -13,7 +13,7 @@ export const FilterProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("");
+  const [activeCategory, setActiveCategory] = useState(1);
   const [subCategories, setSubCategories] = useState([]);
 
   useEffect(() => {
