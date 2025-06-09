@@ -61,7 +61,7 @@ const UserProfile = () => {
 
   return (
     <div className="flex flex-col items-center pt-12 pb-12">
-      {user !== "guest" && user !== undefined ? (
+      {user !== "guest" && user !== null ? (
         <>
           {showPickAvatarScreen ? (
             <PickAvatarScreen
@@ -72,27 +72,29 @@ const UserProfile = () => {
           ) : null}
           <img
             className="w-48 h-48 rounded-full object-cover shadow-md mb-4 hover:scale-110 transition-transform cursor-pointer"
-            src={user.avatar_url}
+            src={user?.avatar_url}
             alt="user's Profile Image"
             onClick={() => setShowPickAvatarScreen(true)}
           />
           <div className="pt-1">
             <p className="text-xl font-extrabold text-green flex flex-col items-center">
-              {user.username}
+              {user?.username}
             </p>
 
             <div className="flex gap-4 mt-3 mb-3">
               <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-                <p className="text-xl font-extrabold">{user.level_nature}</p>
+                <p className="text-xl font-extrabold">{user?.level_nature}</p>
                 <p className="text-sm text-green font-bold">Nature Level</p>
               </div>
               <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-                <p className="text-xl font-extrabold">{user.level_territory}</p>
+                <p className="text-xl font-extrabold">
+                  {user?.level_territory}
+                </p>
                 <p className="text-sm text-green font-bold">Territory Level</p>
               </div>
             </div>
             <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-              <p className="text-xl font-extrabold">{user.rating}</p>
+              <p className="text-xl font-extrabold">{user?.rating}</p>
               <p className="text-sm text-green font-bold">Total Score</p>
             </div>
           </div>

@@ -11,7 +11,8 @@ const LoginScreen = ({ openLoginScreen, closeLoginScreen, setUser }) => {
   const [error, setError] = useState(false);
   const [noUsername, setNoUsername] = useState("");
 
-  const handleLogin = () => {
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
     if (usernameInput) {
       getUserByUsername(usernameInput)
         .then((user) => {
@@ -52,13 +53,16 @@ const LoginScreen = ({ openLoginScreen, closeLoginScreen, setUser }) => {
           <div className="w-full flex flex-col gap-8 items-center">
             <h2 className="text-2xl font-bold">Login</h2>
           </div>
-          <form className="w-full flex flex-col items-center pt-10 mb-5">
+          <form
+            className="w-full flex flex-col items-center pt-10"
+            onSubmit={handleSubmitForm}
+          >
             {noUsername ? (
               <p className="text-red mb-1">username Not Found!</p>
             ) : null}
             <input
               placeholder="Enter username"
-              className="h-[56px] w-full bg-gray-100 p-4 rounded-xl shadow-[0px_4px_4px_0px_#00000040]"
+              className="h-[56px] w-full bg-gray-100 p-4 rounded-xl shadow-[0px_4px_4px_0px_#00000040] mb-5"
               name="user"
               value={usernameInput}
               onChange={(e) => {
@@ -66,13 +70,10 @@ const LoginScreen = ({ openLoginScreen, closeLoginScreen, setUser }) => {
                 setNoUsername("");
               }}
             />
+            <button className="w-full bg-green rounded-4xl p-2 text-white font-bold shadow-[0px_4px_4px_0px_#00000040] hover:bg-green-600 mb-5">
+              Login
+            </button>
           </form>
-          <button
-            className="w-full bg-green rounded-4xl p-2 text-white font-bold shadow-[0px_4px_4px_0px_#00000040] hover:bg-green-600 mb-5"
-            onClick={handleLogin}
-          >
-            Login
-          </button>
         </>
       )}
     </PopUp>
