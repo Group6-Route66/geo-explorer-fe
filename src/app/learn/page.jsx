@@ -8,7 +8,7 @@ import LearningCardList from "@/components/LearningCardList";
 export default function LearnPage() {
   return (
     <FilterProvider>
-      <FilterBar />
+      <FilterBar showCategories={false} showSubCategories={true} />
       <LearningCardList />
     </FilterProvider>
   );

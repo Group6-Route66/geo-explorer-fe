@@ -3,6 +3,9 @@ import axios from "axios";
 const geoExplorerApi = axios.create({
   baseURL: "https://geo-explorer-be.onrender.com/api",
 });
+export const getCategories = () => {
+  return geoExplorerApi.get("/categories").then(({ data }) => data.categories);
+};
 
 export const getSubCategories = () => {
   return geoExplorerApi.get("/subcategories").then(({ data }) => {
@@ -20,6 +23,25 @@ export const getUserByUsername = (username) => {
   return geoExplorerApi.get(`/users/${username}`).then(({ data }) => {
     return data.user;
   });
+};
+
+export const postUser = (username, avatar_url) => {
+  return geoExplorerApi
+    .post(`/users`, {
+      username: username,
+      avatar_url: avatar_url,
+    })
+    .then(({ data }) => {
+      return data.user;
+    });
+};
+
+export const patchUserAvatar = (username, avatar_url) => {
+  return geoExplorerApi
+    .patch(`/users/${username}`, { avatar_url: avatar_url })
+    .then(({ data }) => {
+      return data.user;
+    });
 };
 
 export const getLearningCards = (continent, sub_category_id, page = 1) => {

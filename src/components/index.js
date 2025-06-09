@@ -12,5 +12,11 @@ export { default as UsersRanking } from "./UsersRanking";
 export { default as CustomError } from "./CustomError";
 export { default as CustomLoading } from "./CustomLoading";
 export { default as MatchingPairsQuiz } from "./MatchingPairsQuiz";
+export { default as FilterBar } from "./FilterBar";
+export { default as LearningCardList } from "./LearningCardList";
+export { default as LoginScreen } from "./LoginScreen";
+export { default as RegisterScreen } from "./RegisterScreen";
+export { default as PickAvatarScreen } from "./PickAvatarScreen";
+
 
 export * from "./ui";
