@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useContext } from "react";
 
 import { LogoIcon, UserIcon } from "@/assets";
-import { useContext } from "react";
 import { UserContext } from "@/contexts";
 
 const Header = () => {
