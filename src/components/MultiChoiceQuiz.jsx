@@ -10,6 +10,7 @@ const MultiChoiceQuiz = () => {
   const [activeQuestion, setActiveQuestion] = useState({});
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
 
+  //todo: use filterContext for endpoints
   useEffect(() => {
     getMultichoiceQAs("Beginner", "asia", 1).then((result) => {
       setMcQuestions(result);

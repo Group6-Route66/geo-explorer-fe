@@ -1,9 +1,9 @@
-import { QuizMatchingPairsCard } from "@/components";
+import { MatchingPairsQuiz } from "@/components";
 
 export default function QuizMatchingPairs() {
-    return (
-      <div>
-       < QuizMatchingPairsCard />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <MatchingPairsQuiz />
+    </div>
+  );
+}
