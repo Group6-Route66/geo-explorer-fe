@@ -1,25 +1,26 @@
 "use client";
-import Link from "next/link";
+
 import { useState } from "react";
 
-const NextButton = () => {
+const NextButton = ({ disabled = false }) => {
   const [level] = useState("Beginner");
 
   const levelColors = {
-    Beginner:
-      "w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white",
-    Intermediate:
-      "w-40 bg-grey-500 border rounded-3xl p-2 text-yellow-600 font-bold hover:bg-yellow hover:text-white",
-    Advanced:
-      "w-40 bg-grey-500 border rounded-3xl p-2 text-red-600 font-bold hover:bg-red hover:text-white",
+    Beginner: "text-green-600",
+    Intermediate: "text-yellow-600",
+    Advanced: "text-red-600 ",
   };
 
-  const buttonClass = levelColors[level] || levelColors.Beginner;
+  const buttonClass =
+    "w-40 bg-grey-500 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-300 ";
 
   return (
-    <Link href="/">
-      <button className={buttonClass}>Go next</button>
-    </Link>
+    <button
+      disabled={disabled}
+      className={`${buttonClass} ${levelColors[level] || levelColors.Beginner}`}
+    >
+      Go next
+    </button>
   );
 };
 

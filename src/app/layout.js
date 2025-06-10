@@ -1,10 +1,13 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 
-import { UserContextProvider } from "@/contexts";
+import {
+  FilterProvider,
+  ProgressProvider,
+  UserContextProvider,
+} from "@/contexts";
 
 import { Continent, Footer, Header } from "@/components";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,11 +31,13 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserContextProvider>
-          <Header />
-          <main className="flex flex-col grow">
-            {children}
-          </main>
-          <Footer />
+          <FilterProvider>
+            <ProgressProvider>
+              <Header />
+              <main className="flex flex-col grow">{children}</main>
+              <Footer />
+            </ProgressProvider>
+          </FilterProvider>
         </UserContextProvider>
       </body>
     </html>

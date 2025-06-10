@@ -1,25 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NextButton from "./NextButton";
+import { useProgress } from "@/contexts";
+import QuizFeedbackPopup from "./QuizFeedbackPopup";
 
-const MultiChoice = () => {
+const MultiChoice = ({
+  activeQuestion,
+  mcQuestions,
+  activeQuestionIndex,
+  setActiveQuestionIndex,
+}) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
-  const [multiChoiceQA] = useState({
-    question_mc_id: 1,
-    continent: "Asia",
-    sub_category_id: 1,
-    level: "Beginner",
-    question_text: "Which mountain is the highest peak in Asia?",
-    answer_mc_id: 1,
-    multiple_choice_text: [
-      "Mount Fuji",
-      "Altai Mountains",
-      "Ural Mountains",
-      "Mount Everest",
-    ],
-    correct_answer: "Mount Everest",
-  });
+  const [correctAnswersList, setCorrectAnswersList] = useState([]);
+  const [isOpenFeedback, setOpenFeedback] = useState(false);
+
+  const { progress, updateProgress } = useProgress();
 
   const levelColors = {
     Beginner: {
@@ -37,66 +33,105 @@ const MultiChoice = () => {
   };
 
   function handleAnswer(e) {
-    if (e.target.value === multiChoiceQA.correct_answer) {
+    if (e.target.value === activeQuestion.correct_answer) {
       setIsCorrectAnswer(true);
+      setCorrectAnswersList((currentList) => [...currentList, e.target.value]);
     } else {
       setIsCorrectAnswer(false);
     }
   }
 
-  const colorClasses = levelColors[multiChoiceQA.level] || levelColors.Beginner;
+  const colorClasses =
+    levelColors[activeQuestion?.level] || levelColors.Beginner;
+
+  const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(",");
+
+  const handleCloseFeedback = () => {
+    setOpenFeedback(false);
+  };
+
+  useEffect(() => {
+    updateProgress({ totalQuestions: mcQuestions.length });
+  }, [mcQuestions]);
 
   return (
-    <div className="mt-25">
-      <div>
-        <h2 className="text-2xl font-bold text-center">
-          {multiChoiceQA.question_text}
-        </h2>
-      </div>
+    <div className=" w-full my-25">
+      <h2 className="text-2xl font-bold text-center mb-6">
+        {activeQuestion?.question_text}
+      </h2>
 
-      <div className="mt-15">
-        {multiChoiceQA.multiple_choice_text.map((item, index) => {
-          let buttonClass = `w-full p-2 text-white font-bold m-4 rounded-4xl `;
-
-          if (isCorrectAnswer !== null) {
-            if (item === multiChoiceQA.correct_answer) {
-              buttonClass += colorClasses.correct;
+      {multipleChoiceList && multipleChoiceList.length ? (
+        <div className="w-full flex flex-col items-center gap-4 mb-6 ">
+          {multipleChoiceList.map((item, index) => {
+            let buttonClass = `w-full p-2 text-white font-bold rounded-4xl `;
+            if (isCorrectAnswer !== null) {
+              if (item === activeQuestion.correct_answer) {
+                buttonClass += colorClasses.correct;
+              } else {
+                buttonClass +=
+                  "bg-gray-100 text-gray-600 cursor-not-allowed opacity-60";
+              }
             } else {
-              buttonClass +=
-                "bg-gray-100 text-gray-600 cursor-not-allowed opacity-60";
+              buttonClass += `${colorClasses.base} cursor-pointer`;
             }
-          } else {
-            buttonClass += `${colorClasses.base} cursor-pointer`;
-          }
+            return (
+              <button
+                key={`button-mc-qa-${index}`}
+                onClick={handleAnswer}
+                value={item}
+                className={buttonClass}
+                disabled={isCorrectAnswer !== null}
+              >
+                {item}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
-          return (
-            <button
-              key={`button-mc-qa-${index}`}
-              onClick={handleAnswer}
-              value={item}
-              className={buttonClass}
-              disabled={isCorrectAnswer !== null}
-            >
-              {item}
-            </button>
-          );
-        })}
-      </div>
-
-      {isCorrectAnswer === true && (
-        <div className="w-full mt-15 p-3 bg-green-50 text-green-700 rounded text-center">
+      {isCorrectAnswer === true ? (
+        <div className="w-full my-10 p-3 bg-green-50 text-green-700 rounded text-center">
           That's correct, well done!
         </div>
-      )}
-      {isCorrectAnswer === false && (
-        <div className="w-full mt-15 p-3 bg-red-50 text-red-700 rounded text-center">
+      ) : isCorrectAnswer === false ? (
+        <div className="w-full my-10 p-3 bg-red-50 text-red-700 rounded text-center">
           Not quite right. The correct answer is highlighted in green.
         </div>
-      )}
+      ) : null}
+      {activeQuestionIndex < mcQuestions.length - 1 ? (
+        <div
+          className="flex items-center justify-end"
+          onClick={() => {
+            setActiveQuestionIndex((current) => current + 1);
+            setIsCorrectAnswer(null);
+            updateProgress({ currentQuestion: progress.currentQuestion + 1 });
+          }}
+        >
+          <NextButton disabled={isCorrectAnswer === null} />
+        </div>
+      ) : null}
 
-      <div className="my-50 flex items-center justify-end">
-        <NextButton />
-      </div>
+      {activeQuestionIndex >= mcQuestions.length - 1 ? (
+        <div
+          className="flex items-center justify-end"
+          onClick={() => {
+            setOpenFeedback(true);
+          }}
+        >
+          <button className="w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
+            Finish
+          </button>
+        </div>
+      ) : null}
+
+      {isOpenFeedback ? (
+        <QuizFeedbackPopup
+          openFeedback={isOpenFeedback}
+          onClose={handleCloseFeedback}
+          correctCount={correctAnswersList.length}
+          totalCount={mcQuestions.length}
+        />
+      ) : null}
     </div>
   );
 };

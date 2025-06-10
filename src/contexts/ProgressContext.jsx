@@ -9,7 +9,7 @@ export const ProgressProvider = ({ children }) => {
     level: "Beginner",
     quizz: 1,
     currentQuestion: 1,
-    totalQuestions: 10,
+    totalQuestions: 0,
   });
 
   const updateProgress = (newProgress) => {

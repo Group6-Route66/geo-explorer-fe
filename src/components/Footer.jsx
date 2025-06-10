@@ -28,7 +28,7 @@ const Footer = () => {
         <span className="text-xs mt-1">Take a quiz</span>
       </Link>
 
-      <Link href="/learn" className={linkClass("/learn")}>
+      <Link href="/learn/world" className={linkClass("/learn")}>
         <LearnIcon
           className={isActive("/learn") ? "text-[var(--color-green)]" : ""}
         />
@@ -49,17 +49,6 @@ const Footer = () => {
           className={isActive("/profile") ? "text-[var(--color-green)]" : ""}
         />
         <span className="text-xs mt-1">Profile</span>
-      </Link>
-
-      <Link
-        href="/testQuizMatchingPairs"
-        className={linkClass("/testQuizMatchingPairs")}
-      >
-        <span className="text-xs mt-1">Quiz Matching Pairs</span>
-      </Link>
-
-      <Link href="/multichoice" className={linkClass("/multichoice")}>
-        <span className="text-xs mt-1">Quiz Multichoice</span>
       </Link>
     </footer>
   );

@@ -62,3 +62,7 @@ h1 {
 button {
   cursor: pointer;
 }
+
+button:disabled {
+  cursor: not-allowed;
+}

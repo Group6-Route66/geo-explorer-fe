@@ -1,6 +1,6 @@
 "use client";
 
-const { createContext, useState, useEffect } = require("react");
+const { createContext, useState, useEffect, useContext } = require("react");
 
 export const UserContext = createContext();
 
@@ -31,3 +31,5 @@ export const UserContextProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+export const useUser = () => useContext(UserContext);

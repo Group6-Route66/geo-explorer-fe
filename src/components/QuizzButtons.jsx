@@ -1,55 +1,65 @@
 "use client";
 import Link from "next/link";
 import { useProgress } from "@/contexts/ProgressContext";
+import { useFilter } from "@/contexts";
 
 const QuizzButtons = () => {
   const { progress } = useProgress();
   const { level, quizz } = progress;
 
+  const { continent, activeCategory } = useFilter();
+
   const levelColors = {
-    Beginner:
-      "w-50 h-30 bg-green shadow-lg/60 shadow-green-600  border-2 border-green-600 rounded-full p-2 text-white text-3xl font-bold hover:text-green-600",
-    Intermediate:
-      "w-50 h-30 bg-yellow shadow-lg/60 shadow-yellow-600 border-2 border-yellow-600 rounded-full p-2 text-white text-3xl font-bold hover:text-yellow-600",
-    Advanced:
-      "w-50 h-30 bg-red-400 shadow-lg/60 border-2 shadow-red-600 border-red-600 rounded-full p-2 text-white text-3xl font-bold hover:text-red-600",
+    Beginner: "bg-green",
+    Intermediate: "bg-yellow",
+    Advanced: "bg-red-400",
   };
 
-  const buttonClass = levelColors[level] || levelColors.Beginner;
+  const buttonClass =
+    "shadow-lg/60 shadow-green-600 border-2 border-green-600 rounded-full px-8 py-4 sm:px-12 sm:py-6 lg:px-20 lg:py-10 text-white text-3xl font-bold hover:text-green-600";
 
   const disabledClass =
-    "w-50 h-30 bg-gray-200 shadow-xl/20 rounded-full p-2 text-gray-400 text-3xl font-bold";
+    "bg-gray-200 shadow-xl/20 rounded-full px-8 py-4 sm:px-12 sm:py-6 lg:px-20 lg:py-10 text-gray-400 text-3xl font-bold ";
 
   return (
-    <div className=" flex-col p-20 content-center mt-10">
-      <div className="flex justify-start mb-15 ml-30">
-        <Link href="/">
-          <button className={buttonClass}>1</button>
-        </Link>
-      </div>
-
-      <div className="flex justify-end mb-20 mr-30">
-        {quizz === 1 ? (
-          <button disabled className={`${disabledClass}`}>
-            2
-          </button>
-        ) : (
-          <Link href="/">
-            <button className={buttonClass}>2</button>
+    <div className="w-full flex flex-col justify-center items-center my-10  bg-gray-100 py-3 md:py-10 px-6 rounded-xl shadow-lg">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center text-green-600">
+        Start Your Quiz Journey
+      </h2>
+      <div className="w-full sm:max-w-100  lg:max-w-150 flex flex-col gap-4 p-10">
+        <div className="flex justify-start">
+          <Link href={`/multichoice/${activeCategory}/${continent}`}>
+            <button
+              className={`${buttonClass} ${
+                levelColors[level] || levelColors.Beginner
+              }`}
+            >
+              1
+            </button>
           </Link>
-        )}
-      </div>
-
-      <div className="flex justify-start mb-10 ml-30">
-        {quizz === 1 || quizz === 2 ? (
-          <button disabled className={`${disabledClass}`}>
-            3
-          </button>
-        ) : (
-          <Link href="/">
-            <button className={buttonClass}>3</button>
+        </div>
+        <div className="flex justify-end">
+          <Link href={`/matchingPairs/${activeCategory}/${continent}`}>
+            <button
+              disabled={quizz === 1}
+              className={`${quizz === 1 ? disabledClass : buttonClass}`}
+            >
+              2
+            </button>
           </Link>
-        )}
+        </div>
+        <div className="flex justify-start">
+          <Link href={`/map/${activeCategory}/${continent}`}>
+            <button
+              disabled={quizz === 1 && quizz === 2}
+              className={`${
+                quizz === 1 || quizz === 2 ? disabledClass : buttonClass
+              }`}
+            >
+              3
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
