@@ -13,7 +13,7 @@ const continents = {
   africa: "Africa",
   "south america": "South America",
   "north america": "North America",
-  "australia/oceania": "Australia/Oceania",
+  oceania: "Australia/Oceania",
 };
 // FilterBar supports optional rendering of categories and sub-categories
 export default function FilterBar({
