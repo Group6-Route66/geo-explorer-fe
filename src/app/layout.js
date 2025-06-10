@@ -1,10 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
-
 import {
   FilterProvider,
   ProgressProvider,
   UserContextProvider,
+  DarkModeContext,
 } from "@/contexts";
 
 import { Continent, Footer, Header } from "@/components";
@@ -26,19 +26,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html class="dark" lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <UserContextProvider>
-          <FilterProvider>
-            <ProgressProvider>
-              <Header />
-              <main className="flex flex-col grow">{children}</main>
-              <Footer />
-            </ProgressProvider>
-          </FilterProvider>
-        </UserContextProvider>
+        <DarkModeContext>
+          <UserContextProvider>
+            <FilterProvider>
+              <ProgressProvider>
+                <Header />
+                <main className="flex flex-col grow">{children}</main>
+                <Footer />
+              </ProgressProvider>
+            </FilterProvider>
+          </UserContextProvider>
+        </DarkModeContext>
       </body>
     </html>
   );

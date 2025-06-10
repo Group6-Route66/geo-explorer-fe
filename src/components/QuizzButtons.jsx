@@ -32,7 +32,7 @@ const QuizzButtons = () => {
     "text-2xl sm:text-3xl md:text-4xl font-extrabold text-center ";
 
   return (
-    <div className="w-full flex flex-col justify-center items-center my-10  bg-gray-100 py-3 md:py-10 px-6 rounded-xl shadow-lg">
+    <div className="w-full flex flex-col justify-center items-center my-10  bg-gray-100 py-3 md:py-10 px-6 rounded-xl shadow-lg dark:bg-gray-500">
       <h2
         className={`${textClass} ${textColors[level] || textColors.Beginner}`}
       >
