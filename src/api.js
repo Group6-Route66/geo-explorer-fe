@@ -44,6 +44,17 @@ export const patchUserAvatar = (username, avatar_url) => {
     });
 };
 
+export const patchUserScore = (username, score, correctedAnswers) => {
+  return geoExplorerApi
+    .patch(`/users/${username}`, {
+      rating: score,
+      correct_answers: correctedAnswers,
+    })
+    .then(({ data }) => {
+      return data.user;
+    });
+};
+
 export const getLearningCards = (continent, sub_category_id, page = 1) => {
   return geoExplorerApi
     .get(

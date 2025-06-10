@@ -19,7 +19,6 @@ export const FilterProvider = ({ children }) => {
   useEffect(() => {
     getCategories()
       .then((categories) => {
-        console.log("Fetched categories:", categories);
         setCategories(categories);
         if (categories.length > 0) setActiveCategory(categories[0].category_id);
       })
@@ -30,7 +29,6 @@ export const FilterProvider = ({ children }) => {
 
     getSubCategories()
       .then((subs) => {
-        console.log("Fetched subCategories:", subs);
         const formattedSubs = subs.map((s) => ({
           id: s.sub_category_id,
           label: s.sub_category_name,

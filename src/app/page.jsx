@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { QuizzButtons, WelcomeScreen } from "@/components";
 
-import ProgressBar from "@/components/ProgressBar";
 import ProgressBarMain from "@/components/ProgressBarMain";
 import FilterBar from "@/components/FilterBar.jsx";
 
@@ -23,7 +22,6 @@ export default function Home() {
       <FilterBar showCategories={true} showSubCategories={false} />
 
       <ProgressBarMain />
-
 
       <QuizzButtons />
     </div>

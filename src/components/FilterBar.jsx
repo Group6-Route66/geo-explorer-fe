@@ -2,8 +2,9 @@
 
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
 import { useFilter } from "@/contexts";
-import { Categories } from ".";
+import Categories from "./Categories";
 
 const continents = {
   world: "World",
@@ -79,7 +80,6 @@ export default function FilterBar({
 
         {/* Category button group */}
         {showCategories && (
-
           <Categories
             categories={categories}
             activeCategory={activeCategory}
