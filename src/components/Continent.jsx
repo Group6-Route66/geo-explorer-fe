@@ -82,7 +82,7 @@ const Continent = () => {
               value="Australia/Oceania"
               onClick={handleOnclickContinent}
             >
-              Australia/Oceania
+              Oceania
             </button>
           </>
         ) : (
