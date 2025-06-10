@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+
 import NextButton from "./NextButton";
-import { useProgress } from "@/contexts";
+import { useProgress, useUser } from "@/contexts";
 import QuizFeedbackPopup from "./QuizFeedbackPopup";
+import { handleFinishQuiz } from "@/utils";
 
 const MultiChoice = ({
   activeQuestion,
@@ -16,6 +19,10 @@ const MultiChoice = ({
   const [isOpenFeedback, setOpenFeedback] = useState(false);
 
   const { progress, updateProgress } = useProgress();
+
+  const { user, setUser } = useUser();
+
+  const { category } = useParams();
 
   const levelColors = {
     Beginner: {
@@ -31,6 +38,13 @@ const MultiChoice = ({
       correct: "bg-red-600",
     },
   };
+  const colorClasses =
+    levelColors[activeQuestion?.level] || levelColors.Beginner;
+
+  const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(",");
+
+  const successRate = correctAnswersList.length / mcQuestions.length;
+  const isSuccess = successRate >= 0.8;
 
   function handleAnswer(e) {
     if (e.target.value === activeQuestion.correct_answer) {
@@ -41,10 +55,9 @@ const MultiChoice = ({
     }
   }
 
-  const colorClasses =
-    levelColors[activeQuestion?.level] || levelColors.Beginner;
-
-  const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(",");
+  const onFinishQuiz = () => {
+    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswersList);
+  };
 
   const handleCloseFeedback = () => {
     setOpenFeedback(false);
@@ -116,6 +129,7 @@ const MultiChoice = ({
           className="flex items-center justify-end"
           onClick={() => {
             setOpenFeedback(true);
+            onFinishQuiz();
           }}
         >
           <button className="w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
@@ -128,8 +142,12 @@ const MultiChoice = ({
         <QuizFeedbackPopup
           openFeedback={isOpenFeedback}
           onClose={handleCloseFeedback}
+          isSuccess={isSuccess}
           correctCount={correctAnswersList.length}
           totalCount={mcQuestions.length}
+          updateProgress={updateProgress}
+          setActiveQuestionIndex={setActiveQuestionIndex}
+          setIsCorrectAnswer={setIsCorrectAnswer}
         />
       ) : null}
     </div>

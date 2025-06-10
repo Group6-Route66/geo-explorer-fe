@@ -6,8 +6,6 @@ const ProgressContext = createContext();
 
 export const ProgressProvider = ({ children }) => {
   const [progress, setProgress] = useState({
-    level: "Beginner",
-    quizz: 1,
     currentQuestion: 1,
     totalQuestions: 0,
   });

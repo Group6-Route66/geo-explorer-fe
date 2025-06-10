@@ -5,14 +5,14 @@ import { useParams } from "next/navigation";
 
 import { getMatchingPairs } from "@/api";
 import MatchingPairsCard from "./MatchingPairsCard";
-import { useProgress, useUser } from "@/contexts";
+import { useFilter, useProgress, useUser } from "@/contexts";
 import ProgressBar from "./ProgressBar";
 
 const MatchingPairsQuiz = () => {
   const [mpQuestions, setMpQuestions] = useState([]);
   const [activeQuestion, setActiveQuestion] = useState({});
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
-  const [level, setLevel] = useState();
+  const { level, setLevel } = useFilter();
 
   const { category, continent } = useParams();
 

@@ -1,20 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
+
+import NextButton from "./NextButton";
 
 const { PopUp } = require("./ui");
 
 const QuizFeedbackPopup = ({
   openFeedback,
+  isSuccess,
   correctCount,
   totalCount,
+  updateProgress,
+  setActiveQuestionIndex,
+  setIsCorrectAnswer,
   onClose,
 }) => {
-  const { continent } = useParams();
+  const { category, continent } = useParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const successRate = correctCount / totalCount;
-  const isSuccess = successRate >= 0.8;
+  const goToHomePage = () => {
+    router.push("/");
+  };
+
+  const goToNextPage = () => {
+    if (pathname.includes("multichoice")) {
+      router.push(`/matchingPairs/${category}/${continent}`);
+    } else if (pathname.includes("matchingPairs")) {
+      router.push(`/map/${category}/${continent}`);
+    }
+  };
+
+  const tryAgainQuiz = () => {
+    if (pathname.includes("multichoice")) {
+      router.push(`/multichoice/${category}/${continent}`);
+    } else if (pathname.includes("matchingPairs")) {
+      router.push(`/matchingPairs/${category}/${continent}`);
+    } else if (pathname.includes("map")) {
+      router.push(`/map/${category}/${continent}`);
+    }
+  };
 
   return (
     <PopUp openPopUp={openFeedback}>
@@ -35,14 +62,45 @@ const QuizFeedbackPopup = ({
             : "Don't worry! Review and try again to improve your score."}
         </p>
         <div className="flex gap-2">
-          <Link href={`/learn/${continent }`}>
-            <button className="mt-4 px-6 py-2 bg-grey-500 text-green-600 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white">
-              Learn
-            </button>
-          </Link>
+          {isSuccess ? (
+            <div
+              onClick={() => {
+                onClose();
+                goToNextPage();
+                updateProgress({ currentQuestion: 1 });
+              }}
+            >
+              <NextButton />
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <Link href={`/learn/${continent}`}>
+                <button className="px-6 py-2 bg-grey-500 text-green-600 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white">
+                  Learn
+                </button>
+              </Link>
+
+              <button
+                onClick={() => {
+                  onClose();
+                  tryAgainQuiz();
+                  updateProgress({ currentQuestion: 1 });
+                  setActiveQuestionIndex(0);
+                  setIsCorrectAnswer(null);
+                }}
+                className="px-6 py-2 bg-grey-500 text-green-600 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white"
+              >
+                Try again
+              </button>
+            </div>
+          )}
           <button
-            onClick={onClose}
-            className="mt-4 px-6 py-2 bg-green hover:bg-green-700 text-white rounded-3xl"
+            onClick={() => {
+              onClose();
+              goToHomePage();
+              updateProgress({ currentQuestion: 1 });
+            }}
+            className="px-6 py-2 bg-green hover:bg-green-700 text-white rounded-3xl"
           >
             Close
           </button>

@@ -4,9 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { QuizIcon, LearnIcon, LeaderboardIcon, UserIcon } from "@/assets";
+import { useFilter } from "@/contexts";
 
 const Footer = () => {
   const pathname = usePathname();
+
+  const { continent } = useFilter();
 
   // to define if it's active
   const isActive = (path) => pathname === path;
@@ -28,7 +31,7 @@ const Footer = () => {
         <span className="text-xs mt-1">Take a quiz</span>
       </Link>
 
-      <Link href="/learn/world" className={linkClass("/learn")}>
+      <Link href={`/learn/${continent}`} className={linkClass("/learn")}>
         <LearnIcon
           className={isActive("/learn") ? "text-[var(--color-green)]" : ""}
         />
