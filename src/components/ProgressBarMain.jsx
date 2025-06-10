@@ -5,64 +5,66 @@ import { useProgress } from "@/contexts/ProgressContext";
 
 const ProgressBarMain = () => {
   const { progress } = useProgress();
-  const { level, quizz, currentQuestion, totalQuestions } = progress;
+  const { level } = progress;
 
-  let percent = 0;
-  let colour = "#6ED788";
+  const levelColors = {
+    Beginner: "bg-green",
+    Intermediate: "bg-yellow",
+    Advanced: "bg-red-300",
+  };
 
-  if (level === "Beginner") {
-    percent = Math.min(
-      Math.max((currentQuestion / totalQuestions) * 33.33, 0),
-      100
-    );
-  }
+  const buttonClass =
+    "w-34 h-6 md:w-40 md:h-8 font-bold bg-opacity-50 flex justify-center items-center border-white rounded-2xl ";
 
-  if (level === "Intermediate") {
-    percent =
-      33.33 +
-      Math.min(Math.max((currentQuestion / totalQuestions) * 33.33, 0), 100);
-
-    colour = "#ffb703";
-  }
-
-  if (level === "Advanced") {
-    percent =
-      66.66 +
-      Math.min(Math.max((currentQuestion / totalQuestions) * 33.33, 0), 100);
-
-    colour = "#f25c54";
-  }
+  const disabledClass =
+    "w-34 h-6 md:w-40 md:h-8 font-bold bg-gray-200 bg-opacity-50 flex justify-center items-center border-white rounded-2xl";
 
   return (
-    <div style={{ margin: "2rem 0" }}>
+    <div className="w-full flex flex-column justify-around mt-3 mb-10">
       <div
-        style={{
-          height: "12px",
-          borderRadius: "8px",
-          overflow: "hidden",
-          backgroundColor: "#ddd",
-        }}
+        className={
+          level === "Beginner"
+            ? `${buttonClass} ${levelColors[level]}`
+            : `${disabledClass}`
+        }
       >
-        <div
-          style={{
-            width: `${percent}%`,
-            height: "100%",
-            backgroundColor: colour,
-            borderRadius: "8px",
-            transition: "width 0.3s ease",
-          }}
-        />
+        <p
+          className={`${
+            level === "Beginner" ? "text-gray" : "text-gray-500/50"
+          } text-xs md:text-sm`}
+        >
+          Beginner
+        </p>
       </div>
-      <div className="w-full flex flex-column justify-around mt-3 mb-10">
-        <div className="w-30 font-bold bg-gray-100 bg-opacity-50 flex justify-center border-white rounded-2xl ">
-          <p>Beginner</p>
-        </div>
-        <div className="w-30 font-bold bg-gray-100 bg-opacity-50 flex justify-center border-white rounded-2xl">
-          <p>Intermediate</p>
-        </div>
-        <div className="w-30 font-bold bg-gray-100 flex justify-center border-white rounded-2xl bg-opacity-50">
-          <p>Advanced</p>
-        </div>
+      <div
+        className={
+          level === "Intermediate"
+            ? `${buttonClass} ${levelColors[level]}`
+            : `${disabledClass}`
+        }
+      >
+        <p
+          className={`${
+            level === "Intermediate" ? "text-gray" : "text-gray-500/50"
+          } text-xs md:text-sm`}
+        >
+          Intermediate
+        </p>
+      </div>
+      <div
+        className={
+          level === "Advanced"
+            ? `${buttonClass} ${levelColors[level]}`
+            : `${disabledClass}`
+        }
+      >
+        <p
+          className={`${
+            level === "Advanced" ? "text-gray" : "text-gray-500/50"
+          } text-xs md:text-sm`}
+        >
+          Advanced
+        </p>
       </div>
     </div>
   );
