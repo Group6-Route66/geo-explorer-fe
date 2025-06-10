@@ -44,11 +44,21 @@ export const patchUserAvatar = (username, avatar_url) => {
     });
 };
 
-export const patchUserScore = (username, score, correctedAnswers) => {
+export const patchUserScore = (
+  username,
+  score,
+  correctedAnswers,
+  newQuiz,
+  userLevelNature,
+  userLevelTerritory
+) => {
   return geoExplorerApi
     .patch(`/users/${username}`, {
       rating: score,
       correct_answers: correctedAnswers,
+      quizz: newQuiz,
+      level_nature: userLevelNature,
+      level_territory: userLevelTerritory,
     })
     .then(({ data }) => {
       return data.user;

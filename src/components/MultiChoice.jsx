@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 import NextButton from "./NextButton";
 import { useProgress, useUser } from "@/contexts";
 import QuizFeedbackPopup from "./QuizFeedbackPopup";
-import { patchUserScore } from "@/api";
+import { handleFinishQuiz } from "@/utils";
 
 const MultiChoice = ({
   activeQuestion,
@@ -20,6 +21,8 @@ const MultiChoice = ({
   const { progress, updateProgress } = useProgress();
 
   const { user, setUser } = useUser();
+
+  const { category } = useParams();
 
   const levelColors = {
     Beginner: {
@@ -52,24 +55,8 @@ const MultiChoice = ({
     }
   }
 
-  const handleFinishQuiz = () => {
-    if (isSuccess && user !== "guest") {
-      const score = user.rating + correctAnswersList.length;
-      const correct_answers = user.correct_answers
-        ? [...user.correct_answers]
-        : [];
-      const newCorrectAnswers = correct_answers
-        .concat(correctAnswersList)
-        .join();
-
-      patchUserScore(user.username, score, newCorrectAnswers)
-        .then((updatedUser) => {
-          setUser(updatedUser);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+  const onFinishQuiz = () => {
+    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswersList);
   };
 
   const handleCloseFeedback = () => {
@@ -142,7 +129,7 @@ const MultiChoice = ({
           className="flex items-center justify-end"
           onClick={() => {
             setOpenFeedback(true);
-            handleFinishQuiz();
+            onFinishQuiz();
           }}
         >
           <button className="w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">

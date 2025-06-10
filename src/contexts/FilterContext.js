@@ -15,6 +15,10 @@ export const FilterProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(1);
   const [subCategories, setSubCategories] = useState([]);
+  const [level, setLevel] = useState("");
+
+  console.log(level);
+  
 
   useEffect(() => {
     getCategories()
@@ -40,6 +44,7 @@ export const FilterProvider = ({ children }) => {
         setSubCategories([]);
       });
   }, []);
+
   return (
     <FilterContext.Provider
       value={{
@@ -59,6 +64,8 @@ export const FilterProvider = ({ children }) => {
         activeCategory,
         setActiveCategory,
         subCategories,
+        level,
+        setLevel,
       }}
     >
       {children}

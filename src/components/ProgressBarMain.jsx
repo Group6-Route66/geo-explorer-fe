@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import { useProgress } from "@/contexts/ProgressContext";
+import { useFilter } from "@/contexts";
 
 const ProgressBarMain = () => {
-  const { progress } = useProgress();
-  const { level } = progress;
+  const { level } = useFilter();
 
   const levelColors = {
     Beginner: "bg-green",

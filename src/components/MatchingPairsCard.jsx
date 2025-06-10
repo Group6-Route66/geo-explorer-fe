@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+
 import NextButton from "./NextButton";
 import { QuizFeedbackPopup } from ".";
+import { handleFinishQuiz } from "@/utils";
+import { useUser } from "@/contexts";
 
 const MatchingPairsCard = ({
   mpQuestions,
@@ -62,6 +66,10 @@ const MatchingPairsCard = ({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isOpenFeedback, setOpenFeedback] = useState(false);
 
+  const { user, setUser } = useUser();
+
+  const { category } = useParams();
+
   function setCorrectAnswersArray(arr1, arr2) {
     let correctAnswersArray = [];
     for (let i = 0; i < arr1.length; i++) {
@@ -91,6 +99,9 @@ const MatchingPairsCard = ({
   const [randomRightButtons, setRandomRightButtons] = useState(
     randomize(rightButtons)
   );
+
+  const successRate = correctAnswers.length / mpQuestions.length;
+  const isSuccess = successRate >= 0.8;
 
   function isOdd(number) {
     return number % 2 === 0 ? false : true;
@@ -238,6 +249,9 @@ const MatchingPairsCard = ({
     setOpenFeedback(false);
   };
 
+  const onFinishQuiz = () => {
+    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswers);
+  };
 
   useEffect(() => {
     setStyleLeftButton1(initialStyle);
@@ -371,6 +385,7 @@ const MatchingPairsCard = ({
           <button
             className="w-40 px-5 py-2 rounded-2xl border border-gray-300 text-black bg-white hover:bg-gray-100 shadow transition duration-200 ease-in-out"
             onClick={handleReset}
+            disabled={isSubmitted}
           >
             Reset
           </button>
@@ -394,6 +409,7 @@ const MatchingPairsCard = ({
             className="flex justify-center p-2"
             onClick={() => {
               setOpenFeedback(true);
+              onFinishQuiz();
             }}
           >
             <button className="w-40 bg-green hover:bg-green-700text-white m-1 px-4 py-2 items-center border rounded-4xl">
@@ -406,8 +422,11 @@ const MatchingPairsCard = ({
         <QuizFeedbackPopup
           openFeedback={isOpenFeedback}
           onClose={handleCloseFeedback}
+          isSuccess={isSuccess}
           correctCount={correctAnswers.length}
           totalCount={mpQuestions.length * 4}
+          updateProgress={updateProgress}
+          setActiveQuestionIndex={setActiveQuestionIndex}
         />
       ) : null}
     </div>
