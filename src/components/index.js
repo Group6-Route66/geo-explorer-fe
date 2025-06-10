@@ -18,5 +18,6 @@ export { default as LoginScreen } from "./LoginScreen";
 export { default as RegisterScreen } from "./RegisterScreen";
 export { default as PickAvatarScreen } from "./PickAvatarScreen";
 export { default as QuizFeedbackPopup } from "./QuizFeedbackPopup";
+export { default as DarkModeButton } from "./DarkModeButton";
 
 export * from "./ui";
