@@ -3,7 +3,7 @@ import { patchUserScore } from "@/api";
 export const handleFinishQuiz = (
   isSuccess,
   category,
-    user,
+  user,
   setUser,
   correctAnswersList
 ) => {
@@ -16,8 +16,8 @@ export const handleFinishQuiz = (
 
     const quiz = user.quizz < 3 ? user.quizz + 1 : user.quizz;
 
-    const userLevelNature = user.level_nature;
-    const userLevelTerritory = user.level_territory;
+    let userLevelNature = user.level_nature;
+    let userLevelTerritory = user.level_territory;
 
     let levelProgression = {
       Beginner: "Intermediate",

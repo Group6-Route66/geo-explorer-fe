@@ -95,6 +95,17 @@ export const getMultichoiceQAs = (level, continent, category_id) => {
     });
 };
 
+export const getMapQAs = (level, continent, category_id) => {
+  return geoExplorerApi
+    .get(
+      `/map?level=${level}&continent=${continent}&category_id=${category_id}`
+    )
+    .then(({ data }) => {
+      return data.mapQuestions;
+    });
+};
+
+
 // getMatchingPairs(1, "asia", "Beginner").then((res) => {
 //   console.log(res, "matching pairs");
 // });

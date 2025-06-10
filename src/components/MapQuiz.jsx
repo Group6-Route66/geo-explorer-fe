@@ -3,13 +3,13 @@
 const { useEffect, useState } = require("react");
 import { useParams } from "next/navigation";
 
-import { getMultichoiceQAs } from "@/api";
+import { getMapQAs } from "@/api";
 import { useProgress, useUser } from "@/contexts";
-import MultiChoice from "./MultiChoice";
 import ProgressBar from "./ProgressBar";
+import Map from "./Map";
 
-const MultiChoiceQuiz = () => {
-  const [mcQuestions, setMcQuestions] = useState([]);
+const MapQuiz = () => {
+  const [mapQuestions, setMapQuestions] = useState([]);
   const [level, setLevel] = useState();
 
   const { user } = useUser();
@@ -34,25 +34,23 @@ const MultiChoiceQuiz = () => {
   useEffect(() => {
     if (!level || !continent || category === undefined) return;
 
-    getMultichoiceQAs(level, continent, category).then((result) => {
-      setMcQuestions(result);
+    getMapQAs(level, continent, category).then((result) => {
+      setMapQuestions(result);
       updateProgress({ totalQuestions: result.length });
     });
   }, [level, category, continent]);
 
-  const activeQuestion = mcQuestions[progress.currentQuestion - 1] || null; 
+  const activeQuestion = mapQuestions[progress.currentQuestion - 1] || null;
 
+    
   return (
     <>
       <ProgressBar />
       {activeQuestion ? (
-        <MultiChoice
-          mcQuestions={mcQuestions}
-          activeQuestion={activeQuestion}
-        />
+        <Map mapQuestions={mapQuestions} activeQuestion={activeQuestion} />
       ) : null}
     </>
   );
 };
 
-export default MultiChoiceQuiz;
+export default MapQuiz;

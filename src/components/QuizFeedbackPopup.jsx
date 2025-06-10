@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 
 import NextButton from "./NextButton";
+import { useProgress } from "@/contexts";
 
 const { PopUp } = require("./ui");
 
@@ -12,14 +13,15 @@ const QuizFeedbackPopup = ({
   isSuccess,
   correctCount,
   totalCount,
-  updateProgress,
-  setActiveQuestionIndex,
   setIsCorrectAnswer,
   onClose,
+  onResetQuiz,
 }) => {
   const { category, continent } = useParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  const { progress, updateProgress } = useProgress();
 
   const goToHomePage = () => {
     router.push("/");
@@ -30,6 +32,8 @@ const QuizFeedbackPopup = ({
       router.push(`/matchingPairs/${category}/${continent}`);
     } else if (pathname.includes("matchingPairs")) {
       router.push(`/map/${category}/${continent}`);
+    } else if (pathname.includes("map")) {
+      router.push("/");
     }
   };
 
@@ -67,7 +71,9 @@ const QuizFeedbackPopup = ({
               onClick={() => {
                 onClose();
                 goToNextPage();
-                updateProgress({ currentQuestion: 1 });
+                updateProgress({
+                  currentQuestion: progress.currentQuestion + 1,
+                });
               }}
             >
               <NextButton />
@@ -84,9 +90,11 @@ const QuizFeedbackPopup = ({
                 onClick={() => {
                   onClose();
                   tryAgainQuiz();
-                  updateProgress({ currentQuestion: 1 });
-                  setActiveQuestionIndex(0);
+                  updateProgress({
+                    currentQuestion: 1,
+                  });
                   setIsCorrectAnswer(null);
+                  onResetQuiz();
                 }}
                 className="px-6 py-2 bg-grey-500 text-green-600 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white"
               >
@@ -98,7 +106,8 @@ const QuizFeedbackPopup = ({
             onClick={() => {
               onClose();
               goToHomePage();
-              updateProgress({ currentQuestion: 1 });
+              updateProgress({ currentQuestion: progress.currentQuestion + 1 });
+              onResetQuiz();
             }}
             className="px-6 py-2 bg-green hover:bg-green-700 text-white rounded-3xl"
           >

@@ -6,16 +6,9 @@ import { useParams } from "next/navigation";
 import NextButton from "./NextButton";
 import { QuizFeedbackPopup } from ".";
 import { handleFinishQuiz } from "@/utils";
-import { useUser } from "@/contexts";
+import { useProgress, useUser } from "@/contexts";
 
-const MatchingPairsCard = ({
-  mpQuestions,
-  activeQuestion,
-  activeQuestionIndex,
-  setActiveQuestionIndex,
-  progress,
-  updateProgress,
-}) => {
+const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const colours = [
     "bg-sky-300 text-white",
     "bg-sky-300 text-white",
@@ -69,6 +62,8 @@ const MatchingPairsCard = ({
   const { user, setUser } = useUser();
 
   const { category } = useParams();
+
+  const { progress, updateProgress } = useProgress();
 
   function setCorrectAnswersArray(arr1, arr2) {
     let correctAnswersArray = [];
@@ -240,8 +235,6 @@ const MatchingPairsCard = ({
     handleReset();
     setIsSubmitted(false);
 
-    setActiveQuestionIndex((current) => current + 1);
-
     updateProgress({ currentQuestion: progress.currentQuestion + 1 });
   }
 
@@ -251,6 +244,10 @@ const MatchingPairsCard = ({
 
   const onFinishQuiz = () => {
     handleFinishQuiz(isSuccess, category, user, setUser, correctAnswers);
+  };
+
+  const resetCorrectAnswers = () => {
+    setCorrectAnswers([]);
   };
 
   useEffect(() => {
@@ -287,7 +284,7 @@ const MatchingPairsCard = ({
 
   return (
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
-      <h4 className="text-2xl font-bold">{activeQuestion.question_text}</h4>
+      <h4 className="text-2xl font-bold">{activeQuestion?.question_text}</h4>
       <div className="container mx-auto">
         {correctAnswers.length ? (
           <section className="grid grid-cols-2">
@@ -400,7 +397,7 @@ const MatchingPairsCard = ({
               Submit
             </button>
           </div>
-        ) : activeQuestionIndex < mpQuestions.length - 1 ? (
+        ) : progress.currentQuestion < progress.totalQuestions ? (
           <div className="flex justify-center p-2" onClick={handleNext}>
             <NextButton />
           </div>
@@ -427,6 +424,7 @@ const MatchingPairsCard = ({
           totalCount={mpQuestions.length * 4}
           updateProgress={updateProgress}
           setActiveQuestionIndex={setActiveQuestionIndex}
+          onResetQuiz={resetCorrectAnswers}
         />
       ) : null}
     </div>
