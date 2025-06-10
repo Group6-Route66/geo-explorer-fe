@@ -8,12 +8,7 @@ import { useProgress, useUser } from "@/contexts";
 import QuizFeedbackPopup from "./QuizFeedbackPopup";
 import { handleFinishQuiz } from "@/utils";
 
-const MultiChoice = ({
-  activeQuestion,
-  mcQuestions,
-  activeQuestionIndex,
-  setActiveQuestionIndex,
-}) => {
+const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
   const [correctAnswersList, setCorrectAnswersList] = useState([]);
   const [isOpenFeedback, setOpenFeedback] = useState(false);
@@ -61,6 +56,10 @@ const MultiChoice = ({
 
   const handleCloseFeedback = () => {
     setOpenFeedback(false);
+  };
+
+  const resetCorrectAnswers = () => {
+    setCorrectAnswersList([]);
   };
 
   useEffect(() => {
@@ -111,11 +110,10 @@ const MultiChoice = ({
           Not quite right. The correct answer is highlighted in green.
         </div>
       ) : null}
-      {activeQuestionIndex < mcQuestions.length - 1 ? (
+      {progress.currentQuestion < progress.totalQuestions ? (
         <div
           className="flex items-center justify-end"
           onClick={() => {
-            setActiveQuestionIndex((current) => current + 1);
             setIsCorrectAnswer(null);
             updateProgress({ currentQuestion: progress.currentQuestion + 1 });
           }}
@@ -124,7 +122,7 @@ const MultiChoice = ({
         </div>
       ) : null}
 
-      {activeQuestionIndex >= mcQuestions.length - 1 ? (
+      {progress.currentQuestion >= progress.totalQuestions ? (
         <div
           className="flex items-center justify-end"
           onClick={() => {
@@ -145,9 +143,8 @@ const MultiChoice = ({
           isSuccess={isSuccess}
           correctCount={correctAnswersList.length}
           totalCount={mcQuestions.length}
-          updateProgress={updateProgress}
-          setActiveQuestionIndex={setActiveQuestionIndex}
           setIsCorrectAnswer={setIsCorrectAnswer}
+          onResetQuiz={resetCorrectAnswers}
         />
       ) : null}
     </div>

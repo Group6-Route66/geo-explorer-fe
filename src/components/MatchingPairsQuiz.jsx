@@ -10,8 +10,7 @@ import ProgressBar from "./ProgressBar";
 
 const MatchingPairsQuiz = () => {
   const [mpQuestions, setMpQuestions] = useState([]);
-  const [activeQuestion, setActiveQuestion] = useState({});
-  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+
   const { level, setLevel } = useFilter();
 
   const { category, continent } = useParams();
@@ -20,8 +19,11 @@ const MatchingPairsQuiz = () => {
 
   const { user } = useUser();
 
+
   useEffect(() => {
     if (!user) return;
+
+    updateProgress({ currentQuestion: 1, totalQuestions: 0 });
 
     if (category === 1) {
       setLevel(user.level_nature);
@@ -36,18 +38,15 @@ const MatchingPairsQuiz = () => {
     if (!level || !continent || category === undefined) return;
     getMatchingPairs(category, continent, level).then((result) => {
       setMpQuestions(result);
+      updateProgress({ totalQuestions: result.length });
     });
   }, [category, continent, level]);
 
   useEffect(() => {
-    if (mpQuestions.length > 0) {
-      setActiveQuestion(mpQuestions[activeQuestionIndex]);
-    }
-  }, [activeQuestionIndex, mpQuestions]);
-
-  useEffect(() => {
     updateProgress({ totalQuestions: mpQuestions.length });
   }, [mpQuestions]);
+
+  const activeQuestion = mpQuestions[progress.currentQuestion - 1] || null;
 
   return (
     <>
@@ -55,10 +54,6 @@ const MatchingPairsQuiz = () => {
       <MatchingPairsCard
         mpQuestions={mpQuestions}
         activeQuestion={activeQuestion}
-        activeQuestionIndex={activeQuestionIndex}
-        setActiveQuestionIndex={setActiveQuestionIndex}
-        progress={progress}
-        updateProgress={updateProgress}
       />
     </>
   );
