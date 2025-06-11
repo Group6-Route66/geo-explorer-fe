@@ -76,25 +76,33 @@ const Map = ({ activeQuestion, mapQuestions }) => {
   }, [activeQuestion]);
 
   return (
-    <div className="flex flex-col justify-center items-center mt-8 p-4 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
-      <div className="w-full flex flex-col sm:flex-row justify-between items-center mb-6 px-4">
-        <p className=" text-2xl font-bold  text-center sm:text-left mb-4 sm:mb-0">
+    <div className="flex flex-col justify-center items-center mt-4 bg-white max-w-4xl mx-auto dark:bg-gray-800">
+      <div className="w-full flex flex-col sm:flex-row justify-between items-center mb-5 ">
+        <p className=" text-xl sm:text-xl font-semibold text-gray-900 content-justify:start dark:text-white sm:text-left">
           {activeQuestion ? activeQuestion.instruction : null}
         </p>
-        {isCorrectAnswer ? (
-          <p className="text-green-300 text-green-600 ">Correct!</p>
-        ) : country && answer ? (
-          <p className="text-red-800 text-red-600 ">Not correct!</p>
-        ) : null}
+        <div>
+          {isCorrectAnswer ? (
+            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-green text-green font-medium ">
+              Correct!
+            </p>
+          ) : country && answer ? (
+            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 bg-red text-white font-medium">
+              Not correct!
+            </p>
+          ) : null}
+        </div>
       </div>
 
-      <div className="flex w-full">
-        <div className="flex items-center m-auto gap-4">
-          <p>{country}</p>
+      <div className="flex w-full mb-6">
+        <div className="flex-1 flex items-center justify-center sm:justify-start gap-4">
+          <div className="px-8 py-1 text-gray-800 border-2 border-green dark:text-white font-medium">
+            <p>{country || "No country selected"}</p>
+          </div>
           {country ? (
             <button
               disabled={answer}
-              className="bg-green rounded-4xl p-2 text-white font-bold disabled:bg-gray-100 disabled:cursor-not-allowed"
+              className="bg-green rounded-4xl p-2 text-white font-bold px-8 disabled:bg-gray-100 disabled:cursor-not-allowed"
               onClick={handleAnswer}
             >
               Confirm
@@ -123,7 +131,7 @@ const Map = ({ activeQuestion, mapQuestions }) => {
               onFinishQuiz();
             }}
           >
-            <button className="w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
+            <button className="w-40 bg-grey-900 border rounded-3xl p-2 text-green font-bold hover:bg-green hover:text-white">
               Finish
             </button>
           </div>
