@@ -1,62 +1,64 @@
+// src/components/Footer.jsx
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { QuizIcon, LearnIcon, LeaderboardIcon, UserIcon } from "@/assets";
-import { useFilter } from "@/contexts";
+import { useFilter } from "@/contexts/FilterContext";
 
-const Footer = () => {
+export default function Footer() {
   const pathname = usePathname();
-
   const { continent } = useFilter();
 
-  // to define if it's active
-  const isActive = (path) => pathname === path;
+  // returns true if the link's path matches the current pathname
+  const isActive = (path) => {
+    // special case: /learn should match /learn/<continent>
+    if (path === "/learn") {
+      return pathname?.startsWith("/learn");
+    }
+    return pathname === path;
+  };
 
-  // active button
+  // shared classes for each <Link>
   const linkClass = (path) =>
-    `flex flex-col items-center transition-colors duration-300 ${
+    [
+      "flex flex-col items-center transition-colors duration-300",
       isActive(path)
         ? "text-[var(--color-green)] font-bold"
-        : "text-gray-600 hover:text-[var(--color-green)]"
-    }`;
+        : "text-gray-600 hover:text-[var(--color-green)] dark:text-gray-400 dark:hover:text-[var(--color-green)]",
+    ].join(" ");
 
   return (
-    <footer className="container sticky bottom-0 z-10 bg-white mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm dark:bg-gray-800">
+    <footer
+      className="
+        container
+        sticky bottom-0 z-10
+        bg-white dark:bg-gray-800
+        mx-auto px-4 lg:max-w-5xl
+        flex justify-between items-center
+        p-4 shadow-md rounded-sm
+        transition-colors duration-300
+      "
+    >
       <Link href="/" className={linkClass("/")}>
-        <QuizIcon
-          className={isActive("/") ? "text-[var(--color-green)]" : ""}
-        />
+        <QuizIcon className="fill-current" />
         <span className="text-xs mt-1">Take a quiz</span>
       </Link>
 
       <Link href={`/learn/${continent}`} className={linkClass("/learn")}>
-        <LearnIcon
-          className={
-            isActive(`/learn/${continent}`) ? "text-[var(--color-green)]" : ""
-          }
-        />
+        <LearnIcon className="fill-current" />
         <span className="text-xs mt-1">Learn</span>
       </Link>
 
       <Link href="/leaderboard" className={linkClass("/leaderboard")}>
-        <LeaderboardIcon
-          className={
-            isActive("/leaderboard") ? "text-[var(--color-green)]" : ""
-          }
-        />
+        <LeaderboardIcon className="fill-current" />
         <span className="text-xs mt-1">Leaderboard</span>
       </Link>
 
       <Link href="/profile" className={linkClass("/profile")}>
-        <UserIcon
-          className={isActive("/profile") ? "text-[var(--color-green)]" : ""}
-        />
+        <UserIcon className="fill-current" />
         <span className="text-xs mt-1">Profile</span>
       </Link>
     </footer>
   );
-};
-
-export default Footer;
+}
