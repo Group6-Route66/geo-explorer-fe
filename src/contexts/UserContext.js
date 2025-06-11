@@ -25,6 +25,7 @@ export const UserContextProvider = ({ children }) => {
     }
   }, [user]);
 
+  
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}
