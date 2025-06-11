@@ -19,7 +19,7 @@ const LearningCard = forwardRef(({ card }, ref) => {
   const frontBgStyle = {
     backgroundImage: `linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.36) 99.99%,
+      rgba(0, 0, 0, 0.30) 99.99%,
       rgba(0, 0, 0, 0.00) 100%,
       rgba(0, 0, 0, 0.10) 100%,
       rgba(0, 0, 0, 0.00) 100%
@@ -35,7 +35,7 @@ const LearningCard = forwardRef(({ card }, ref) => {
   const backBgStyle = {
     backgroundImage: `linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.54) 99.99%,
+      rgba(0, 0, 0, 0.65) 99.99%,
       rgba(0, 0, 0, 0.00) 100%,
       rgba(0, 0, 0, 0.10) 100%,
       rgba(0, 0, 0, 0.00) 100%
@@ -50,7 +50,7 @@ const LearningCard = forwardRef(({ card }, ref) => {
   return (
     <div
       ref={ref}
-      className={`relative w-full h-60 ${styles.perspective} border-[var(--color-green)] cursor-pointer  bg-[var(--color-green)] rounded-lg shadow`}
+      className={`relative w-full aspect-[3/2] ${styles.perspective} border-[var(--color-green)] cursor-pointer  bg-[var(--color-green)] rounded-lg shadow`}
       onClick={() => setFlipped(!flipped)}
     >
       <div

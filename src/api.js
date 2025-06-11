@@ -44,6 +44,29 @@ export const patchUserAvatar = (username, avatar_url) => {
     });
 };
 
+export const patchUserScore = (
+  username,
+  score,
+  correctedAnswers,
+  userNatureQuiz,
+  userTerritoryQuiz,
+  userLevelNature,
+  userLevelTerritory
+) => {
+  return geoExplorerApi
+    .patch(`/users/${username}`, {
+      rating: score,
+      correct_answers: correctedAnswers,
+      nature_quiz: userNatureQuiz,
+      territory_quiz: userTerritoryQuiz,
+      level_nature: userLevelNature,
+      level_territory: userLevelTerritory,
+    })
+    .then(({ data }) => {
+      return data.user;
+    });
+};
+
 export const getLearningCards = (continent, sub_category_id, page = 1) => {
   return geoExplorerApi
     .get(
@@ -71,6 +94,16 @@ export const getMultichoiceQAs = (level, continent, category_id) => {
     )
     .then(({ data }) => {
       return data.multichoice_qa;
+    });
+};
+
+export const getMapQAs = (level, continent, category_id) => {
+  return geoExplorerApi
+    .get(
+      `/map?level=${level}&continent=${continent}&category_id=${category_id}`
+    )
+    .then(({ data }) => {
+      return data.mapQuestions;
     });
 };
 

@@ -15,11 +15,12 @@ export const FilterProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(1);
   const [subCategories, setSubCategories] = useState([]);
+  const [level, setLevel] = useState("Beginner");
+  const [quiz, setQuiz] = useState(1);
 
   useEffect(() => {
     getCategories()
       .then((categories) => {
-        console.log("Fetched categories:", categories);
         setCategories(categories);
         if (categories.length > 0) setActiveCategory(categories[0].category_id);
       })
@@ -30,7 +31,6 @@ export const FilterProvider = ({ children }) => {
 
     getSubCategories()
       .then((subs) => {
-        console.log("Fetched subCategories:", subs);
         const formattedSubs = subs.map((s) => ({
           id: s.sub_category_id,
           label: s.sub_category_name,
@@ -42,6 +42,7 @@ export const FilterProvider = ({ children }) => {
         setSubCategories([]);
       });
   }, []);
+
   return (
     <FilterContext.Provider
       value={{
@@ -61,6 +62,10 @@ export const FilterProvider = ({ children }) => {
         activeCategory,
         setActiveCategory,
         subCategories,
+        level,
+        setLevel,
+        quiz,
+        setQuiz,
       }}
     >
       {children}

@@ -1,21 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import NextButton from "./NextButton";
-import { useProgress } from "@/contexts";
-import QuizFeedbackPopup from "./QuizFeedbackPopup";
+import { act, useEffect, useState } from "react";
+import { useParams, usePathname } from "next/navigation";
 
-const MultiChoice = ({
-  activeQuestion,
-  mcQuestions,
-  activeQuestionIndex,
-  setActiveQuestionIndex,
-}) => {
+import NextButton from "./NextButton";
+import { useProgress, useUser } from "@/contexts";
+import QuizFeedbackPopup from "./QuizFeedbackPopup";
+import { handleFinishQuiz } from "@/utils";
+
+const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
   const [correctAnswersList, setCorrectAnswersList] = useState([]);
   const [isOpenFeedback, setOpenFeedback] = useState(false);
+  const [correctQuestions, setCorrectQuestions] = useState([]);
 
   const { progress, updateProgress } = useProgress();
+
+  const { user, setUser } = useUser();
+
+  const { category } = useParams();
+
+  const pathname = usePathname();
+
+  const pathParts = pathname.split("/").filter(Boolean);
+  const quizType = pathParts[0] || "";
+
+  
 
   const levelColors = {
     Beginner: {
@@ -31,23 +41,36 @@ const MultiChoice = ({
       correct: "bg-red-600",
     },
   };
-
-  function handleAnswer(e) {
-    if (e.target.value === activeQuestion.correct_answer) {
-      setIsCorrectAnswer(true);
-      setCorrectAnswersList((currentList) => [...currentList, e.target.value]);
-    } else {
-      setIsCorrectAnswer(false);
-    }
-  }
-
   const colorClasses =
     levelColors[activeQuestion?.level] || levelColors.Beginner;
 
   const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(",");
 
+  const successRate = correctAnswersList.length / mcQuestions.length;
+  const isSuccess = successRate >= 0.8;
+
+  function handleAnswer(e) {
+    if (e.target.value === activeQuestion.correct_answer) {
+      setIsCorrectAnswer(true);
+      setCorrectAnswersList((currentList) => [...currentList, e.target.value]);
+      setCorrectQuestions((currentList) => {
+        return [...currentList, activeQuestion.question_text];
+      });
+    } else {
+      setIsCorrectAnswer(false);
+    }
+  }
+
+  const onFinishQuiz = () => {
+    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswersList, quizType);
+  };
+
   const handleCloseFeedback = () => {
     setOpenFeedback(false);
+  };
+
+  const resetCorrectAnswers = () => {
+    setCorrectAnswersList([]);
   };
 
   useEffect(() => {
@@ -98,11 +121,10 @@ const MultiChoice = ({
           Not quite right. The correct answer is highlighted in green.
         </div>
       ) : null}
-      {activeQuestionIndex < mcQuestions.length - 1 ? (
+      {progress.currentQuestion < progress.totalQuestions ? (
         <div
           className="flex items-center justify-end"
           onClick={() => {
-            setActiveQuestionIndex((current) => current + 1);
             setIsCorrectAnswer(null);
             updateProgress({ currentQuestion: progress.currentQuestion + 1 });
           }}
@@ -111,11 +133,12 @@ const MultiChoice = ({
         </div>
       ) : null}
 
-      {activeQuestionIndex >= mcQuestions.length - 1 ? (
+      {progress.currentQuestion >= progress.totalQuestions ? (
         <div
           className="flex items-center justify-end"
           onClick={() => {
             setOpenFeedback(true);
+            onFinishQuiz();
           }}
         >
           <button className="w-40 bg-grey-500 border rounded-3xl p-2 text-green-600 font-bold hover:bg-green hover:text-white">
@@ -128,8 +151,11 @@ const MultiChoice = ({
         <QuizFeedbackPopup
           openFeedback={isOpenFeedback}
           onClose={handleCloseFeedback}
+          isSuccess={isSuccess}
           correctCount={correctAnswersList.length}
           totalCount={mcQuestions.length}
+          setIsCorrectAnswer={setIsCorrectAnswer}
+          onResetQuiz={resetCorrectAnswers}
         />
       ) : null}
     </div>

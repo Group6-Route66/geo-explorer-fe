@@ -13,7 +13,7 @@ const UsersRanking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { 
     setIsLoading(true);
     setError(false);
     getUsers()
@@ -45,14 +45,14 @@ const UsersRanking = () => {
   }
 
   return (
-    <div className="flex flex-col items-center pt-12 pb-12">
+    <div className="w-full flex flex-col items-center justify-center pt-12 pb-12">
       <h1 className="text-2xl font-bold mb-6">🏆 Leaderboard</h1>
       <div className="w-full flex flex-col gap-4 justify-center items-center">
         {users.map((individualUser, index) => (
           <div
             key={index}
             className={`${
-              individualUser.username === user.username
+              individualUser.username === user?.username
                 ? "border-4 border-green scale-110"
                 : ""
             } flex items-center justify-between gap-4 p-4 border border-gray-200 rounded-lg shadow-md w-full max-w-md`}

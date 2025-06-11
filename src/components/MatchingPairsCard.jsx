@@ -1,17 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams, usePathname } from "next/navigation";
+
 import NextButton from "./NextButton";
 import { QuizFeedbackPopup } from ".";
+import { handleFinishQuiz, randomize } from "@/utils";
+import { useProgress, useUser } from "@/contexts";
 
-const MatchingPairsCard = ({
-  mpQuestions,
-  activeQuestion,
-  activeQuestionIndex,
-  setActiveQuestionIndex,
-  progress,
-  updateProgress,
-}) => {
+const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const colours = [
     "bg-sky-300 text-white",
     "bg-sky-300 text-white",
@@ -61,6 +58,18 @@ const MatchingPairsCard = ({
   const [correctStyle, setCorrectStyle] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isOpenFeedback, setOpenFeedback] = useState(false);
+  const [correctQuestions, setCorrectQuestions] = useState([]);
+
+  const { user, setUser } = useUser();
+
+  const { category } = useParams();
+
+  const { progress, updateProgress } = useProgress();
+
+  const pathname = usePathname();
+
+  const pathParts = pathname.split("/").filter(Boolean);
+  const quizType = pathParts[0] || "";
 
   function setCorrectAnswersArray(arr1, arr2) {
     let correctAnswersArray = [];
@@ -71,26 +80,12 @@ const MatchingPairsCard = ({
     return correctAnswersArray;
   }
 
-  function randomize(items) {
-    function getRandomInt(num) {
-      return Math.floor(Math.random() * num);
-    }
-    const randomArray = [];
-    while (randomArray.length < items.length) {
-      const index = getRandomInt(items.length);
-      if (!randomArray.includes(index)) {
-        randomArray.push(index);
-      }
-    }
-    return randomArray.map((index) => items[index]);
-  }
+  const [randomLeftButtons, setRandomLeftButtons] = useState([]);
 
-  const [randomLeftButtons, setRandomLeftButtons] = useState(
-    randomize(leftButtons)
-  );
-  const [randomRightButtons, setRandomRightButtons] = useState(
-    randomize(rightButtons)
-  );
+  const [randomRightButtons, setRandomRightButtons] = useState([]);
+
+  const successRate = correctQuestions.length / mpQuestions.length;
+  const isSuccess = successRate >= 0.8;
 
   function isOdd(number) {
     return number % 2 === 0 ? false : true;
@@ -214,6 +209,13 @@ const MatchingPairsCard = ({
       }
     }
 
+    if (isCorrectAnswer) {
+      setCorrectQuestions((current) => [
+        ...current,
+        activeQuestion.question_text,
+      ]);
+    }
+
     setStyleLeftButton1((prev) => `${prev} ${leftStyles[0]}`);
     setStyleLeftButton2((prev) => `${prev} ${leftStyles[1]}`);
     setStyleLeftButton3((prev) => `${prev} ${leftStyles[2]}`);
@@ -228,9 +230,6 @@ const MatchingPairsCard = ({
   function handleNext() {
     handleReset();
     setIsSubmitted(false);
-
-    setActiveQuestionIndex((current) => current + 1);
-
     updateProgress({ currentQuestion: progress.currentQuestion + 1 });
   }
 
@@ -238,6 +237,18 @@ const MatchingPairsCard = ({
     setOpenFeedback(false);
   };
 
+  const onFinishQuiz = () => {
+    handleFinishQuiz(
+      isSuccess,
+      category,
+      user,
+      setUser,
+      correctQuestions,
+      quizType
+    );
+  };
+  console.log(correctQuestions);
+  
 
   useEffect(() => {
     setStyleLeftButton1(initialStyle);
@@ -254,7 +265,7 @@ const MatchingPairsCard = ({
   }, []);
 
   useEffect(() => {
-    if (activeQuestion?.answers?.length) {
+    if (activeQuestion?.answers?.length === 4) {
       const lefts = activeQuestion.answers.map((answer) => answer.left_text);
       const rights = activeQuestion.answers.map((answer) => answer.right_text);
 
@@ -266,104 +277,108 @@ const MatchingPairsCard = ({
   useEffect(() => {
     if (leftButtons.length && rightButtons.length) {
       setCorrectAnswers(setCorrectAnswersArray(leftButtons, rightButtons));
-      setRandomLeftButtons(randomize(leftButtons));
-      setRandomRightButtons(randomize(rightButtons));
+      setRandomLeftButtons(randomize(leftButtons, 4));
+      setRandomRightButtons(randomize(rightButtons, 4));
     }
   }, [leftButtons, rightButtons]);
 
   return (
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
-      <h4 className="text-2xl font-bold">{activeQuestion.question_text}</h4>
+      <h4 className="text-2xl font-bold">{activeQuestion?.question_text}</h4>
       <div className="container mx-auto">
         {correctAnswers.length ? (
           <section className="grid grid-cols-2">
             <div className="flex flex-col place-items-end p-4">
-              <ul className="w-full h-full flex flex-col items-stretch justify-between">
-                <li>
-                  <button
-                    name="left1"
-                    value={randomLeftButtons[0]}
-                    onClick={handleClickButton}
-                    className={`${styleLeftButton1} ${correctStyle}`}
-                  >
-                    {randomLeftButtons[0]}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    name="left2"
-                    value={randomLeftButtons[1]}
-                    onClick={handleClickButton}
-                    className={`${styleLeftButton2} ${correctStyle}`}
-                  >
-                    {randomLeftButtons[1]}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    name="left3"
-                    value={randomLeftButtons[2]}
-                    onClick={handleClickButton}
-                    className={`${styleLeftButton3} ${correctStyle}`}
-                  >
-                    {randomLeftButtons[2]}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    name="left4"
-                    value={randomLeftButtons[3]}
-                    onClick={handleClickButton}
-                    className={`${styleLeftButton4} ${correctStyle}`}
-                  >
-                    {randomLeftButtons[3]}
-                  </button>
-                </li>
-              </ul>
+              {randomLeftButtons && randomLeftButtons.length === 4 ? (
+                <ul className="w-full h-full flex flex-col items-stretch justify-between">
+                  <li>
+                    <button
+                      name="left1"
+                      value={randomLeftButtons[0]}
+                      onClick={handleClickButton}
+                      className={`${styleLeftButton1} ${correctStyle}`}
+                    >
+                      {randomLeftButtons[0]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      name="left2"
+                      value={randomLeftButtons[1]}
+                      onClick={handleClickButton}
+                      className={`${styleLeftButton2} ${correctStyle}`}
+                    >
+                      {randomLeftButtons[1]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      name="left3"
+                      value={randomLeftButtons[2]}
+                      onClick={handleClickButton}
+                      className={`${styleLeftButton3} ${correctStyle}`}
+                    >
+                      {randomLeftButtons[2]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      name="left4"
+                      value={randomLeftButtons[3]}
+                      onClick={handleClickButton}
+                      className={`${styleLeftButton4} ${correctStyle}`}
+                    >
+                      {randomLeftButtons[3]}
+                    </button>
+                  </li>
+                </ul>
+              ) : null}
             </div>
             <div className="flex flex-col place-items-start p-4">
-              <ul className="w-full h-full flex flex-col items-stretch justify-between">
-                <li>
-                  <button
-                    name="right1"
-                    value={randomRightButtons[0]}
-                    onClick={handleClickButton}
-                    className={styleRightButton1}
-                  >
-                    {randomRightButtons[0]}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    name="right2"
-                    value={randomRightButtons[1]}
-                    onClick={handleClickButton}
-                    className={styleRightButton2}
-                  >
-                    {randomRightButtons[1]}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    name="right3"
-                    value={randomRightButtons[2]}
-                    onClick={handleClickButton}
-                    className={styleRightButton3}
-                  >
-                    {randomRightButtons[2]}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    name="right4"
-                    value={randomRightButtons[3]}
-                    onClick={handleClickButton}
-                    className={styleRightButton4}
-                  >
-                    {randomRightButtons[3]}
-                  </button>
-                </li>
-              </ul>
+              {randomRightButtons && randomRightButtons.length === 4 ? (
+                <ul className="w-full h-full flex flex-col items-stretch justify-between">
+                  <li>
+                    <button
+                      name="right1"
+                      value={randomRightButtons[0]}
+                      onClick={handleClickButton}
+                      className={styleRightButton1}
+                    >
+                      {randomRightButtons[0]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      name="right2"
+                      value={randomRightButtons[1]}
+                      onClick={handleClickButton}
+                      className={styleRightButton2}
+                    >
+                      {randomRightButtons[1]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      name="right3"
+                      value={randomRightButtons[2]}
+                      onClick={handleClickButton}
+                      className={styleRightButton3}
+                    >
+                      {randomRightButtons[2]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      name="right4"
+                      value={randomRightButtons[3]}
+                      onClick={handleClickButton}
+                      className={styleRightButton4}
+                    >
+                      {randomRightButtons[3]}
+                    </button>
+                  </li>
+                </ul>
+              ) : null}
             </div>
           </section>
         ) : null}
@@ -371,6 +386,7 @@ const MatchingPairsCard = ({
           <button
             className="w-40 px-5 py-2 rounded-2xl border border-gray-300 text-black bg-white hover:bg-gray-100 shadow transition duration-200 ease-in-out"
             onClick={handleReset}
+            disabled={isSubmitted}
           >
             Reset
           </button>
@@ -382,10 +398,10 @@ const MatchingPairsCard = ({
               onClick={handleSubmit}
               disabled={finalAnswer.length < 4}
             >
-              Submit
+              Confirm
             </button>
           </div>
-        ) : activeQuestionIndex < mpQuestions.length - 1 ? (
+        ) : progress.currentQuestion < progress.totalQuestions ? (
           <div className="flex justify-center p-2" onClick={handleNext}>
             <NextButton />
           </div>
@@ -394,6 +410,7 @@ const MatchingPairsCard = ({
             className="flex justify-center p-2"
             onClick={() => {
               setOpenFeedback(true);
+              onFinishQuiz();
             }}
           >
             <button className="w-40 bg-green hover:bg-green-700text-white m-1 px-4 py-2 items-center border rounded-4xl">
@@ -406,8 +423,11 @@ const MatchingPairsCard = ({
         <QuizFeedbackPopup
           openFeedback={isOpenFeedback}
           onClose={handleCloseFeedback}
-          correctCount={correctAnswers.length}
-          totalCount={mpQuestions.length * 4}
+          isSuccess={isSuccess}
+          correctCount={correctQuestions.length}
+          totalCount={mpQuestions.length}
+          onResetQuiz={handleReset}
+          setIsCorrectAnswer={setCorrectQuestions}
         />
       ) : null}
     </div>

@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { useProgress } from "@/contexts";
+import { useFilter, useProgress } from "@/contexts";
 
 const ProgressBar = () => {
-  const { progress} = useProgress();
-  const { level, currentQuestion, totalQuestions, quizz } = progress;
+  const { progress } = useProgress();
+  const { currentQuestion, totalQuestions } = progress;
+  const { level } = useFilter();
 
   const percent = Math.min(
     Math.max((currentQuestion / totalQuestions) * 100, 0),

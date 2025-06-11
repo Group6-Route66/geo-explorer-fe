@@ -3,22 +3,20 @@
 const { useEffect, useState } = require("react");
 import { useParams } from "next/navigation";
 
-import { getMultichoiceQAs } from "@/api";
-import { useFilter, useProgress, useUser } from "@/contexts";
-import MultiChoice from "./MultiChoice";
+import { getMapQAs } from "@/api";
+import { useProgress, useUser } from "@/contexts";
 import ProgressBar from "./ProgressBar";
+import Map from "./Map";
 import { randomize } from "@/utils";
 
-const MultiChoiceQuiz = () => {
-  const [mcQuestions, setMcQuestions] = useState([]);
+const MapQuiz = () => {
+  const [mapQuestions, setMapQuestions] = useState([]);
+  const [level, setLevel] = useState();
 
   const { user } = useUser();
   const { progress, updateProgress } = useProgress();
 
   const { category, continent } = useParams();
-
-  const { level, setLevel } = useFilter();
-
 
   useEffect(() => {
     if (!user) return;
@@ -37,30 +35,23 @@ const MultiChoiceQuiz = () => {
   useEffect(() => {
     if (!level || !continent || category === undefined) return;
 
-    getMultichoiceQAs(level, continent, category).then((result) => {
-      setMcQuestions(randomize(result, 10));
-      updateProgress({ totalQuestions: mcQuestions.length });
+    getMapQAs(level, continent, category).then((result) => {
+      setMapQuestions(randomize(result, 5));
+      updateProgress({ totalQuestions: mapQuestions.length });
     });
   }, [level, category, continent]);
 
+  const activeQuestion = mapQuestions[progress.currentQuestion - 1] || null;
 
-  const activeQuestion = mcQuestions[progress.currentQuestion - 1] || null; 
-   console.log(mcQuestions, "<---mpQuestions");
-  console.log(mcQuestions.length, "<---mpQuestions.length");
-  console.log(activeQuestion, "<---activeQuestion");
-
-
+    
   return (
     <>
       <ProgressBar />
       {activeQuestion ? (
-        <MultiChoice
-          mcQuestions={mcQuestions}
-          activeQuestion={activeQuestion}
-        />
+        <Map mapQuestions={mapQuestions} activeQuestion={activeQuestion} />
       ) : null}
     </>
   );
 };
 
-export default MultiChoiceQuiz;
+export default MapQuiz;

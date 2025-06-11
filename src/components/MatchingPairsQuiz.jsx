@@ -5,14 +5,16 @@ import { useParams } from "next/navigation";
 
 import { getMatchingPairs } from "@/api";
 import MatchingPairsCard from "./MatchingPairsCard";
-import { useProgress, useUser } from "@/contexts";
+import { useFilter, useProgress, useUser } from "@/contexts";
 import ProgressBar from "./ProgressBar";
+import { randomize } from "@/utils";
+import { CustomLoading } from ".";
 
 const MatchingPairsQuiz = () => {
   const [mpQuestions, setMpQuestions] = useState([]);
-  const [activeQuestion, setActiveQuestion] = useState({});
-  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
-  const [level, setLevel] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const { level, setLevel } = useFilter();
 
   const { category, continent } = useParams();
 
@@ -22,6 +24,8 @@ const MatchingPairsQuiz = () => {
 
   useEffect(() => {
     if (!user) return;
+
+    updateProgress({ currentQuestion: 1, totalQuestions: 0 });
 
     if (category === 1) {
       setLevel(user.level_nature);
@@ -34,32 +38,34 @@ const MatchingPairsQuiz = () => {
 
   useEffect(() => {
     if (!level || !continent || category === undefined) return;
+    setLoading(true);
     getMatchingPairs(category, continent, level).then((result) => {
-      setMpQuestions(result);
+      const randomized = randomize(result, 3);
+      setMpQuestions(randomized);
+      updateProgress({ totalQuestions: randomized.length });
+      setLoading(false);
     });
   }, [category, continent, level]);
-
-  useEffect(() => {
-    if (mpQuestions.length > 0) {
-      setActiveQuestion(mpQuestions[activeQuestionIndex]);
-    }
-  }, [activeQuestionIndex, mpQuestions]);
 
   useEffect(() => {
     updateProgress({ totalQuestions: mpQuestions.length });
   }, [mpQuestions]);
 
+  const activeQuestion = mpQuestions[progress.currentQuestion - 1] || null;
+
   return (
     <>
-      <ProgressBar />
-      <MatchingPairsCard
-        mpQuestions={mpQuestions}
-        activeQuestion={activeQuestion}
-        activeQuestionIndex={activeQuestionIndex}
-        setActiveQuestionIndex={setActiveQuestionIndex}
-        progress={progress}
-        updateProgress={updateProgress}
-      />
+      {loading || !activeQuestion ? (
+        <CustomLoading />
+      ) : (
+        <>
+          <ProgressBar />
+          <MatchingPairsCard
+            mpQuestions={mpQuestions}
+            activeQuestion={activeQuestion}
+          />
+        </>
+      )}
     </>
   );
 };
