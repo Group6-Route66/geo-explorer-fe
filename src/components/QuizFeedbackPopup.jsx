@@ -16,6 +16,7 @@ const QuizFeedbackPopup = ({
   setIsCorrectAnswer,
   onClose,
   onResetQuiz,
+  setCorrectQuestions,
 }) => {
   const { category, continent } = useParams();
   const router = useRouter();
@@ -94,6 +95,7 @@ const QuizFeedbackPopup = ({
                     currentQuestion: 1,
                   });
                   setIsCorrectAnswer ? setIsCorrectAnswer(null) : null;
+                  setCorrectQuestions ? setCorrectQuestions([]) : null;
                   onResetQuiz();
                 }}
                 className="px-6 py-2 bg-grey-500 text-green-600 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white"

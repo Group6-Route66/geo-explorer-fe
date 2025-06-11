@@ -55,9 +55,7 @@ const MatchingPairsQuiz = () => {
 
   return (
     <>
-      {loading || !activeQuestion ? (
-        <CustomLoading />
-      ) : (
+      {!loading && activeQuestion ? (
         <>
           <ProgressBar />
           <MatchingPairsCard
@@ -65,6 +63,8 @@ const MatchingPairsQuiz = () => {
             activeQuestion={activeQuestion}
           />
         </>
+      ) : (
+        <CustomLoading />
       )}
     </>
   );
