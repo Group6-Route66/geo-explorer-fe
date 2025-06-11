@@ -87,6 +87,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const successRate = correctQuestions.length / mpQuestions.length;
   const isSuccess = successRate >= 0.8;
 
+  
   function isOdd(number) {
     return number % 2 === 0 ? false : true;
   }
@@ -177,6 +178,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     setCounterColour(0);
     setCurrentAnswer("");
     setFinalAnswer([]);
+    setIsSubmitted(false);
   }
 
   function handleSubmit() {
@@ -247,8 +249,6 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
       quizType
     );
   };
-  console.log(correctQuestions);
-  
 
   useEffect(() => {
     setStyleLeftButton1(initialStyle);
@@ -286,7 +286,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
       <h4 className="text-2xl font-bold">{activeQuestion?.question_text}</h4>
       <div className="container mx-auto">
-        {correctAnswers.length ? (
+
           <section className="grid grid-cols-2">
             <div className="flex flex-col place-items-end p-4">
               {randomLeftButtons && randomLeftButtons.length === 4 ? (
@@ -381,7 +381,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
               ) : null}
             </div>
           </section>
-        ) : null}
+
         <div className="flex justify-center p-2">
           <button
             className="w-40 px-5 py-2 rounded-2xl border border-gray-300 text-black bg-white hover:bg-gray-100 shadow transition duration-200 ease-in-out"
@@ -427,7 +427,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
           correctCount={correctQuestions.length}
           totalCount={mpQuestions.length}
           onResetQuiz={handleReset}
-          setIsCorrectAnswer={setCorrectQuestions}
+          setCorrectQuestions={setCorrectQuestions}
         />
       ) : null}
     </div>
