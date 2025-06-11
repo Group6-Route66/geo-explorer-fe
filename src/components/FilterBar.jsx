@@ -78,7 +78,7 @@ export default function FilterBar({
           )}
         </div>
 
-        {/* Category button group */}
+        {/* Category button group*/}
         {showCategories && (
           <Categories
             categories={categories}
@@ -96,7 +96,7 @@ export default function FilterBar({
                 onClick={() => setSubCategoryId(id)}
                 className={`pb-2 border-b-4 mr-1 ml-1 ${
                   subCategoryId === id
-                    ? "border-green w-100 font-bold text-color-green"
+                    ? "border-green text-green w-100 font-bold text-color-green"
                     : "border-gray-900 w-100 text-gray-900 hover:text-color-green"
                 }`}
                 type="button"
