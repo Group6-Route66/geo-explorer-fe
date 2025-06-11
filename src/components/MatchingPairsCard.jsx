@@ -230,6 +230,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     setStyleRightButton3((prev) => `${prev} ${rightStyles[2]}`);
     setStyleRightButton4((prev) => `${prev} ${rightStyles[3]}`);
   }
+  
 
   function handleNext() {
     handleReset();
@@ -394,7 +395,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
               onClick={handleSubmit}
               disabled={finalAnswer.length < 4}
             >
-              Submit
+              Confirm
             </button>
           </div>
         ) : progress.currentQuestion < progress.totalQuestions ? (
@@ -423,7 +424,6 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
           correctCount={correctAnswers.length}
           totalCount={mpQuestions.length * 4}
           updateProgress={updateProgress}
-          setActiveQuestionIndex={setActiveQuestionIndex}
           onResetQuiz={resetCorrectAnswers}
         />
       ) : null}

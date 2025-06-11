@@ -4,18 +4,20 @@ const { useEffect, useState } = require("react");
 import { useParams } from "next/navigation";
 
 import { getMultichoiceQAs } from "@/api";
-import { useProgress, useUser } from "@/contexts";
+import { useFilter, useProgress, useUser } from "@/contexts";
 import MultiChoice from "./MultiChoice";
 import ProgressBar from "./ProgressBar";
 
 const MultiChoiceQuiz = () => {
   const [mcQuestions, setMcQuestions] = useState([]);
-  const [level, setLevel] = useState();
 
   const { user } = useUser();
   const { progress, updateProgress } = useProgress();
 
   const { category, continent } = useParams();
+
+  const { level, setLevel } = useFilter();
+
 
   useEffect(() => {
     if (!user) return;
@@ -40,7 +42,7 @@ const MultiChoiceQuiz = () => {
     });
   }, [level, category, continent]);
 
-  const activeQuestion = mcQuestions[progress.currentQuestion - 1] || null; 
+  const activeQuestion = mcQuestions[progress.currentQuestion - 1] || null;
 
   return (
     <>

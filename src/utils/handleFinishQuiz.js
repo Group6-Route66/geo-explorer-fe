@@ -14,10 +14,11 @@ export const handleFinishQuiz = (
       : [];
     const newCorrectAnswers = correct_answers.concat(correctAnswersList).join();
 
-    const quiz = user.quizz < 3 ? user.quizz + 1 : user.quizz;
-
     let userLevelNature = user.level_nature;
     let userLevelTerritory = user.level_territory;
+
+    let userTerritoryQuiz = user.territory_quiz;
+    let userNatureQuiz = user.nature_quiz;
 
     let levelProgression = {
       Beginner: "Intermediate",
@@ -27,15 +28,20 @@ export const handleFinishQuiz = (
       Advanced: "Advanced",
     };
 
-    if (user.quizz === 3) {
-      if (category === "1") {
-        if (levelProgression[userLevelNature]) {
-          userLevelNature = levelProgression[userLevelNature];
-        }
-      } else if (category === "2") {
-        if (levelProgression[userLevelTerritory]) {
-          userLevelTerritory = levelProgression[userLevelTerritory];
-        }
+    if (category === "1") {
+      if (userNatureQuiz === 3) {
+        userLevelNature = levelProgression[userLevelNature] || userLevelNature;
+        userNatureQuiz = 1;
+      } else if (userNatureQuiz < 3) {
+        userNatureQuiz = userNatureQuiz + 1;
+      }
+    } else if (category == "2") {
+      if (userTerritoryQuiz === 3) {
+        userLevelTerritory =
+          levelProgression[userLevelTerritory] || userLevelTerritory;
+        userTerritoryQuiz = 1;
+      } else if (userTerritoryQuiz < 3) {
+        userTerritoryQuiz = userTerritoryQuiz + 1;
       }
     }
 
@@ -43,7 +49,8 @@ export const handleFinishQuiz = (
       user.username,
       score,
       newCorrectAnswers,
-      quiz,
+      userNatureQuiz,
+      userTerritoryQuiz,
       userLevelNature,
       userLevelTerritory
     )
