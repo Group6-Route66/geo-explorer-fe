@@ -7,6 +7,7 @@ import { getMultichoiceQAs } from "@/api";
 import { useProgress, useUser } from "@/contexts";
 import MultiChoice from "./MultiChoice";
 import ProgressBar from "./ProgressBar";
+import { randomize } from "@/utils";
 
 const MultiChoiceQuiz = () => {
   const [mcQuestions, setMcQuestions] = useState([]);
@@ -35,12 +36,16 @@ const MultiChoiceQuiz = () => {
     if (!level || !continent || category === undefined) return;
 
     getMultichoiceQAs(level, continent, category).then((result) => {
-      setMcQuestions(result);
-      updateProgress({ totalQuestions: result.length });
+      setMcQuestions(randomize(result, 10));
+      updateProgress({ totalQuestions: mcQuestions.length });
     });
   }, [level, category, continent]);
 
   const activeQuestion = mcQuestions[progress.currentQuestion - 1] || null; 
+   console.log(mcQuestions, "<---mpQuestions");
+  console.log(mcQuestions.length, "<---mpQuestions.length");
+  console.log(activeQuestion, "<---activeQuestion");
+
 
   return (
     <>

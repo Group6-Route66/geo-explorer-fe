@@ -35,8 +35,8 @@ const MapQuiz = () => {
     if (!level || !continent || category === undefined) return;
 
     getMapQAs(level, continent, category).then((result) => {
-      setMapQuestions(result);
-      updateProgress({ totalQuestions: result.length });
+      setMapQuestions(randomize(result, 5));
+      updateProgress({ totalQuestions: mapQuestions.length });
     });
   }, [level, category, continent]);
 

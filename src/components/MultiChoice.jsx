@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import NextButton from "./NextButton";
@@ -12,6 +12,7 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
   const [correctAnswersList, setCorrectAnswersList] = useState([]);
   const [isOpenFeedback, setOpenFeedback] = useState(false);
+  const [correctQuestions, setCorrectQuestions] = useState([]);
 
   const { progress, updateProgress } = useProgress();
 
@@ -45,6 +46,9 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
     if (e.target.value === activeQuestion.correct_answer) {
       setIsCorrectAnswer(true);
       setCorrectAnswersList((currentList) => [...currentList, e.target.value]);
+      setCorrectQuestions((currentList) => {
+        return [...currentList, activeQuestion.question_text];
+      })
     } else {
       setIsCorrectAnswer(false);
     }
