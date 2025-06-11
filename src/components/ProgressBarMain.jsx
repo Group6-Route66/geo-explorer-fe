@@ -4,8 +4,10 @@ import React from "react";
 import { useFilter, useUser } from "@/contexts";
 
 const ProgressBarMain = () => {
-  const { level, setLevel, activeCategory } = useFilter();
+  const { level, setLevel, activeCategory, setQuiz } = useFilter();
   const { user } = useUser();
+
+  console.log(activeCategory);
 
   const levelColors = {
     Beginner: "bg-green",
@@ -20,6 +22,7 @@ const ProgressBarMain = () => {
         user.level_nature === "Advanced"
       ) {
         setLevel("Beginner");
+        setQuiz(3);
       }
     }
 
@@ -29,35 +32,45 @@ const ProgressBarMain = () => {
         user.level_territory === "Advanced"
       ) {
         setLevel("Beginner");
+        setQuiz(3);
       }
     }
   }
 
   function handleClickIntermediate() {
     if (activeCategory === 1 && user.level_nature === "Intermediate") {
+      console.log(user.nature_quiz, "<<<<<<<");
+
       setLevel("Intermediate");
+
+      setQuiz(user?.nature_quiz);
     }
 
     if (activeCategory === 1 && user.level_nature === "Advanced") {
       setLevel("Intermediate");
+      setQuiz(3);
     }
 
     if (activeCategory === 2 && user.level_territory === "Intermediate") {
       setLevel("Intermediate");
+      setQuiz(user?.territory_quiz);
     }
 
     if (activeCategory === 2 && user.level_territory === "Advanced") {
       setLevel("Intermediate");
+      setQuiz(3);
     }
   }
 
   function handleClickAdvanced() {
     if (activeCategory === 1 && user.level_nature === "Advanced") {
       setLevel("Advanced");
+      setQuiz(user?.nature_quiz);
     }
 
     if (activeCategory === 2 && user.level_territory === "Advanced") {
       setLevel("Advanced");
+      setQuiz(user?.territory_quiz);
     }
   }
 
@@ -72,20 +85,17 @@ const ProgressBarMain = () => {
       <button
         onClick={(e) => handleClickBeginner(e)}
         value="Beginner"
-        className={
-          level === "Beginner" ||
-          level === "Intermediate" ||
-          level === "Advanced"
-            ? `${buttonClass} ${levelColors["Beginner"]}`
-            : `${disabledClass}`
-        }
+        className={`${buttonClass} ${levelColors["Beginner"]}`}
       >
         Beginner
       </button>
       <button
         onClick={(e) => handleClickIntermediate(e)}
         className={
-          level === "Intermediate" || level === "Advanced"
+          (activeCategory === 1 && user?.level_nature === "Intermediate") ||
+          (activeCategory === 1 && user?.level_nature === "Advanced") ||
+          (activeCategory === 2 && user?.level_territory === "Intermediate") ||
+          (activeCategory === 2 && user?.level_territory === "Advanced")
             ? `${buttonClass} ${levelColors["Intermediate"]}`
             : `${disabledClass}`
         }
@@ -95,8 +105,9 @@ const ProgressBarMain = () => {
       </button>
       <button
         className={
-          level === "Advanced"
-            ? `${buttonClass} ${levelColors[level]}`
+          (activeCategory === 1 && user?.level_nature === "Advanced") ||
+          (activeCategory === 2 && user?.level_territory === "Advanced")
+            ? `${buttonClass} ${levelColors["Advanced"]}`
             : `${disabledClass}`
         }
         onClick={(e) => handleClickAdvanced(e)}
