@@ -1,44 +1,34 @@
+// src/components/ProgressBar.jsx
 "use client";
 
 import React from "react";
 import { useFilter, useProgress } from "@/contexts";
 
-const ProgressBar = () => {
+export default function ProgressBar() {
   const { progress } = useProgress();
   const { currentQuestion, totalQuestions } = progress;
   const { level } = useFilter();
 
-  
   const percent = Math.min(
     Math.max((currentQuestion / totalQuestions) * 100, 0),
     100
   );
 
-   return (
-    <div style={{ margin: "1rem 0" }}>
-      <div style={{ marginBottom: "0.25rem", fontWeight: "bold" }} className="dark:text-white">
+  return (
+    <div className="my-4 dark:bg-gray-800">
+      {/* Label */}
+      <div className="mb-1 font-bold dark:text-gray-300 ">
         Level: {level} | Question {currentQuestion} of {totalQuestions}
       </div>
-      <div
-        style={{
-          height: "12px",
-          borderRadius: "8px",
-          overflow: "hidden",
-          backgroundColor: "#ddd",
-        }}
-      >
+
+      {/* Track */}
+      <div className="w-full h-3 bg-gray-300 dark:bg-gray-300 rounded-full overflow-hidden">
+        {/* Filled */}
         <div
-          style={{
-            width: `${percent}%`,
-            height: "100%",
-            backgroundColor: "#6ED788",
-            borderRadius: "8px",
-            transition: "width 0.3s ease",
-          }}
+          className="h-full bg-green rounded-full transition-[width] duration-300 ease-in-out"
+          style={{ width: `${percent}%` }}
         />
       </div>
     </div>
   );
-};
-
-export default ProgressBar;
+}

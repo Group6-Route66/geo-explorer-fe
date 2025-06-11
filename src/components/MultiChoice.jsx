@@ -25,8 +25,6 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   const pathParts = pathname.split("/").filter(Boolean);
   const quizType = pathParts[0] || "";
 
-  
-
   const levelColors = {
     Beginner: {
       base: "bg-green hover:bg-green-600",
@@ -62,7 +60,14 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   }
 
   const onFinishQuiz = () => {
-    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswersList, quizType);
+    handleFinishQuiz(
+      isSuccess,
+      category,
+      user,
+      setUser,
+      correctAnswersList,
+      quizType
+    );
   };
 
   const handleCloseFeedback = () => {
