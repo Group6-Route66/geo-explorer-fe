@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 
 import NextButton from "./NextButton";
 import { QuizFeedbackPopup } from ".";
-import { handleFinishQuiz } from "@/utils";
+import { handleFinishQuiz, randomize } from "@/utils";
 import { useProgress, useUser } from "@/contexts";
 
 const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
@@ -58,6 +58,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const [correctStyle, setCorrectStyle] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isOpenFeedback, setOpenFeedback] = useState(false);
+  const [activeQuestions, setActiveQuestions] = useState([]);
 
   const { user, setUser } = useUser();
 
@@ -74,25 +75,11 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     return correctAnswersArray;
   }
 
-  function randomize(items) {
-    function getRandomInt(num) {
-      return Math.floor(Math.random() * num);
-    }
-    const randomArray = [];
-    while (randomArray.length < items.length) {
-      const index = getRandomInt(items.length);
-      if (!randomArray.includes(index)) {
-        randomArray.push(index);
-      }
-    }
-    return randomArray.map((index) => items[index]);
-  }
-
   const [randomLeftButtons, setRandomLeftButtons] = useState(
-    randomize(leftButtons)
+    randomize(leftButtons, leftButtons.length)
   );
   const [randomRightButtons, setRandomRightButtons] = useState(
-    randomize(rightButtons)
+    randomize(rightButtons, rightButtons.length)
   );
 
   const successRate = correctAnswers.length / mpQuestions.length;
@@ -235,7 +222,9 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   function handleNext() {
     handleReset();
     setIsSubmitted(false);
-
+    setActiveQuestions((current) => {
+      return [...current, activeQuestion.question_text];
+    });
     updateProgress({ currentQuestion: progress.currentQuestion + 1 });
   }
 
@@ -244,7 +233,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   };
 
   const onFinishQuiz = () => {
-    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswers);
+    handleFinishQuiz(isSuccess, category, user, setUser, activeQuestions);
   };
 
   const resetCorrectAnswers = () => {
@@ -282,6 +271,9 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
       setRandomRightButtons(randomize(rightButtons));
     }
   }, [leftButtons, rightButtons]);
+
+console.log(activeQuestion, "<---activeQuestion in MPCard");
+
 
   return (
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
