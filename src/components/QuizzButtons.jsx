@@ -56,13 +56,13 @@ const QuizzButtons = () => {
   }, [user, activeCategory]);
 
   return (
-    <div className="w-full flex flex-col justify-center items-center my-10  bg-gray-100 py-3 md:py-10 px-6 rounded-xl shadow-lg dark:bg-gray-200">
+    <div className="w-full flex flex-col justify-center items-center my-8 bg-gray-100 py-3 md:py-4 px-6 rounded-xl shadow-lg dark:bg-white/10 dark:backdrop-blur-md dark:border-white/10 dark:shadow-xl">
       <h2
-        className={`${textClass} ${textColors[level] || textColors.Beginner}`}
+        className={`${textClass} ${textColors[level] || textColors.Beginner} mb-1`}
       >
         Start Your Quiz Journey
       </h2>
-      <div className="w-full sm:max-w-100  lg:max-w-150 flex flex-col gap-4 p-10">
+      <div className="w-full sm:max-w-100  lg:max-w-150 flex flex-col gap-4 sm:gap-0 p-5">
         <div className="flex justify-start">
           <Link href={`/multichoice/${activeCategory}/${continent}`}>
             <button
