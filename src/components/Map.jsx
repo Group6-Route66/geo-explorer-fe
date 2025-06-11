@@ -83,7 +83,7 @@ const Map = ({ activeQuestion, mapQuestions }) => {
         </p>
         <div>
           {isCorrectAnswer ? (
-            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-green text-green font-medium ">
+            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-green text-white font-medium ">
               Correct!
             </p>
           ) : country && answer ? (
