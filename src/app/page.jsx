@@ -13,7 +13,7 @@ export default function Home() {
   const handleCloseWelcomeScreen = () => setOpenWelcomeScreen(false);
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl dark:bg-green-800">
+    <div className="container mx-auto px-4 lg:max-w-5xl dark:bg-gray-800">
       <WelcomeScreen
         openWelcomeScreen={isOpenWelcomeScreen}
         closeWelcomeScreen={handleCloseWelcomeScreen}
