@@ -58,7 +58,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const [correctStyle, setCorrectStyle] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isOpenFeedback, setOpenFeedback] = useState(false);
-  const [activeQuestions, setActiveQuestions] = useState([]);
+  const [correctQuestions, setCorrectQuestions] = useState([]);
 
   const { user, setUser } = useUser();
 
@@ -66,10 +66,10 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
 
   const { progress, updateProgress } = useProgress();
 
-    const pathname = usePathname();
-  
-    const pathParts = pathname.split("/").filter(Boolean);
-    const quizType = pathParts[0] || "";
+  const pathname = usePathname();
+
+  const pathParts = pathname.split("/").filter(Boolean);
+  const quizType = pathParts[0] || "";
 
   function setCorrectAnswersArray(arr1, arr2) {
     let correctAnswersArray = [];
@@ -84,7 +84,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
 
   const [randomRightButtons, setRandomRightButtons] = useState([]);
 
-  const successRate = correctAnswers.length / mpQuestions.length;
+  const successRate = correctQuestions.length / mpQuestions.length;
   const isSuccess = successRate >= 0.8;
 
   function isOdd(number) {
@@ -209,6 +209,13 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
       }
     }
 
+    if (isCorrectAnswer) {
+      setCorrectQuestions((current) => [
+        ...current,
+        activeQuestion.question_text,
+      ]);
+    }
+
     setStyleLeftButton1((prev) => `${prev} ${leftStyles[0]}`);
     setStyleLeftButton2((prev) => `${prev} ${leftStyles[1]}`);
     setStyleLeftButton3((prev) => `${prev} ${leftStyles[2]}`);
@@ -223,9 +230,6 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   function handleNext() {
     handleReset();
     setIsSubmitted(false);
-    setActiveQuestions((current) => {
-      return [...current, activeQuestion.question_text];
-    });
     updateProgress({ currentQuestion: progress.currentQuestion + 1 });
   }
 
@@ -234,12 +238,17 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   };
 
   const onFinishQuiz = () => {
-    handleFinishQuiz(isSuccess, category, user, setUser, activeQuestions, quizType);
+    handleFinishQuiz(
+      isSuccess,
+      category,
+      user,
+      setUser,
+      correctQuestions,
+      quizType
+    );
   };
-
-  const resetCorrectAnswers = () => {
-    setCorrectAnswers([]);
-  };
+  console.log(correctQuestions);
+  
 
   useEffect(() => {
     setStyleLeftButton1(initialStyle);
@@ -259,7 +268,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     if (activeQuestion?.answers?.length === 4) {
       const lefts = activeQuestion.answers.map((answer) => answer.left_text);
       const rights = activeQuestion.answers.map((answer) => answer.right_text);
-  
+
       setLeftButtons(lefts);
       setRightButtons(rights);
     }
@@ -272,9 +281,6 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
       setRandomRightButtons(randomize(rightButtons, 4));
     }
   }, [leftButtons, rightButtons]);
-
-
-
 
   return (
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
@@ -418,10 +424,10 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
           openFeedback={isOpenFeedback}
           onClose={handleCloseFeedback}
           isSuccess={isSuccess}
-          correctCount={correctAnswers.length}
-          totalCount={mpQuestions.length * 4}
-          updateProgress={updateProgress}
-          onResetQuiz={resetCorrectAnswers}
+          correctCount={correctQuestions.length}
+          totalCount={mpQuestions.length}
+          onResetQuiz={handleReset}
+          setIsCorrectAnswer={setCorrectQuestions}
         />
       ) : null}
     </div>

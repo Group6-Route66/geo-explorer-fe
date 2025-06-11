@@ -8,6 +8,8 @@ export const handleFinishQuiz = (
   correctAnswersList,
   quizType
 ) => {
+  console.log(correctAnswersList);
+  
   if (isSuccess && user !== "guest") {
     const score = user.rating + correctAnswersList.length;
     const correct_answers = user.correct_answers
