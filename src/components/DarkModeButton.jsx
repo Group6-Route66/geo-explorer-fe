@@ -1,22 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MoonIcon } from "@/assets/icons/MoonIcon";
-import { useTheme } from "next-themes";
 
 const DarkModeButton = () => {
-  const { theme, setTheme } = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(undefined);
 
-  console.log(theme);
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    setIsDarkMode(savedTheme ? savedTheme === "dark" : systemPrefersDark);
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode === undefined) return;
+
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
+
+  if (isDarkMode === undefined) return null;
 
   return (
     <button
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      onClick={() => setIsDarkMode(!isDarkMode)}
       className="w-12 h-6 bg-gray-300 rounded-full transition-all duration-400"
     >
       <span
-        className={` h-5 w-5 bg-white rounded-full flex items-center justify-center transform transition-transform duration-400 ${
-          theme === "light" ? "translate-x-6" : ""
+        className={`h-5 w-5 bg-white rounded-full flex items-center justify-center transform transition-transform duration-400 ${
+          isDarkMode ? "" : "translate-x-6"
         }`}
       >
         <MoonIcon />

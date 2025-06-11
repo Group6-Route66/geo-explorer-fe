@@ -4,7 +4,6 @@ import {
   FilterProvider,
   ProgressProvider,
   UserContextProvider,
-  DarkModeContext,
 } from "@/contexts";
 
 import { Continent, Footer, Header } from "@/components";
@@ -26,21 +25,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html class="dark" lang="en" suppressHydrationWarning>
+    <html lang="en" className="">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        <DarkModeContext>
-          <UserContextProvider>
-            <FilterProvider>
-              <ProgressProvider>
-                <Header />
-                <main className="flex flex-col grow">{children}</main>
-                <Footer />
-              </ProgressProvider>
-            </FilterProvider>
-          </UserContextProvider>
-        </DarkModeContext>
+        <UserContextProvider>
+          <FilterProvider>
+            <ProgressProvider>
+              <Header />
+              <main className="flex flex-col grow">{children}</main>
+              <Footer />
+            </ProgressProvider>
+          </FilterProvider>
+        </UserContextProvider>
       </body>
     </html>
   );

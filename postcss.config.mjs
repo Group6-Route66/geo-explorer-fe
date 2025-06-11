@@ -1,7 +1,6 @@
 const config = {
   plugins: {
     "@tailwindcss/postcss": {
-      darkMode: "class",
       theme: {
         container: {
           center: true,
