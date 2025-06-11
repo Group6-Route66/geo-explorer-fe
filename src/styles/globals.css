@@ -29,8 +29,7 @@
   --font-mono: "YourMonoFont", monospace;
 }
 
-
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root {
     background: var(--color-gray-900);
     color: var(--foreground);
