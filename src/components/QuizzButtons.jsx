@@ -38,7 +38,7 @@ const QuizzButtons = () => {
     setQuiz(user !== "guest" ? user.quizz : 1);
 
     if (user !== "guest") {
-      const userLevel = { 
+      const userLevel = {
         1: user?.level_nature,
         2: user?.level_territory,
       };
