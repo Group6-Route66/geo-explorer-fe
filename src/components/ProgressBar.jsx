@@ -14,7 +14,7 @@ const ProgressBar = () => {
     100
   );
 
-  return (
+   return (
     <div style={{ margin: "1rem 0" }}>
       <div style={{ marginBottom: "0.25rem", fontWeight: "bold" }} className="dark:text-white">
         Level: {level} | Question {currentQuestion} of {totalQuestions}

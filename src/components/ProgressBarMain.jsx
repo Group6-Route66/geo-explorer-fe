@@ -7,8 +7,6 @@ const ProgressBarMain = () => {
   const { level, setLevel, activeCategory, setQuiz } = useFilter();
   const { user } = useUser();
 
-  console.log(activeCategory);
-
   const levelColors = {
     Beginner: "bg-green",
     Intermediate: "bg-yellow",
@@ -39,8 +37,6 @@ const ProgressBarMain = () => {
 
   function handleClickIntermediate() {
     if (activeCategory === 1 && user.level_nature === "Intermediate") {
-      console.log(user.nature_quiz, "<<<<<<<");
-
       setLevel("Intermediate");
 
       setQuiz(user?.nature_quiz);
@@ -73,6 +69,8 @@ const ProgressBarMain = () => {
       setQuiz(user?.territory_quiz);
     }
   }
+
+  console.log(level, "<<<<<<level");
 
   const buttonClass =
     "w-34 h-6 md:w-40 md:h-8 font-bold bg-opacity-50 flex justify-center items-center border-white rounded-2xl ";

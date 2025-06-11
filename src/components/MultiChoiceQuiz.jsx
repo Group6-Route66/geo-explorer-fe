@@ -25,14 +25,6 @@ const MultiChoiceQuiz = () => {
     if (!user) return;
 
     updateProgress({ currentQuestion: 1, totalQuestions: 0 });
-
-    if (category === "1") {
-      setLevel(user.level_nature);
-    } else if (category === "2") {
-      setLevel(user.level_territory);
-    } else {
-      setLevel("Beginner");
-    }
   }, [user, category]);
 
   useEffect(() => {
