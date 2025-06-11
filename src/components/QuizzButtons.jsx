@@ -6,10 +6,9 @@ import { useFilter, useUser } from "@/contexts";
 
 const QuizzButtons = () => {
   const { user } = useUser();
-  const { level, setLevel } = useFilter();
-  const [quiz, setQuiz] = useState(1);
 
-  const { continent, activeCategory } = useFilter();
+  const { continent, activeCategory, level, setLevel, quiz, setQuiz } =
+    useFilter();
 
   const levelColors = {
     Beginner: "bg-green shadow-green-600 border-green-600 hover:text-green-600",
@@ -35,17 +34,25 @@ const QuizzButtons = () => {
 
   useEffect(() => {
     if (!user) return;
+
+    setQuiz(user !== "guest" ? user.quizz : 1);
+
     if (user !== "guest") {
-      setQuiz(user.quizz);
+      const userLevel = { 
+        1: user?.level_nature,
+        2: user?.level_territory,
+      };
+
+      const userQuiz = {
+        1: user?.nature_quiz,
+        2: user?.territory_quiz,
+      };
+      setLevel(userLevel[activeCategory] || "Beginner");
+      setQuiz(userQuiz[activeCategory] || 1);
     } else {
+      setLevel("Beginner");
       setQuiz(1);
     }
-
-    if (user !== "guest" && activeCategory === 1) {
-      setLevel(user?.level_nature);
-    } else if (user !== "guest" && activeCategory === 2) {
-      setLevel(user?.level_territory);
-    } else setLevel("Beginner");
   }, [user, activeCategory]);
 
   return (

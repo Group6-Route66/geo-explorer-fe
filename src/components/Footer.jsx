@@ -33,7 +33,9 @@ const Footer = () => {
 
       <Link href={`/learn/${continent}`} className={linkClass("/learn")}>
         <LearnIcon
-          className={isActive("/learn") ? "text-[var(--color-green)]" : ""}
+          className={
+            isActive(`/learn/${continent}`) ? "text-[var(--color-green)]" : ""
+          }
         />
         <span className="text-xs mt-1">Learn</span>
       </Link>

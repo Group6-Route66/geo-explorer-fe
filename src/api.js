@@ -48,7 +48,8 @@ export const patchUserScore = (
   username,
   score,
   correctedAnswers,
-  newQuiz,
+  userNatureQuiz,
+  userTerritoryQuiz,
   userLevelNature,
   userLevelTerritory
 ) => {
@@ -56,7 +57,8 @@ export const patchUserScore = (
     .patch(`/users/${username}`, {
       rating: score,
       correct_answers: correctedAnswers,
-      quizz: newQuiz,
+      nature_quiz: userNatureQuiz,
+      territory_quiz: userTerritoryQuiz,
       level_nature: userLevelNature,
       level_territory: userLevelTerritory,
     })
@@ -104,7 +106,6 @@ export const getMapQAs = (level, continent, category_id) => {
       return data.mapQuestions;
     });
 };
-
 
 // getMatchingPairs(1, "asia", "Beginner").then((res) => {
 //   console.log(res, "matching pairs");
