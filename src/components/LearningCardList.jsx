@@ -1,11 +1,15 @@
+// src/components/LearningCardList.jsx
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useFilter } from "@/contexts/FilterContext";
 import LearningCard from "@/components/LearningCard";
 import { getLearningCards } from "@/api";
+import CustomLoading from "./CustomLoading";
+import CustomError from "./CustomError";
 
 export default function LearningCardList() {
+  // Destructure needed state + setters from context
   const {
     continent,
     subCategoryId,
@@ -19,52 +23,71 @@ export default function LearningCardList() {
     setHasMore,
   } = useFilter();
 
+  // Local error flag
+  const [error, setError] = useState(null);
+
+  // Page size: how many cards per page
   const pageSize = 5;
 
-  // Fetch cards from API based on filters and current page
+  // 1. Fetch cards from API based on filters and current page
   const fetchCards = useCallback(() => {
+    setError(null);
     setLoading(true);
 
     getLearningCards(continent.toLowerCase(), subCategoryId, page)
       .then((data) => {
+        // Replace on first page, append afterwards
         if (page === 1) {
           setCards(data);
         } else {
           setCards((prev) => {
-            // Filter out duplicates before appending
-            const newCards = data.filter(
-              (newCard) =>
-                !prev.some((card) => card.card_id === newCard.card_id)
+            // avoid duplicates
+            const newOnes = data.filter(
+              (card) => !prev.some((c) => c.card_id === card.card_id)
             );
-            return [...prev, ...newCards];
+            return [...prev, ...newOnes];
           });
         }
+        // if fewer than pageSize, disable further loads
         setHasMore(data.length === pageSize);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Fetch error:", err);
+        setError(err);
         setHasMore(false);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [continent, subCategoryId, page, setCards, setHasMore, setLoading]);
 
-  // Reset page to 1 when continent or subcategory changes
+  // 2. Reset to page 1 whenever filters change
   useEffect(() => {
     setPage(1);
   }, [continent, subCategoryId, setPage]);
 
-  // Fetch cards whenever fetchCards function changes (page/filter change)
+  // 3. Fetch whenever page or filters change
   useEffect(() => {
     fetchCards();
   }, [fetchCards]);
 
-  // Handler for Load More button to load next page
+  // Retry fetch on error
+  const handleRetry = () => {
+    fetchCards();
+  };
+
+  // Load more handler
   const handleLoadMore = () => {
     if (!loading && hasMore) {
-      setPage((prev) => prev + 1);
+      setPage((p) => p + 1);
     }
   };
+
+  // 4. Render error screen if fetch failed
+  if (error) return <CustomError onRetry={handleRetry} />;
+
+  // 5. Render full‐page spinner on initial load
+  if (loading && page === 1) return <CustomLoading />;
 
   return (
     <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
@@ -73,21 +96,23 @@ export default function LearningCardList() {
         <LearningCard key={card.card_id} card={card} />
       ))}
 
-      {/* Show loading text when fetching data */}
-      {loading && <p className="text-center col-span-full">Loading...</p>}
+      {/* In‐line spinner when loading more pages */}
+      {loading && page > 1 && (
+        <p className="text-center col-span-full">Loading...</p>
+      )}
 
-      {/* Show Load More button if not loading and more data available */}
+      {/* Load More button */}
       {!loading && hasMore && (
         <button
           onClick={handleLoadMore}
-          className="col-span-full bg-[var(--color-green)] hover:[var(--color-gray-900)] text-white font-bold py-2 px-4 rounded mt-4"
+          className="col-span-full bg-[var(--color-green)] hover:bg-gray-900 text-white font-bold py-2 px-4 rounded mt-4"
         >
           Load More
         </button>
       )}
 
-      {/* Show message if no more data */}
-      {!hasMore && !loading && (
+      {/* “No more” only if you've actually paged past page 1 */}
+      {!loading && !hasMore && page > 1 && (
         <p className="text-center col-span-full text-gray-500 mt-4">
           No more cards to load.
         </p>
