@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useFilter } from "@/contexts/FilterContext";
 import LearningCard from "@/components/LearningCard";
 import { getLearningCards } from "@/api";
 
 export default function LearningCardList() {
-  // Destructure all needed state and setters from FilterContext
   const {
     continent,
     subCategoryId,
@@ -20,93 +19,79 @@ export default function LearningCardList() {
     setHasMore,
   } = useFilter();
 
-  // useRef to keep track of the IntersectionObserver instance
-  const observer = useRef();
-
-  // Fixed page size used for pagination requests
   const pageSize = 5;
 
-  // Function to fetch learning cards based on current filters and page
+  // Fetch cards from API based on filters and current page
   const fetchCards = useCallback(() => {
-    setLoading(true); // Show loading spinner
+    setLoading(true);
 
-    // Call API function to get learning cards for current filters & page
     getLearningCards(continent.toLowerCase(), subCategoryId, page)
       .then((data) => {
-        console.log("Fetched data length:", data.length, "Page:", page);
-
-        // If this is the first page, replace current cards with fresh data
         if (page === 1) {
           setCards(data);
         } else {
-          // Otherwise, append new cards to existing list for infinite scroll
-          setCards((prev) => [...prev, ...data]);
+          setCards((prev) => {
+            // Filter out duplicates before appending
+            const newCards = data.filter(
+              (newCard) =>
+                !prev.some((card) => card.card_id === newCard.card_id)
+            );
+            return [...prev, ...newCards];
+          });
         }
-
-        // If number of fetched cards is less than page size, no more data
         setHasMore(data.length === pageSize);
-
-        setLoading(false); // Hide loading spinner
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Fetch error:", err);
-
-        setHasMore(false); // Prevent further fetching on error
-        setLoading(false); // Hide loading spinner
+        setHasMore(false);
+        setLoading(false);
       });
   }, [continent, subCategoryId, page, setCards, setHasMore, setLoading]);
 
-  // When continent or subCategoryId changes, reset page to 1 to refresh data
+  // Reset page to 1 when continent or subcategory changes
   useEffect(() => {
     setPage(1);
   }, [continent, subCategoryId, setPage]);
 
-  // Fetch cards whenever the fetchCards function changes (due to dependencies)
+  // Fetch cards whenever fetchCards function changes (page/filter change)
   useEffect(() => {
     fetchCards();
   }, [fetchCards]);
 
-  // Set up IntersectionObserver to detect when last card is visible for infinite scroll
-  const lastCardRef = useCallback(
-    (node) => {
-      // If already loading, don't setup observer again
-      if (loading) return;
-
-      // Disconnect previous observer instance if exists
-      if (observer.current) observer.current.disconnect();
-
-      // Create new IntersectionObserver with some margin to preload
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          // If last card is intersecting viewport and there is more data
-          if (entries[0].isIntersecting && hasMore) {
-            console.log("Load next page triggered");
-            setPage((prevPage) => prevPage + 1); // Load next page
-          }
-        },
-        { rootMargin: "100px" } // Trigger a bit before it enters viewport
-      );
-
-      // Observe the current node (last card)
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore, setPage]
-  );
+  // Handler for Load More button to load next page
+  const handleLoadMore = () => {
+    if (!loading && hasMore) {
+      setPage((prev) => prev + 1);
+    }
+  };
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl lg:grid-cols-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {/* Render all cards */}
-      {cards.map((card, idx) => {
-        // Attach the IntersectionObserver ref to the last card only
-        if (idx === cards.length - 1) {
-          return (
-            <LearningCard ref={lastCardRef} key={card.card_id} card={card} />
-          );
-        }
-        return <LearningCard key={card.card_id} card={card} />;
-      })}
-      {/* Show loading indicator when loading */}
+    <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+      {/* Render all loaded cards */}
+      {cards.map((card) => (
+        <LearningCard key={card.card_id} card={card} />
+      ))}
+
+      {/* Show loading text when fetching data */}
       {loading && <p className="text-center col-span-full">Loading...</p>}
+
+      {/* Show Load More button if not loading and more data available */}
+      {!loading && hasMore && (
+        <button
+          onClick={handleLoadMore}
+          className="col-span-full bg-[var(--color-green)] hover:[var(--color-gray-900)] text-white font-bold py-2 px-4 rounded mt-4"
+        >
+          Load More
+        </button>
+      )}
+
+      {/* Show message if no more data */}
+      {!hasMore && !loading && (
+        <p className="text-center col-span-full text-gray-500 mt-4">
+          No more cards to load.
+        </p>
+      )}
     </div>
   );
 }
