@@ -27,7 +27,7 @@ export default function LearningCardList() {
   const [error, setError] = useState(null);
 
   // Page size: how many cards per page
-  const pageSize = 5;
+  const pageSize = 10;
 
   // 1. Fetch cards from API based on filters and current page
   const fetchCards = useCallback(() => {
@@ -90,7 +90,7 @@ export default function LearningCardList() {
   if (loading && page === 1) return <CustomLoading />;
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+    <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 dark:bg-gray-800">
       {/* Render all loaded cards */}
       {cards.map((card) => (
         <LearningCard key={card.card_id} card={card} />
@@ -105,7 +105,7 @@ export default function LearningCardList() {
       {!loading && hasMore && (
         <button
           onClick={handleLoadMore}
-          className="col-span-full bg-[var(--color-green)] hover:bg-gray-900 text-white font-bold py-2 px-4 rounded mt-4"
+          className="col-span-full bg-[var(--color-green)] hover:bg-gray-900 text-white font-bold py-2 px-4 rounded mt-4 mb-4"
         >
           Load More
         </button>
@@ -113,7 +113,7 @@ export default function LearningCardList() {
 
       {/* “No more” only if you've actually paged past page 1 */}
       {!loading && !hasMore && page > 1 && (
-        <p className="text-center col-span-full text-gray-500 mt-4">
+        <p className="text-center col-span-full text-gray-500 mt-4 pb-2">
           No more cards to load.
         </p>
       )}

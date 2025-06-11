@@ -50,7 +50,7 @@ const LearningCard = forwardRef(({ card }, ref) => {
   return (
     <div
       ref={ref}
-      className={`relative w-full aspect-[3/2] ${styles.perspective} border-green cursor-pointer  bg--green rounded-lg shadow`}
+      className={`relative w-full aspect-[3/2] ${styles.perspective} border-green cursor-pointer  bg--green rounded-lg shadow mt-1 mb-2`}
       onClick={() => setFlipped(!flipped)}
     >
       <div

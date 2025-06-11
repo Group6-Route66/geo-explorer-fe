@@ -42,12 +42,12 @@ export default function FilterBar({
   }, [continentParams]);
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4">
-      <div className="w-full max-w-5xl mx-auto p-4">
+    <div className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 dark:bg-gray-800">
+      <div className="w-full max-w-5xl mx-auto p-4 dark:bg-gray-800 dark:text-white">
         {/* Continent dropdown */}
         <div className="relative mb-6">
           <button
-            className="w-full flex justify-between items-center border border-green rounded-md px-4 py-2"
+            className="w-full flex justify-between items-center border border-green rounded-md px-4 py-2  "
             onClick={() => setIsContinentOpen(!isContinentOpen)}
             type="button"
           >
@@ -60,7 +60,7 @@ export default function FilterBar({
             </svg>
           </button>
           {isContinentOpen && (
-            <div className="absolute z-10 w-full border border-green rounded-md mt-1 bg-white shadow-lg max-h-60 overflow-auto">
+            <div className="absolute z-10 w-full border border-green rounded-md mt-1 bg-white shadow-lg max-h-60 overflow-auto dark:bg-gray-800 dark:text-white">
               {Object.entries(continents).map(([key, value]) => (
                 <button
                   key={key}
@@ -97,7 +97,7 @@ export default function FilterBar({
                 className={`pb-2 border-b-4 mr-1 ml-1 ${
                   subCategoryId === id
                     ? "border-green text-green w-100 font-bold text-color-green"
-                    : "border-gray-900 w-100 text-gray-900 hover:text-color-green"
+                    : "border-gray-900 w-100 text-gray-900 hover:text-color-green dark:text-white dark:border-white"
                 }`}
                 type="button"
               >

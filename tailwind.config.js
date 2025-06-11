@@ -1,16 +1,19 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "class",
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./app/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class", // use the .dark class
   theme: {
     extend: {
       colors: {
-        customgreen: "#49e659",
+        green: "var(--color-green)",
+        "gray-100": "var(--color-gray-100)",
+        "gray-900": "var(--color-gray-900)",
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant("dark", "&:where(.dark, .dark *)");
+    },
+  ],
 };
