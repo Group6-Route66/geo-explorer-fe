@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 🌍 Geo Explorer – Interactive Geography Learning Platform
 
-## Getting Started
+Geo Explorer is an educational web app that transforms the way users learn geography. Built with Next.js and Tailwind CSS, it features a quiz section, real-time progress tracking, and a global leaderboard to foster friendly competition.
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
+🧠 1. Multi-Level Quiz System
+1.1.Progress through difficulty levels: Beginner → Intermediate → Advanced
+
+🎮 2. Three Engaging Quiz Modes
+2.1. 📝Multiple Choice Questions
+
+    2.2.🧩 Matching Pairs
+
+    2.3.🗺️ Interactive Map Challenges
+
+👤 3. Personalized User Profiles
+3.1.Customizable avatars
+3.2.Skill level indicators
+3.3.Detailed progress tracking
+
+🌍 4. Global Leaderboard
+4.1.Compete with other geographer masters
+
+📚 5. Learning Section
+5.1.Browse curated educational content, filterable by continent and category (mountains, water, landscapes, and countries)
+
+🌓 6. Dark & Light Mode
+6.1.Choose your preferred viewing experience with a single toggle
+
+## 🧭 Getting Started
+
+✅ Prerequisites
+Node.js v18+
+npm v9+
+
+## ⚙️ Installation
+
+git clone https://github.com/your-username/geo-explorer.git
+cd geo-explorer
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧩 Project Structure
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+geo-explorer/
+├── src/
+│ ├── app/
+│ ├── components/
+│ ├── contexts/
+│ ├── data/
+│ ├── styles/
+│ ├── utils/
+│ └── api.js
+├── .env.example
+├── next.config.js
+├── tailwind.config.js
+└── .gitignore
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 Live Demo
 
-## Learn More
+The application is deployed on Vercel:
+🔗 https://geo-explorer.vercel.app
 
-To learn more about Next.js, take a look at the following resources:
+## 🧑‍🤝‍🧑 Credits
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Developed by the Route 66 Team @ Northcoders
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Team Members: Nayden Hristov, Sofiia Madryha, Mohammed Humadi, Phone Sett, Catarina Sapateiro, Waiyan Sze
 
-## Deploy on Vercel
+## 📄 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is open-source.

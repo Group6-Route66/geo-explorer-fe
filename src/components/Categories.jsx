@@ -14,12 +14,12 @@ const Categories = ({ activeCategory, setActiveCategory, categories }) => {
             p-2                 
             border-4 border-transparent 
             border-b-gray-200
-            transition-colors duration-200
+            transition-colors duration-200 text-color-green
 
             ${
               activeCategory === category_id
-                ? "border-b-green text-green font-bold"
-                : "hover:border-b-green hover:text-green text-[var(--main-text)]"
+                ? "border-b-green text-green font-bold "
+                : "hover:border-b-green hover:text-green text-[var(--main-text)] dark:text-white"
             }
           `}
           type="button"

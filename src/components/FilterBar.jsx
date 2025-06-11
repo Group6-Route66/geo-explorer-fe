@@ -42,7 +42,7 @@ export default function FilterBar({
   }, [continentParams]);
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 dark:bg-gray-800">
+    <div className="container mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 ">
       <div className="w-full max-w-5xl mx-auto p-4 dark:bg-gray-800 dark:text-white">
         {/* Continent dropdown */}
         <div className="relative mb-6">

@@ -45,7 +45,7 @@ const UsersRanking = () => {
   }
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-12 pb-12">
+    <div className="w-full flex flex-col items-center justify-center pt-12 pb-12 ">
       <h1 className="text-2xl font-bold mb-6">🏆 Leaderboard</h1>
       <div className="w-full flex flex-col gap-4 justify-center items-center">
         {users.map((individualUser, index) => (
@@ -63,12 +63,12 @@ const UsersRanking = () => {
                 src={individualUser.avatar_url}
                 alt={`${individualUser.username}'s Profile Image`}
               />
-              <div>
+              <div className="dark:text-white">
                 <p className="font-bold text-lg">{individualUser.username}</p>
-                <p className="text-gray-600">Score: {individualUser.rating}</p>
+                <p className="text-gray-600 dark:text-white">Score: {individualUser.rating}</p>
               </div>
             </div>
-            <p className="text-2xl font-bold">{index + 1}</p>
+            <p className="text-2xl font-bold dark:text-white">{index + 1}</p>
           </div>
         ))}
       </div>

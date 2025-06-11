@@ -17,6 +17,7 @@
 
 @theme {
   --color-green: #6ed788;
+  --color-green-800: #064e3b;
   --color-gray-100: #f0f2f5;
   --color-gray-900: #51545d;
   --color-yellow: #ffc971;
@@ -28,7 +29,8 @@
   --font-mono: "YourMonoFont", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
+
+/* @media (prefers-color-scheme: dark) {
   :root {
     background: var(--color-gray-900);
     color: var(--foreground);
@@ -47,7 +49,7 @@
 }
 
 body {
-  background: var(--background);
+  /* background: var(--background); */
   color: var(--main-text);
   font-family: var(--font-geist-sans);
   min-height: 100vh;
