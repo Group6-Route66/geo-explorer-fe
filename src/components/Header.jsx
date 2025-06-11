@@ -18,7 +18,7 @@ const Header = () => {
       <Link href="/">
         <h1>Geo Explorer</h1>
       </Link>
-      <div className="flex gap-3">
+      <div className="flex gap-3 items-center">
         <Link href="/profile">
           {user !== "guest" && user !== null ? (
             <img

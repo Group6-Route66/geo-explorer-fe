@@ -8,6 +8,7 @@ const ProgressBar = () => {
   const { currentQuestion, totalQuestions } = progress;
   const { level } = useFilter();
 
+  
   const percent = Math.min(
     Math.max((currentQuestion / totalQuestions) * 100, 0),
     100
@@ -15,7 +16,7 @@ const ProgressBar = () => {
 
   return (
     <div style={{ margin: "1rem 0" }}>
-      <div style={{ marginBottom: "0.25rem", fontWeight: "bold" }}>
+      <div style={{ marginBottom: "0.25rem", fontWeight: "bold" }} className="dark:text-white">
         Level: {level} | Question {currentQuestion} of {totalQuestions}
       </div>
       <div

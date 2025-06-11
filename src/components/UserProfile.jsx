@@ -83,18 +83,18 @@ const UserProfile = () => {
 
             <div className="flex gap-4 mt-3 mb-3">
               <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-                <p className="text-xl font-extrabold">{user?.level_nature}</p>
+                <p className="text-xl font-extrabold dark:text-white">{user?.level_nature}</p>
                 <p className="text-sm text-green font-bold">Nature Level</p>
               </div>
               <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-                <p className="text-xl font-extrabold">
+                <p className="text-xl font-extrabold dark:text-white">
                   {user?.level_territory}
                 </p>
                 <p className="text-sm text-green font-bold">Territory Level</p>
               </div>
             </div>
             <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-              <p className="text-xl font-extrabold">{user?.rating}</p>
+              <p className="text-xl font-extrabold dark:text-white">{user?.rating}</p>
               <p className="text-sm text-green font-bold">Total Score</p>
             </div>
           </div>

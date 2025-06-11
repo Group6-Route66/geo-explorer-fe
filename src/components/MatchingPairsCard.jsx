@@ -87,7 +87,6 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const successRate = correctQuestions.length / mpQuestions.length;
   const isSuccess = successRate >= 0.6;
 
-  
   function isOdd(number) {
     return number % 2 === 0 ? false : true;
   }
@@ -274,6 +273,8 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     }
   }, [activeQuestion]);
 
+  console.log(activeQuestion);
+
   useEffect(() => {
     if (leftButtons.length && rightButtons.length) {
       setCorrectAnswers(setCorrectAnswersArray(leftButtons, rightButtons));
@@ -284,103 +285,102 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
 
   return (
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
-      <h4 className="text-2xl font-bold">{activeQuestion?.question_text}</h4>
+      <h4 className="text-2xl font-bold dark:text-white">{activeQuestion?.question_text}</h4>
       <div className="container mx-auto">
-
-          <section className="grid grid-cols-2">
-            <div className="flex flex-col place-items-end p-4">
-              {randomLeftButtons && randomLeftButtons.length === 4 ? (
-                <ul className="w-full h-full flex flex-col items-stretch justify-between">
-                  <li>
-                    <button
-                      name="left1"
-                      value={randomLeftButtons[0]}
-                      onClick={handleClickButton}
-                      className={`${styleLeftButton1} ${correctStyle}`}
-                    >
-                      {randomLeftButtons[0]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      name="left2"
-                      value={randomLeftButtons[1]}
-                      onClick={handleClickButton}
-                      className={`${styleLeftButton2} ${correctStyle}`}
-                    >
-                      {randomLeftButtons[1]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      name="left3"
-                      value={randomLeftButtons[2]}
-                      onClick={handleClickButton}
-                      className={`${styleLeftButton3} ${correctStyle}`}
-                    >
-                      {randomLeftButtons[2]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      name="left4"
-                      value={randomLeftButtons[3]}
-                      onClick={handleClickButton}
-                      className={`${styleLeftButton4} ${correctStyle}`}
-                    >
-                      {randomLeftButtons[3]}
-                    </button>
-                  </li>
-                </ul>
-              ) : null}
-            </div>
-            <div className="flex flex-col place-items-start p-4">
-              {randomRightButtons && randomRightButtons.length === 4 ? (
-                <ul className="w-full h-full flex flex-col items-stretch justify-between">
-                  <li>
-                    <button
-                      name="right1"
-                      value={randomRightButtons[0]}
-                      onClick={handleClickButton}
-                      className={styleRightButton1}
-                    >
-                      {randomRightButtons[0]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      name="right2"
-                      value={randomRightButtons[1]}
-                      onClick={handleClickButton}
-                      className={styleRightButton2}
-                    >
-                      {randomRightButtons[1]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      name="right3"
-                      value={randomRightButtons[2]}
-                      onClick={handleClickButton}
-                      className={styleRightButton3}
-                    >
-                      {randomRightButtons[2]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      name="right4"
-                      value={randomRightButtons[3]}
-                      onClick={handleClickButton}
-                      className={styleRightButton4}
-                    >
-                      {randomRightButtons[3]}
-                    </button>
-                  </li>
-                </ul>
-              ) : null}
-            </div>
-          </section>
+        <section className="grid grid-cols-2">
+          <div className="flex flex-col place-items-end p-4">
+            {randomLeftButtons && randomLeftButtons.length === 4 ? (
+              <ul className="w-full h-full flex flex-col items-stretch justify-between">
+                <li>
+                  <button
+                    name="left1"
+                    value={randomLeftButtons[0]}
+                    onClick={handleClickButton}
+                    className={`${styleLeftButton1} ${correctStyle}`}
+                  >
+                    {randomLeftButtons[0]}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    name="left2"
+                    value={randomLeftButtons[1]}
+                    onClick={handleClickButton}
+                    className={`${styleLeftButton2} ${correctStyle}`}
+                  >
+                    {randomLeftButtons[1]}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    name="left3"
+                    value={randomLeftButtons[2]}
+                    onClick={handleClickButton}
+                    className={`${styleLeftButton3} ${correctStyle}`}
+                  >
+                    {randomLeftButtons[2]}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    name="left4"
+                    value={randomLeftButtons[3]}
+                    onClick={handleClickButton}
+                    className={`${styleLeftButton4} ${correctStyle}`}
+                  >
+                    {randomLeftButtons[3]}
+                  </button>
+                </li>
+              </ul>
+            ) : null}
+          </div>
+          <div className="flex flex-col place-items-start p-4">
+            {randomRightButtons && randomRightButtons.length === 4 ? (
+              <ul className="w-full h-full flex flex-col items-stretch justify-between">
+                <li>
+                  <button
+                    name="right1"
+                    value={randomRightButtons[0]}
+                    onClick={handleClickButton}
+                    className={styleRightButton1}
+                  >
+                    {randomRightButtons[0]}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    name="right2"
+                    value={randomRightButtons[1]}
+                    onClick={handleClickButton}
+                    className={styleRightButton2}
+                  >
+                    {randomRightButtons[1]}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    name="right3"
+                    value={randomRightButtons[2]}
+                    onClick={handleClickButton}
+                    className={styleRightButton3}
+                  >
+                    {randomRightButtons[2]}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    name="right4"
+                    value={randomRightButtons[3]}
+                    onClick={handleClickButton}
+                    className={styleRightButton4}
+                  >
+                    {randomRightButtons[3]}
+                  </button>
+                </li>
+              </ul>
+            ) : null}
+          </div>
+        </section>
 
         <div className="flex justify-center p-2">
           <button

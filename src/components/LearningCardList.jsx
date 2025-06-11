@@ -90,7 +90,7 @@ export default function LearningCardList() {
   if (loading && page === 1) return <CustomLoading />;
 
   return (
-    <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 dark:bg-gray-800">
+    <div className="container mx-auto px-4 lg:max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 ">
       {/* Render all loaded cards */}
       {cards.map((card) => (
         <LearningCard key={card.card_id} card={card} />

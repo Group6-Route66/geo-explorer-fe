@@ -79,7 +79,7 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
 
   return (
     <div className=" w-full my-25">
-      <h2 className="text-2xl font-bold text-center mb-6">
+      <h2 className="text-2xl font-bold text-center mb-6 dark:text-white">
         {activeQuestion?.question_text}
       </h2>
 
