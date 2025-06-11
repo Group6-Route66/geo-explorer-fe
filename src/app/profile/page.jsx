@@ -1,9 +1,12 @@
-import { UserProfile } from "@/components";
+'use client'
+
+import { CustomLoading, UserProfile } from "@/components";
+import { Suspense } from 'react'
 
 export default function Profile() {
   return (
-    <div>
+    <Suspense fallback={<CustomLoading />}>
       <UserProfile />
-    </div>
+    </Suspense>
   );
 }
