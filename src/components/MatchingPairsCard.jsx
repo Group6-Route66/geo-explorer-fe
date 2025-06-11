@@ -85,7 +85,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const [randomRightButtons, setRandomRightButtons] = useState([]);
 
   const successRate = correctQuestions.length / mpQuestions.length;
-  const isSuccess = successRate >= 0.8;
+  const isSuccess = successRate >= 0.6;
 
   
   function isOdd(number) {

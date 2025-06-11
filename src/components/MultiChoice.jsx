@@ -44,7 +44,7 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   const colorClasses =
     levelColors[activeQuestion?.level] || levelColors.Beginner;
 
-  const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(",");
+  const multipleChoiceList = activeQuestion?.multiple_choice_text?.split(";");
 
   const successRate = correctAnswersList.length / mcQuestions.length;
   const isSuccess = successRate >= 0.8;

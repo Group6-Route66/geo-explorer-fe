@@ -8,10 +8,12 @@ import { useProgress, useUser } from "@/contexts";
 import ProgressBar from "./ProgressBar";
 import Map from "./Map";
 import { randomize } from "@/utils";
+import { CustomLoading } from ".";
 
 const MapQuiz = () => {
   const [mapQuestions, setMapQuestions] = useState([]);
   const [level, setLevel] = useState();
+  const [loading, setLoading] = useState(true);
 
   const { user } = useUser();
   const { progress, updateProgress } = useProgress();
@@ -34,22 +36,27 @@ const MapQuiz = () => {
 
   useEffect(() => {
     if (!level || !continent || category === undefined) return;
-
+    setLoading(true);
     getMapQAs(level, continent, category).then((result) => {
       setMapQuestions(randomize(result, 5));
       updateProgress({ totalQuestions: mapQuestions.length });
+      setLoading(false);
     });
   }, [level, category, continent]);
 
   const activeQuestion = mapQuestions[progress.currentQuestion - 1] || null;
 
-    
   return (
     <>
-      <ProgressBar />
-      {activeQuestion ? (
-        <Map mapQuestions={mapQuestions} activeQuestion={activeQuestion} />
-      ) : null}
+      {!loading && activeQuestion ? (
+        <>
+          <ProgressBar />
+
+          <Map mapQuestions={mapQuestions} activeQuestion={activeQuestion} />
+        </>
+      ) : (
+        <CustomLoading />
+      )}
     </>
   );
 };

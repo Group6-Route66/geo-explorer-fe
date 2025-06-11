@@ -8,9 +8,11 @@ import { useFilter, useProgress, useUser } from "@/contexts";
 import MultiChoice from "./MultiChoice";
 import ProgressBar from "./ProgressBar";
 import { randomize } from "@/utils";
+import { CustomLoading } from ".";
 
 const MultiChoiceQuiz = () => {
   const [mcQuestions, setMcQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { user } = useUser();
   const { progress, updateProgress } = useProgress();
@@ -18,7 +20,6 @@ const MultiChoiceQuiz = () => {
   const { category, continent } = useParams();
 
   const { level, setLevel } = useFilter();
-
 
   useEffect(() => {
     if (!user) return;
@@ -36,29 +37,30 @@ const MultiChoiceQuiz = () => {
 
   useEffect(() => {
     if (!level || !continent || category === undefined) return;
-
+    setLoading(true);
     getMultichoiceQAs(level, continent, category).then((result) => {
       setMcQuestions(randomize(result, 10));
       updateProgress({ totalQuestions: mcQuestions.length });
+      setLoading(false);
     });
   }, [level, category, continent]);
 
-
-  const activeQuestion = mcQuestions[progress.currentQuestion - 1] || null; 
-   console.log(mcQuestions, "<---mpQuestions");
-  console.log(mcQuestions.length, "<---mpQuestions.length");
-  console.log(activeQuestion, "<---activeQuestion");
-
+  const activeQuestion = mcQuestions[progress.currentQuestion - 1] || null;
 
   return (
     <>
-      <ProgressBar />
-      {activeQuestion ? (
-        <MultiChoice
-          mcQuestions={mcQuestions}
-          activeQuestion={activeQuestion}
-        />
-      ) : null}
+      {!loading && activeQuestion ? (
+        <>
+          <ProgressBar />
+
+          <MultiChoice
+            mcQuestions={mcQuestions}
+            activeQuestion={activeQuestion}
+          />
+        </>
+      ) : (
+        <CustomLoading />
+      )}
     </>
   );
 };

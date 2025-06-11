@@ -8,12 +8,12 @@
   --main-text: #51545d;
 }
 
-@theme inline {
+/* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
+} */
 
 @theme {
   --color-green: #6ed788;
@@ -28,7 +28,9 @@
   --font-mono: "YourMonoFont", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
+
+
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -44,7 +46,7 @@
     --font-sans: "YourSansFont", sans-serif;
     --font-mono: "YourMonoFont", monospace;
   }
-}
+} */
 
 body {
   background: var(--background);
