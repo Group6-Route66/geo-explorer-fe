@@ -7,6 +7,7 @@ import NextButton from "./NextButton";
 import { QuizFeedbackPopup } from ".";
 import { handleFinishQuiz, randomize } from "@/utils";
 import { useProgress, useUser } from "@/contexts";
+import Image from "next/image";
 
 const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const colours = [
@@ -283,9 +284,14 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     }
   }, [leftButtons, rightButtons]);
 
+  console.log(randomRightButtons[0]);
+  
+
   return (
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
-      <h4 className="text-2xl font-bold dark:text-white">{activeQuestion?.question_text}</h4>
+      <h4 className="text-2xl font-bold dark:text-white">
+        {activeQuestion?.question_text}
+      </h4>
       <div className="container mx-auto">
         <section className="grid grid-cols-2">
           <div className="flex flex-col place-items-end p-4">
@@ -344,7 +350,11 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
                     onClick={handleClickButton}
                     className={styleRightButton1}
                   >
-                    {randomRightButtons[0]}
+                    {randomRightButtons[0].includes("https") ? (
+                      <Image src={randomRightButtons[0]} width={20} height={20} alt="questsion-country"/>
+                    ) : (
+                      <span>{randomRightButtons[0]}</span>
+                    )}
                   </button>
                 </li>
                 <li>
@@ -354,7 +364,11 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
                     onClick={handleClickButton}
                     className={styleRightButton2}
                   >
-                    {randomRightButtons[1]}
+                   {randomRightButtons[1].includes("https") ? (
+                      <Image src={randomRightButtons[1]} width={20} height={20} alt="questsion-country"/>
+                    ) : (
+                      <span>{randomRightButtons[1]}</span>
+                    )}
                   </button>
                 </li>
                 <li>
@@ -364,7 +378,11 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
                     onClick={handleClickButton}
                     className={styleRightButton3}
                   >
-                    {randomRightButtons[2]}
+                    {randomRightButtons[2].includes("https") ? (
+                      <Image src={randomRightButtons[2]} width={20} height={20} alt="questsion-country"/>
+                    ) : (
+                      <span>{randomRightButtons[2]}</span>
+                    )}
                   </button>
                 </li>
                 <li>
@@ -374,7 +392,11 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
                     onClick={handleClickButton}
                     className={styleRightButton4}
                   >
-                    {randomRightButtons[3]}
+                     {randomRightButtons[3].includes("https") ? (
+                      <Image src={randomRightButtons[3]} width={20} height={20} alt="questsion-country"/>
+                    ) : (
+                      <span>{randomRightButtons[3]}</span>
+                    )}
                   </button>
                 </li>
               </ul>
