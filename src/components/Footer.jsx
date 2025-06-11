@@ -23,7 +23,7 @@ const Footer = () => {
     }`;
 
   return (
-    <footer className="container sticky bottom-0 z-10 bg-white mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm">
+    <footer className="container sticky bottom-0 z-10 bg-white mx-auto px-4 lg:max-w-5xl flex justify-between items-center p-4 shadow-md rounded-sm dark:bg-gray-800">
       <Link href="/" className={linkClass("/")}>
         <QuizIcon
           className={isActive("/") ? "text-[var(--color-green)]" : ""}

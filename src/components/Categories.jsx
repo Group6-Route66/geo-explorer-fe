@@ -8,7 +8,7 @@ const Categories = ({ activeCategory, setActiveCategory, categories }) => {
           key={category.category_id}
           className={`${
             activeCategory === category.category_id ? "border-b-green" : ""
-          } w-1/2 p-2 border-2 border-transparent border-b-gray-200`}
+          } w-1/2 p-2 border-2 border-transparent border-b-gray-200 dark:text-white`}
           onClick={() => setActiveCategory(category.category_id)}
         >
           {category.category_name}
