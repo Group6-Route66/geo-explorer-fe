@@ -1,6 +1,6 @@
 "use client";
 import { useProgress, useUser } from "@/contexts";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import NextButton from "./NextButton";
@@ -21,6 +21,11 @@ const Map = ({ activeQuestion, mapQuestions }) => {
   const { user, setUser } = useUser();
 
   const { category } = useParams();
+
+  const pathname = usePathname();
+
+  const pathParts = pathname.split("/").filter(Boolean);
+  const quizType = pathParts[0] || "";
 
   const successRate = correctAnswersList.length / mapQuestions.length;
   const isSuccess = successRate >= 0.8;
@@ -45,7 +50,14 @@ const Map = ({ activeQuestion, mapQuestions }) => {
   };
 
   const onFinishQuiz = () => {
-    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswersList);
+    handleFinishQuiz(
+      isSuccess,
+      category,
+      user,
+      setUser,
+      correctAnswersList,
+      quizType
+    );
   };
 
   const handleCloseFeedback = () => {

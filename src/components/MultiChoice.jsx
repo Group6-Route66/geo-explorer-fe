@@ -1,7 +1,7 @@
 "use client";
 
 import { act, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 import NextButton from "./NextButton";
 import { useProgress, useUser } from "@/contexts";
@@ -19,6 +19,13 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   const { user, setUser } = useUser();
 
   const { category } = useParams();
+
+  const pathname = usePathname();
+
+  const pathParts = pathname.split("/").filter(Boolean);
+  const quizType = pathParts[0] || "";
+
+  
 
   const levelColors = {
     Beginner: {
@@ -48,14 +55,14 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
       setCorrectAnswersList((currentList) => [...currentList, e.target.value]);
       setCorrectQuestions((currentList) => {
         return [...currentList, activeQuestion.question_text];
-      })
+      });
     } else {
       setIsCorrectAnswer(false);
     }
   }
 
   const onFinishQuiz = () => {
-    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswersList);
+    handleFinishQuiz(isSuccess, category, user, setUser, correctAnswersList, quizType);
   };
 
   const handleCloseFeedback = () => {

@@ -7,6 +7,7 @@ import { getMapQAs } from "@/api";
 import { useProgress, useUser } from "@/contexts";
 import ProgressBar from "./ProgressBar";
 import Map from "./Map";
+import { randomize } from "@/utils";
 
 const MapQuiz = () => {
   const [mapQuestions, setMapQuestions] = useState([]);
