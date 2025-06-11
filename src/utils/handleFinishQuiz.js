@@ -5,7 +5,8 @@ export const handleFinishQuiz = (
   category,
   user,
   setUser,
-  correctAnswersList
+  correctAnswersList,
+  quizType
 ) => {
   if (isSuccess && user !== "guest") {
     const score = user.rating + correctAnswersList.length;
@@ -28,23 +29,37 @@ export const handleFinishQuiz = (
       Advanced: "Advanced",
     };
 
+
+    const quizTypeToNumber = {
+      multichoice: 1,
+      matchingPairs: 2,
+      map: 3,
+    };
+    const currentQuizNumber = quizTypeToNumber[quizType];
+
+    console.log(currentQuizNumber === userNatureQuiz);
+    console.log(currentQuizNumber, userNatureQuiz);
+    console.log(quizType);
+    
+    
+
+
     if (category === "1") {
-      if (userNatureQuiz === 3) {
+      if (userNatureQuiz === 3 && currentQuizNumber === 3) {
         userLevelNature = levelProgression[userLevelNature] || userLevelNature;
         userNatureQuiz = 1;
-      } else if (userNatureQuiz < 3) {
-        userNatureQuiz = userNatureQuiz + 1;
+      } else if (currentQuizNumber === userNatureQuiz) {
+        userNatureQuiz += 1;
       }
-    } else if (category == "2") {
-      if (userTerritoryQuiz === 3) {
-        userLevelTerritory =
-          levelProgression[userLevelTerritory] || userLevelTerritory;
+
+    } else if (category === "2") {
+      if (userTerritoryQuiz === 3 && currentQuizNumber === 3) {
+        userLevelTerritory = levelProgression[userLevelTerritory] || userLevelTerritory;
         userTerritoryQuiz = 1;
-      } else if (userTerritoryQuiz < 3) {
-        userTerritoryQuiz = userTerritoryQuiz + 1;
+      } else if (currentQuizNumber === userTerritoryQuiz) {
+        userTerritoryQuiz += 1;
       }
     }
-
     patchUserScore(
       user.username,
       score,

@@ -8,9 +8,11 @@ import MatchingPairsCard from "./MatchingPairsCard";
 import { useFilter, useProgress, useUser } from "@/contexts";
 import ProgressBar from "./ProgressBar";
 import { randomize } from "@/utils";
+import { CustomLoading } from ".";
 
 const MatchingPairsQuiz = () => {
   const [mpQuestions, setMpQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { level, setLevel } = useFilter();
 
@@ -36,9 +38,12 @@ const MatchingPairsQuiz = () => {
 
   useEffect(() => {
     if (!level || !continent || category === undefined) return;
+    setLoading(true);
     getMatchingPairs(category, continent, level).then((result) => {
-      setMpQuestions(randomize(result, 3));
-      updateProgress({ totalQuestions: mpQuestions.length });
+      const randomized = randomize(result, 3);
+      setMpQuestions(randomized);
+      updateProgress({ totalQuestions: randomized.length });
+      setLoading(false);
     });
   }, [category, continent, level]);
 
@@ -47,17 +52,20 @@ const MatchingPairsQuiz = () => {
   }, [mpQuestions]);
 
   const activeQuestion = mpQuestions[progress.currentQuestion - 1] || null;
-  console.log(mpQuestions, "<---mpQuestions");
-  console.log(mpQuestions.length, "<---mpQuestions.length");
-  console.log(activeQuestion, "<---activeQuestion");
 
   return (
     <>
-      <ProgressBar />
-      <MatchingPairsCard
-        mpQuestions={mpQuestions}
-        activeQuestion={activeQuestion}
-      />
+      {loading || !activeQuestion ? (
+        <CustomLoading />
+      ) : (
+        <>
+          <ProgressBar />
+          <MatchingPairsCard
+            mpQuestions={mpQuestions}
+            activeQuestion={activeQuestion}
+          />
+        </>
+      )}
     </>
   );
 };
