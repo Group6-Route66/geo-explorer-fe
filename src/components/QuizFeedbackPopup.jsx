@@ -93,7 +93,7 @@ const QuizFeedbackPopup = ({
                   updateProgress({
                     currentQuestion: 1,
                   });
-                  setIsCorrectAnswer(null);
+                  setIsCorrectAnswer ? setIsCorrectAnswer(null) : null;
                   onResetQuiz();
                 }}
                 className="px-6 py-2 bg-grey-500 text-green-600 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white"

@@ -1,8 +1,9 @@
 "use client";
-import { useProgress, useUser } from "@/contexts";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+
+import { useProgress, useUser } from "@/contexts";
 import NextButton from "./NextButton";
 import { handleFinishQuiz } from "@/utils";
 import { QuizFeedbackPopup } from ".";
