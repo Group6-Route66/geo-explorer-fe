@@ -73,10 +73,10 @@ const ProgressBarMain = () => {
   console.log(level, "<<<<<<level");
 
   const buttonClass =
-    "w-34 h-6 md:w-40 md:h-8 font-bold bg-opacity-50 flex justify-center items-center border-white rounded-2xl ";
+    "h-6 md:w-40 md:h-8 px-2 sm:px-6 text-sm sm:text-base font-bold bg-opacity-50 flex justify-center items-center border-white rounded-2xl ";
 
   const disabledClass =
-    "w-34 h-6 md:w-40 md:h-8 font-bold bg-gray-200 bg-opacity-50 flex justify-center items-center border-white rounded-2xl text-gray-400";
+    "h-6 md:w-40 md:h-8 px-2 sm:px-6 font-bold bg-gray-200 bg-opacity-50 flex justify-center items-center border-white rounded-2xl text-gray-400";
 
   return (
     <div className="w-full flex flex-column justify-around mt-3 mb-10">

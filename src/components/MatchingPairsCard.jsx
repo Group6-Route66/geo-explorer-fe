@@ -24,9 +24,11 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   const initialStyle = `  w-full 
   bg-white 
   text-black 
-  m-1 
-  px-6 
-  py-3 
+  m-1
+  px-2
+  py-1
+  sm:px-6 
+  sm:py-3 
   flex 
   items-center 
   justify-center 
@@ -443,7 +445,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
         {!isSubmitted ? (
           <div className="flex justify-center p-2">
             <button
-              className="w-40 bg-green rounded-3xl p-2 font-bold hover:bg-green-500 shadow disabled:bg-gray-200 disabled:text-gray-500"
+              className="w-40 bg-green border text-white dark:text-gray-800 rounded-3xl p-2 font-bold hover:bg-green disabled:bg-transparent disabled:text-gray-300 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-300 "
               onClick={handleSubmit}
               disabled={finalAnswer.length < activeQuestion.answers.length}
             >

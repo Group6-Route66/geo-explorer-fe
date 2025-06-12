@@ -12,7 +12,7 @@ const NextButton = ({ disabled = false }) => {
   };
 
   const buttonClass =
-    "w-40 bg-grey-500 border rounded-3xl p-2 font-bold hover:bg-green hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-300 ";
+    "w-40 bg-grey-500  border rounded-3xl p-2 font-bold hover:bg-green hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-300 ";
 
   return (
     <button
