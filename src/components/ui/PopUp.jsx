@@ -6,7 +6,7 @@ const PopUp = ({ openPopUp, children }) => {
       <div
         className="
         w-full max-w-full lg:max-w-[500px] 
-        bg-white shadow-inner border border-green rounded-t-2xl lg:rounded-xl 
+        bg-white dark:bg-gray-800 shadow-inner border border-green dark:border-transparent rounded-t-2xl lg:rounded-xl 
         p-4 
         max-h-[90vh] overflow-y-auto
       "
