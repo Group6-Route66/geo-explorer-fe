@@ -154,7 +154,7 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
 
       {isOpenFeedback ? (
         <QuizFeedbackPopup
-          openFeedback={openFeedback}
+          openFeedback={isOpenFeedback}
           onClose={handleCloseFeedback}
           isSuccess={isSuccess}
           correctCount={correctAnswersList.length}
