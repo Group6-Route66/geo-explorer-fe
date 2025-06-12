@@ -58,10 +58,10 @@ const QuizFeedbackPopup = ({
         >
           {isSuccess ? "Success! 🎉" : "Try Again 💡"}
         </h2>
-        <p className="text-xl font-bold text-gray-800">
+        <p className="text-xl font-bold text-gray-800 dark:text-gray-300">
           Score: {correctCount} / {totalCount}
         </p>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-300">
           {isSuccess
             ? "Great job! You passed the quiz."
             : "Don't worry! Review and try again to improve your score."}

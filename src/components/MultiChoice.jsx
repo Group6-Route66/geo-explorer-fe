@@ -1,6 +1,6 @@
 "use client";
 
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 
 import NextButton from "./NextButton";
@@ -154,7 +154,7 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
 
       {isOpenFeedback ? (
         <QuizFeedbackPopup
-          openFeedback={isOpenFeedback}
+          openFeedback={openFeedback}
           onClose={handleCloseFeedback}
           isSuccess={isSuccess}
           correctCount={correctAnswersList.length}

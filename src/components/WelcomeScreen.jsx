@@ -59,13 +59,15 @@ const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
             onSubmit={handleSubmitForm}
             className="w-full flex flex-col items-center pt-10 mb-5"
           >
-            <h3 className="text-2xl font-bold mb-8">Welcome to Geo Explorer</h3>
+            <h3 className="text-2xl font-bold mb-8 dark:text-green">
+              Welcome to Geo Explorer
+            </h3>
             {noUsername ? (
               <p className="text-red mb-1">username Not Found!</p>
             ) : null}
             <input
               placeholder="Enter username"
-              className="h-[56px] w-full bg-gray-100 p-4 rounded-xl mb-8 shadow-[0px_4px_4px_0px_#00000040]"
+              className="h-[56px] w-full bg-gray-100 dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-300 p-4 rounded-xl mb-8 shadow-[0px_4px_4px_0px_#00000040]"
               name="user"
               value={usernameInput}
               onChange={(e) => {
@@ -84,7 +86,7 @@ const WelcomeScreen = ({ openWelcomeScreen, closeWelcomeScreen }) => {
             </button>
           </Link>
           <button
-            className="w-full bg-gray-100 rounded-4xl p-2 text-black font-bold shadow-[0px_4px_4px_0px_#00000040] hover:bg-green-600 mb-5"
+            className="w-full bg-gray-100 rounded-4xl p-2 text-black dark:bg-gray-700 dark:text-white font-bold shadow-[0px_4px_4px_0px_#00000040] hover:bg-green-600 mb-5"
             onClick={playAsGuest}
           >
             Play as Guest
