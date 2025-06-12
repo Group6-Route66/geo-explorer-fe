@@ -55,7 +55,7 @@ const UsersRanking = () => {
               individualUser.username === user?.username
                 ? "border-4 border-green scale-110"
                 : ""
-            } flex items-center justify-between gap-4 p-4 border border-gray-200 rounded-lg shadow-md w-full max-w-md`}
+            } flex items-center justify-between gap-4 p-4 border border-gray-200 rounded-lg shadow-md w-full max-w-xs md:max-w-md`}
           >
             <div className="flex items-center gap-5">
               <img

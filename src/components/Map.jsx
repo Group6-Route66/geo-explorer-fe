@@ -83,11 +83,11 @@ const Map = ({ activeQuestion, mapQuestions }) => {
         </p>
         <div>
           {isCorrectAnswer ? (
-            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-green text-green font-medium ">
+            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-green text-white dark:text-gray-800 font-medium ">
               Correct!
             </p>
           ) : country && answer ? (
-            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 bg-red text-white font-medium">
+            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-red text-white font-medium">
               Not correct!
             </p>
           ) : null}
@@ -102,7 +102,7 @@ const Map = ({ activeQuestion, mapQuestions }) => {
           {country ? (
             <button
               disabled={answer}
-              className="bg-green rounded-4xl p-2 text-white font-bold px-8 disabled:bg-gray-100 disabled:cursor-not-allowed"
+              className="w-40 bg-green border text-white dark:text-gray-800 rounded-3xl p-2 font-bold hover:bg-green disabled:bg-transparent disabled:text-gray-300 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-300"
               onClick={handleAnswer}
             >
               Confirm

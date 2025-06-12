@@ -83,8 +83,8 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
   }, [mcQuestions]);
 
   return (
-    <div className=" w-full my-25">
-      <h2 className="text-2xl font-bold text-center mb-6 dark:text-white">
+    <div className=" w-full my-10 md:my-15">
+      <h2 className="text-xl md:text-2xl font-bold text-center mb-5 md:mb-15 dark:text-white">
         {activeQuestion?.question_text}
       </h2>
 
@@ -123,7 +123,7 @@ const MultiChoice = ({ activeQuestion, mcQuestions }) => {
         </div>
       ) : isCorrectAnswer === false ? (
         <div className="w-full my-10 p-3 bg-red-50 text-red-700 rounded text-center">
-          Not quite right. The correct answer is highlighted in green.
+          Not quite right. The correct answer is highlighted.
         </div>
       ) : null}
       {progress.currentQuestion < progress.totalQuestions ? (
