@@ -34,7 +34,7 @@ export default function Footer() {
         container
         sticky bottom-0 z-10
         bg-white dark:bg-gray-800
-        mx-auto px-4 lg:max-w-5xl
+        w-full max-w-full mx-0 md:mx-auto px-4 lg:max-w-5xl
         flex justify-between items-center
         p-4 shadow-md rounded-sm
         transition-colors duration-300
