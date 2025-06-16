@@ -23,9 +23,11 @@ const PickAvatarScreen = ({
         </button>
       </div>
       <div className="w-full flex flex-col items-center mb-8">
-        <h2 className="text-2xl font-bold">Select Your Avatar</h2>
+        <h2 className="text-2xl font-bold dark:text-gray-100">
+          Select Your Avatar
+        </h2>
       </div>
-      <div className="grid grid-cols-5 gap-4 justify-items-center w-full">
+      <div className="grid grid-cols-5 gap-4 justify-items-center w-full max-h-55 p-1 overflow-auto">
         {avatarUrls.map((avatar, index) => {
           return (
             <img

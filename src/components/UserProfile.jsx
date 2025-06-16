@@ -60,7 +60,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="flex flex-col items-center pt-12 pb-12">
+    <div className="w-full flex flex-col items-center pt-12 pb-12">
       {user !== "guest" && user !== null ? (
         <>
           {showPickAvatarScreen ? (
@@ -76,24 +76,24 @@ const UserProfile = () => {
             alt="user's Profile Image"
             onClick={() => setShowPickAvatarScreen(true)}
           />
-          <div className="pt-1">
+          <div className="w-full pt-1 flex flex-col items-center">
             <p className="text-xl font-extrabold text-green flex flex-col items-center">
               {user?.username}
             </p>
 
-            <div className="flex gap-4 mt-3 mb-3">
-              <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-                <p className="text-xl font-extrabold dark:text-white">{user?.level_nature}</p>
+            <div className="w-full max-w-75 sm:max-w-100 flex justify-center xs:justify-between items-center flex-wrap gap-4 mt-3 mb-3">
+              <div className="border-2 border-green rounded-md p-4 sm:p-7 flex flex-col justify-center items-center gap-2">
+                <p className="text-md sm:text-xl font-extrabold dark:text-white">{user?.level_nature}</p>
                 <p className="text-sm text-green font-bold">Nature Level</p>
               </div>
-              <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
-                <p className="text-xl font-extrabold dark:text-white">
+              <div className="border-2 border-green rounded-md p-4 sm:p-7 flex flex-col items-center gap-2">
+                <p className="text-md sm:text-xl font-extrabold dark:text-white">
                   {user?.level_territory}
                 </p>
                 <p className="text-sm text-green font-bold">Territory Level</p>
               </div>
             </div>
-            <div className="border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
+            <div className="w-full max-w-75 sm:max-w-100 border-2 border-green rounded-md p-8 flex flex-col items-center gap-2">
               <p className="text-xl font-extrabold dark:text-white">{user?.rating}</p>
               <p className="text-sm text-green font-bold">Total Score</p>
             </div>

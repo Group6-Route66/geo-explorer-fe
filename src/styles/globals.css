@@ -27,6 +27,7 @@
   --color-blue: #6ebdd7;
   --font-sans: "YourSansFont", sans-serif;
   --font-mono: "YourMonoFont", monospace;
+  --breakpoint-xs: 22rem;
 }
 
 @media (prefers-color-scheme: dark) {

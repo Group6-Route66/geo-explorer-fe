@@ -67,10 +67,10 @@ const RegisterScreen = ({
               X
             </button>
           </div>
-          <div className="w-full flex flex-col gap-8 items-center">
-            <h2 className="text-2xl font-bold">Register</h2>
+          <div className="w-full flex flex-col items-center">
+            <h2 className="text-2xl font-bold dark:text-gray-100">Register</h2>
           </div>
-          <div className="flex justify-center items-center mt-5">
+          <div className="flex justify-center items-center mt-4">
             <img
               className="w-28 h-28  rounded-full object-cover shadow-md mb-4 hover:scale-110 transition-transform cursor-pointer"
               src={regAvatarUrl}
@@ -83,11 +83,11 @@ const RegisterScreen = ({
             onSubmit={handleSubmitForm}
           >
             {usernameExists ? (
-              <p className="text-red mb-1">username Already Exists!</p>
+              <p className="text-red mb-1">Username Already Exists!</p>
             ) : null}
             <input
               placeholder="Enter username"
-              className="h-[56px] w-full bg-gray-100 p-4 rounded-xl mb-8 shadow-[0px_4px_4px_0px_#00000040]"
+              className="h-[56px] w-full bg-gray-100 dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-300 p-4 rounded-xl mb-8 shadow-[0px_4px_4px_0px_#00000040]"
               name="user"
               value={usernameInput}
               onChange={(e) => {

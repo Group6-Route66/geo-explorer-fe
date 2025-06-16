@@ -97,8 +97,11 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
   function handleClickButton(event) {
     event.preventDefault();
     if (counterColour < 8) {
-      const currentClicked = event.target.name;
-      const value = event.target.value;
+      const currentClicked = event.currentTarget.name;
+      const value = event.currentTarget.value;
+
+      console.log(event.target);
+      console.log(event.currentTarget);
 
       setCounterColour(counterColour + 1);
       const currentStyle = `w-full ${colours[counterColour]} m-1 
@@ -223,12 +226,14 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     setStyleLeftButton1((prev) => `${prev} ${leftStyles[0]}`);
     setStyleLeftButton2((prev) => `${prev} ${leftStyles[1]}`);
     setStyleLeftButton3((prev) => `${prev} ${leftStyles[2]}`);
-    setStyleLeftButton4((prev) => `${prev} ${leftStyles[3]}`);
+    randomLeftButtons[3] &&
+      setStyleLeftButton4((prev) => `${prev} ${leftStyles[3]}`);
 
     setStyleRightButton1((prev) => `${prev} ${rightStyles[0]}`);
     setStyleRightButton2((prev) => `${prev} ${rightStyles[1]}`);
     setStyleRightButton3((prev) => `${prev} ${rightStyles[2]}`);
-    setStyleRightButton4((prev) => `${prev} ${rightStyles[3]}`);
+    randomRightButtons[3] &&
+      setStyleRightButton4((prev) => `${prev} ${rightStyles[3]}`);
   }
 
   function handleNext() {
@@ -276,8 +281,6 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
     }
   }, [activeQuestion]);
 
-  console.log(activeQuestion);
-
   useEffect(() => {
     if (leftButtons.length && rightButtons.length) {
       setCorrectAnswers(setCorrectAnswersArray(leftButtons, rightButtons));
@@ -288,7 +291,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
 
   return (
     <div className="flex flex-col justify-center items-center m-2 p-4 rounded-sm">
-      <h4 className="text-2xl font-bold dark:text-white">
+      <h4 className="text-xl md:text-2xl font-bold dark:text-white">
         {activeQuestion?.question_text}
       </h4>
       <div className="container mx-auto">
@@ -344,7 +347,7 @@ const MatchingPairsCard = ({ mpQuestions, activeQuestion }) => {
             ) : null}
           </div>
           <div className="flex flex-col place-items-start p-4">
-            {randomRightButtons && randomRightButtons.length  ? (
+            {randomRightButtons && randomRightButtons.length ? (
               <ul className="w-full h-full flex flex-col items-stretch justify-between">
                 <li>
                   <button

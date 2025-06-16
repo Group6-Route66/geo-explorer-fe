@@ -1,5 +1,5 @@
 "use client";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -78,25 +78,25 @@ const Map = ({ activeQuestion, mapQuestions }) => {
   return (
     <div className="flex flex-col justify-center items-center mt-4 bg-white max-w-4xl mx-auto dark:bg-gray-800">
       <div className="w-full flex flex-col sm:flex-row justify-between items-center mb-5 ">
-        <p className=" text-xl sm:text-xl font-semibold text-gray-900 content-justify:start dark:text-white sm:text-left">
+        <p className="text-xl md:text-2xl font-semibold text-gray-900 content-justify:start dark:text-white sm:text-left">
           {activeQuestion ? activeQuestion.instruction : null}
         </p>
-        <div>
+        <div className="w-full max-w-30 mt-4 sm:mt-0 rounded-full">
           {isCorrectAnswer ? (
-            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-green text-white dark:text-gray-800 font-medium ">
+            <p className="p-0 bg-green text-white dark:text-gray-800 font-medium px-3 py-1 rounded-full">
               Correct!
             </p>
           ) : country && answer ? (
-            <p className="w-100 mt-4 sm:mt-0 block px-3 py-1 rounded-full bg-red text-white font-medium">
+            <p className="p-0 bg-red text-white font-medium px-3 py-1 rounded-full">
               Not correct!
             </p>
           ) : null}
         </div>
       </div>
 
-      <div className="flex w-full mb-6">
-        <div className="flex-1 flex items-center justify-center sm:justify-start gap-4">
-          <div className="px-8 py-1 text-gray-800 border-2 border-green dark:text-white font-medium">
+      <div className="flex flex-col sm:flex-row gap-2 w-full mb-6">
+        <div className="flex-1 flex  items-center justify-center sm:justify-start gap-4">
+          <div className="px-2 py-1 text-gray-800 border-2 border-green dark:text-white font-medium">
             <p>{country || "No country selected"}</p>
           </div>
           {country ? (
@@ -112,7 +112,7 @@ const Map = ({ activeQuestion, mapQuestions }) => {
 
         {progress.currentQuestion < progress.totalQuestions ? (
           <div
-            className="flex items-center justify-end"
+            className="flex items-center justify-center sm:justify-end"
             onClick={() => {
               setCountry(null);
               setAnswer(null);
@@ -166,7 +166,7 @@ const Map = ({ activeQuestion, mapQuestions }) => {
               />
             ))
           }
-        </Geographies>
+          </Geographies>
       </ComposableMap>
       {isOpenFeedback ? (
         <QuizFeedbackPopup
